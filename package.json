@@ -33,6 +33,7 @@
   "scripts": {
     "start": "lerna run --parallel start",
     "type": "tsc --noEmit --composite false",
+    "prepare": "husky install",
     "lint": "eslint \"**/*.{js,ts,tsx}\""
   },
   "devDependencies": {
