@@ -1,0 +1,14 @@
+{
+    // "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "target": "es6",
+        "outDir": "build",
+        "rootDir": ".",
+        "experimentalDecorators": true,
+        "allowJs": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+    },
+    "exclude": ["config.js","models", "index.ts"],
+    "include": ["**/*.ts", "**/*.js"]
+}

@@ -27,7 +27,8 @@
       "**/cors",
       "**/antd",
       "**/pixi.js",
-      "**/@inlet/react-pixi"
+      "**/@inlet/react-pixi",
+      "*"
     ]
   },
   "scripts": {

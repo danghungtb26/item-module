@@ -1,17 +1,33 @@
 {
-    "extends": "../../tsconfig.json",
+    // "extends": "../../tsconfig.json",
     "compilerOptions": {
         "paths": {
             // "@*": ["./src/*"],
-            "@drop-ball/*": ["../../packages/*"]
+            "*": ["@types/*.d.ts"]
           },
         "baseUrl": ".",
+        "rootDir": ".",
+        "typeRoots": ["node", "@types", "global.d.ts"],
         "outDir": "dist",
-        "target": "es2016",
+        "target": "es6",
         "module": "commonjs",
+        "moduleResolution": "node",
+        "lib": ["ESNext"],
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true
-    }
+        "forceConsistentCasingInFileNames": true,
+        "experimentalDecorators": true,
+        "allowJs": true,
+        "strictPropertyInitialization": false,
+        "noImplicitOverride": false,
+        
+    },
+    "ts-node": {
+        "files": true
+    },
+    "include": [
+        "./src/**/*.ts",
+        "./@types/**/*.d.ts"
+    ]
 }

@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    // "baseUrl": ".",
     "paths": {
       // "@*": ["src/*"],
-      "@drop-ball/*": ["./packages/*"]
     },
     "target": "es5",
     "lib": [
@@ -11,7 +10,7 @@
       "dom.iterable",
       "esnext"
     ],
-    "typeRoots": ["./node_modules/@types/","src/models/types.d.ts"],
+    "typeRoots": ["./node_modules/@types/", "@types/*"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -25,7 +24,9 @@
     "isolatedModules": false,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false,
+    "experimentalDecorators": true,
   },
   "include": ["**/*.ts", "**/*.tsx", "src", "src/react-app-env.d.ts"],
   "exclude": ["node_modules"]
