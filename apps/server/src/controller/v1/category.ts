@@ -9,7 +9,10 @@ export class CategoryController {
     page = 1,
     limit = 10,
   }) => {
-    const categories = await Category.findAndCountAll({ offset: (page - 1) * 10, limit })
+    const categories = await Category.findAndCountAll({
+      offset: (page - 1) * 10,
+      limit,
+    })
     return {
       data: categories.rows,
       paging: {
@@ -21,20 +24,48 @@ export class CategoryController {
     }
   }
 
-  static findOne = Category.findOne
+  static findOne = async (id: number | string) => {
+    const category = await Category.findOne({
+      where: {
+        id,
+      },
+    })
+    if (category) {
+      return {
+        data: category,
+      }
+    }
 
-  static update = async (id: number, body: Record<string, any>) => {
-    return Category.update(body, { where: { id } })
-      .then(num => {
-        if (num.length > 0) {
-          return true
-        }
+    throw new Error('Not found')
+  }
 
-        return false
-      })
-      .catch(() => {
-        return false
-      })
+  static create = async (body: Record<string, any>) => {
+    const category = await Category.create(body)
+    if (category) {
+      return {
+        data: category,
+      }
+    }
+
+    throw new Error('Cannot create')
+  }
+
+  static update = async (id: number | string, body: Record<string, any>) => {
+    const category = await Category.findOne({
+      where: {
+        id,
+      },
+    })
+
+    if (category) {
+      await Category.update(body, { where: { id } })
+      const category = await Category.findOne({ where: { id } })
+      return {
+        data: category,
+      }
+    }
+
+    throw new Error('Cannot update')
   }
 
   static deleteByPk = async (id: string) => {

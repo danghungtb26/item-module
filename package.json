@@ -27,11 +27,11 @@
       "**/cors",
       "**/antd",
       "**/pixi.js",
-      "**/@inlet/react-pixi",
-      "*"
+      "**/@inlet/react-pixi"
     ]
   },
   "scripts": {
+    "start:web": "yarn workspace web-react start",
     "start": "lerna run --parallel start",
     "type": "tsc --noEmit --composite false",
     "prepare": "husky install",
@@ -55,4 +55,5 @@
   "lint-staged": {
     "**/*.{js,ts,tsx}": "eslint \"**/*.{js,ts,tsx}\" --cache --fix"
   }
+  
 }

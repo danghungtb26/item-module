@@ -67,7 +67,7 @@ export class ItemController {
       }
     }
 
-    throw new Error('Item cannot create')
+    throw new Error('Cannot update')
   }
 
   static deleteByPk = async (id: string) => {

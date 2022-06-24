@@ -1,17 +1,11 @@
 import Express, { Response, Request } from 'express'
 import { isNumber } from 'lodash'
-import ControllerV1 from '../../controller/v1'
+import ControllerV1 from '../../../controller/v1'
 
-const controller = ControllerV1.Item.Item
+const controller = ControllerV1.Item.Status
 
+// status
 const route = Express()
-
-route.get('/attribute', (_, res: Response) => {
-  res.status(200)
-  res.json({
-    data: controller.attibutes,
-  })
-})
 
 route.get('/', async (req: Request, res: Response) => {
   const { page: p, limit: l } = req.query || {}
@@ -70,6 +64,42 @@ route.put('/:id', async (req: Request, res: Response) => {
 
     res.status(200)
     res.json(data)
+  } catch (error: any) {
+    res.status(500)
+    res.json({
+      message: error.message,
+    })
+  }
+})
+
+route.put('/wrap-order', async (req: Request, res: Response) => {
+  const { start, end } = req.body || {}
+
+  if (!isNumber(start) || !isNumber(end)) {
+    res.status(400)
+    res.json({ message: 'Not found' })
+    return
+  }
+
+  try {
+    const data = await controller.wrapOrder(start, end)
+
+    res.status(200)
+    res.json(data)
+  } catch (error: any) {
+    res.status(500)
+    res.json({
+      message: error.message,
+    })
+  }
+})
+
+route.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params || {}
+
+    const deleted = await controller.deleteByPk(id)
+    res.json(deleted)
   } catch (error: any) {
     res.status(500)
     res.json({

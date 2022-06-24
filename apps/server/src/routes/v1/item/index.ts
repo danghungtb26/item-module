@@ -1,10 +1,20 @@
 import Express, { Response, Request } from 'express'
 import { isNumber } from 'lodash'
-import ControllerV1 from '../../controller/v1'
+import ControllerV1 from '../../../controller/v1'
+import status from './status'
+import type from './type'
 
-const controller = ControllerV1.Category
+const controller = ControllerV1.Item.Item
 
 const route = Express()
+
+route.get('/attribute', (_, res: Response) => {
+  res.status(200)
+  res.json({
+    data: controller.attibutes,
+  })
+})
+
 route.get('/', async (req: Request, res: Response) => {
   const { page: p, limit: l } = req.query || {}
 
@@ -83,5 +93,8 @@ route.delete('/:id', async (req: Request, res: Response) => {
     })
   }
 })
+
+route.use('/type', type)
+route.use('/status', status)
 
 export default route

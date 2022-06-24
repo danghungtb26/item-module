@@ -4,28 +4,10 @@
   ],
   "rules": {
     "import/no-extraneous-dependencies": ["error", {"packageDir": ["./apps/web-react", "./apps/server"]}],
-    // "import/no-unresolved": 0,
-    // "react/jsx-wrap-multilines": 0,
-    // "object-curly-newline": 0,
-    // "no-shadow": 0,
-    // "arrow-parens": 0,
-    // "no-unused-vars": 0,
-    // "implicit-arrow-linebreak": 0,
-    // "jsx-a11y/anchor-is-valid": 0,
-    // "no-confusing-arrow": 0,
-    // "react/jsx-curly-newline": 0,
-    // "no-use-before-define": 0,
-    // "comma-dangle": 0,
-    // "arrow-body-style": 0,
-    // "camelcase": 0,
-    // "operator-linebreak": 0,
-    // "react/require-default-props": 0,
-    // "no-param-reassign": 0,
-    // "class-methods-use-this": 0,
-    // "import/prefer-default-export": 0,
-    // "react/jsx-one-expression-per-line": 0
     "global-require": 0,
-    "max-classes-per-file": 0
+    "max-classes-per-file": 0,
+    "react/no-array-index-key": 0,
+    "no-undef": [0, { "typeof": true }]
   },
   "globals" : {
     "Model": true,
@@ -47,6 +29,6 @@
   "settings": {
     "import/core-modules": [
        
-      ]
+    ]
   }
 }

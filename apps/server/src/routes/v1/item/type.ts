@@ -1,10 +1,12 @@
 import Express, { Response, Request } from 'express'
 import { isNumber } from 'lodash'
-import ControllerV1 from '../../controller/v1'
+import ControllerV1 from '../../../controller/v1'
 
-const controller = ControllerV1.Category
+const controller = ControllerV1.Item.Type
 
+// type
 const route = Express()
+
 route.get('/', async (req: Request, res: Response) => {
   const { page: p, limit: l } = req.query || {}
 
