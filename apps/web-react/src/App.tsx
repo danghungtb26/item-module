@@ -2,7 +2,7 @@ import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import { MainLayout } from '@layouts'
 import CategoryPage from '@pages/category'
-import StatusPage from '@pages/status'
+import StatusPage from '@pages/item/status'
 
 function App() {
   return (
