@@ -1,36 +1,25 @@
 import FilterItem from '@components/FilterItem'
-import { Button, Cascader, Col, DatePicker, Form, Row } from 'antd'
-import Search from 'antd/lib/input/Search'
+import { ColDefaultProps, TwoColDefaultProps } from '@themes/styles'
+import { Button, Cascader, Col, DatePicker, Form, Input, Row } from 'antd'
 import React from 'react'
 
 const { RangePicker } = DatePicker
 
-const ColProps = {
-  xs: 24,
-  sm: 12,
-  style: {
-    marginBottom: 16,
-  },
+type FilterProps = {
+  onCreate?: () => void
 }
 
-const TwoColProps = {
-  ...ColProps,
-  xl: 96,
-}
-
-type FilterProps = {}
-
-const Filter: React.FC<FilterProps> = () => {
+const Filter: React.FC<FilterProps> = ({ onCreate }) => {
   return (
     <Form>
       <Row gutter={24}>
-        <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
+        <Col {...ColDefaultProps} xl={{ span: 4 }} md={{ span: 8 }}>
           <Form.Item>
-            <Search onSearch={() => {}} placeholder="Search" />
+            <Input onChange={() => {}} placeholder="Search" />
           </Form.Item>
         </Col>
 
-        <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }} id="addressCascader">
+        <Col {...ColDefaultProps} xl={{ span: 4 }} md={{ span: 8 }} id="addressCascader">
           <Form.Item name="address">
             <Cascader
               style={{ width: '100%' }}
@@ -40,7 +29,7 @@ const Filter: React.FC<FilterProps> = () => {
           </Form.Item>
         </Col>
         <Col
-          {...ColProps}
+          {...ColDefaultProps}
           xl={{ span: 6 }}
           md={{ span: 8 }}
           sm={{ span: 12 }}
@@ -52,7 +41,7 @@ const Filter: React.FC<FilterProps> = () => {
             </Form.Item>
           </FilterItem>
         </Col>
-        <Col {...TwoColProps} xl={{ span: 10 }} md={{ span: 24 }} sm={{ span: 24 }}>
+        <Col {...TwoColDefaultProps} xl={{ span: 10 }} md={{ span: 24 }} sm={{ span: 24 }}>
           <Row align="middle" justify="space-between">
             <div>
               <Button type="primary" htmlType="submit" className="margin-right">
@@ -60,7 +49,9 @@ const Filter: React.FC<FilterProps> = () => {
               </Button>
               <Button>Reset</Button>
             </div>
-            <Button type="ghost">Create</Button>
+            <Button onClick={onCreate} type="ghost">
+              Create
+            </Button>
           </Row>
         </Col>
       </Row>

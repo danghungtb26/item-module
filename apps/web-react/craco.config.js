@@ -1,17 +1,23 @@
 const path = require('path')
 const { getLoader, loaderByName } = require('@craco/craco')
 
+const CracoLessPlugin = require('craco-less')
+
 const packages = []
 // packages.push(path.join(__dirname, '../../packages/model'))
 // packages.push(path.join(__dirname, '../../packages/api'))
+
+const route = ['components', 'pages', 'hooks', 'layouts', 'routes', 'themes']
+
+const aliases = route.reduce((a, b) => {
+  return { ...a, [`@${b}`]: path.resolve(__dirname, `src/${b}`) }
+}, {})
 
 module.exports = {
   webpack: {
     alias: {
       '@': path.resolve(__dirname, 'src/'),
-      '@components': path.resolve(__dirname, 'src/components'),
-      '@layouts': path.resolve(__dirname, 'src/layouts'),
-      '@pages': path.resolve(__dirname, 'src/pages'),
+      ...aliases,
     },
     configure: (webpackConfig, arg) => {
       const { isFound, match } = getLoader(webpackConfig, loaderByName('babel-loader'))
@@ -26,5 +32,21 @@ module.exports = {
       return webpackConfig
     },
   },
-  plugins: [],
+  plugins: [
+    {
+      plugin: CracoLessPlugin,
+      options: {
+        lessLoaderOptions: {
+          lessOptions: {
+            modifyVars: {
+              '@primary-color': '#4D8BD6',
+              '@link-color': '#4D8BD6',
+              '@border-radius-base': '2px',
+            },
+            javascriptEnabled: true,
+          },
+        },
+      },
+    },
+  ],
 }

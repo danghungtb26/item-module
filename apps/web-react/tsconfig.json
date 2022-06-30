@@ -11,7 +11,7 @@
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
-    "lib": ["ESNext"],
+    "lib": ["ESNext","DOM"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

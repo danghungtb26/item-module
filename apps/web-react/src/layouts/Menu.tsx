@@ -1,10 +1,8 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-sparse-arrays */
 import { Menu } from 'antd'
 import { DashboardFilled, TrophyFilled } from '@ant-design/icons'
 import { Link, useLocation } from 'react-router-dom'
 
-const keys = ['/', '/category']
+const keys = ['/', '/category', '/item/type']
 
 const menu = [
   <Menu.Item key={keys[0]}>
@@ -17,6 +15,12 @@ const menu = [
     <Link to={keys[1]}>
       <TrophyFilled type="trophy" />
       <span>Category</span>
+    </Link>
+  </Menu.Item>,
+  <Menu.Item key={keys[2]}>
+    <Link to={keys[2]}>
+      <TrophyFilled type="trophy" />
+      <span>Item Type</span>
     </Link>
   </Menu.Item>,
 ]

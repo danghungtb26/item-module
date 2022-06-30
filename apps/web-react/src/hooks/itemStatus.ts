@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export const useItemTypes = (options?: { init: { page: number; limit: number } }) => {
+export const useItemStatuses = (options?: { init: { page: number; limit: number } }) => {
   const [data, setData] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<boolean | string>(false)
@@ -27,8 +27,8 @@ export const useItemTypes = (options?: { init: { page: number; limit: number } }
     setError,
   }
 }
-export const useItemType = (p: { id: Item.TypeInterface['id'] }) => {
-  const [data, setData] = useState<Item.TypeInterface>()
+export const useItemStatus = (p: { id: Item.StatusInterface['id'] }) => {
+  const [data, setData] = useState<Item.StatusInterface>()
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<boolean | string>(false)
 

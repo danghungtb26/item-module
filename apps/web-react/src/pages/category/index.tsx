@@ -3,6 +3,7 @@ import { Button, Space, Table, TableProps } from 'antd'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import Page from '@components/Page'
 import Filter from './components/Filter'
+import ModalForm, { ModalFormMethod } from './components/Modal'
 
 const CategoryPage: React.FC = () => {
   const [data, setData] = useState<any[]>([])
@@ -13,7 +14,9 @@ const CategoryPage: React.FC = () => {
 
   useEffect(() => {}, [param.id])
 
-  const columns = useRef<TableProps<any>['columns']>([
+  const modal = useRef<ModalFormMethod>(null)
+
+  const columns = useRef<TableProps<CategoryInterface>['columns']>([
     {
       title: 'ID',
       dataIndex: 'id',
@@ -26,7 +29,7 @@ const CategoryPage: React.FC = () => {
       dataIndex: 'version',
       key: 'name',
       render: (text: string, record) => (
-        <Link to={`${location.pathname}/${record.getId()}/rule-file`}>{text}</Link>
+        <Link to={`${location.pathname}/${record.id}/edit`}>{text}</Link>
       ),
     },
     // {
@@ -41,15 +44,14 @@ const CategoryPage: React.FC = () => {
       width: '25%',
     },
     {
-      title: 'Release At',
-      dataIndex: 'released_at',
-      key: 'released_at',
-      render: (_, record) => record.getReleaseDate(),
+      title: 'Created At',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
     },
     {
-      title: 'Rollback At',
-      dataIndex: 'rollback_at',
-      key: 'rollback_at',
+      title: 'Updated At',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
     },
     {
       title: 'Action',
@@ -57,11 +59,8 @@ const CategoryPage: React.FC = () => {
       align: 'center',
       render: (_, record) => (
         <Space size="middle">
-          <Button
-            onClick={() => navigate(`${location.pathname}/${record.getId()}/rule-file`)}
-            type="primary"
-          >
-            View
+          <Button onClick={() => navigate(`${location.pathname}/${record.id}/edit`)} type="ghost">
+            Edit
           </Button>
         </Space>
       ),
@@ -79,6 +78,7 @@ const CategoryPage: React.FC = () => {
           dataSource={data}
           loading={loading}
         />
+        <ModalForm ref={modal} />
       </div>
     </Page>
   )

@@ -10,24 +10,6 @@ const TriggerBlock = styled.div`
   height: 100%;
 `
 
-const StyledImageBlock = styled(TriggerBlock)`
-  @media (min-width: 576px) {
-    display: none !important;
-  }
-
-  padding-left: 24px;
-  ${'' /* cursor: pointer; */}
-`
-
-const HeaderBlock = styled(TriggerBlock)`
-  padding: 0 12px;
-  cursor: pointer;
-  transition: all 0.3s;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.025);
-  }
-`
 export default ({ collapsed, handleToggle }: { collapsed: boolean; handleToggle: () => void }) => {
   const Component = collapsed ? MenuUnfoldOutlined : MenuFoldOutlined
 

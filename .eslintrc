@@ -3,11 +3,25 @@
     "@rn-base"
   ],
   "rules": {
+  //   "import/extensions": [
+  //     "error",
+  //     "ignorePackages",
+  //     {
+  //       "less": "always",
+  //       "js": "always",
+  //       "jsx": "always",
+  //       "ts": "always",
+  //       "tsx": "always",
+  //       "css": "always"
+  //     }
+  //  ],
     "import/no-extraneous-dependencies": ["error", {"packageDir": ["./apps/web-react", "./apps/server"]}],
     "global-require": 0,
     "max-classes-per-file": 0,
     "react/no-array-index-key": 0,
-    "no-undef": [0, { "typeof": true }]
+    "no-undef": [0, { "typeof": true }],
+    "no-unused-vars": 0,
+    "@typescript-eslint/no-unused-vars": 1
   },
   "globals" : {
     "Model": true,

@@ -1,18 +1,22 @@
+import './App.less'
 import './App.css'
+// import './themes/index.less'
 import { Route, Routes } from 'react-router-dom'
-import { MainLayout } from '@layouts'
-import CategoryPage from '@pages/category'
-import StatusPage from '@pages/item/status'
+import routes, { RouteInterface } from '@routes'
+import { useEffect } from 'react'
 
+const appendRoute = (prePath: string, children: RouteInterface[]) => {
+  return children.map(i => (
+    <Route key={prePath + i.path} path={prePath + i.path} element={i.element}>
+      {appendRoute(prePath + i.path, i.children ?? [])}
+    </Route>
+  ))
+}
+
+const RoutesElement = appendRoute('', routes)
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route path="/category" element={<CategoryPage />} />
-        <Route path="/status" element={<StatusPage />} />
-      </Route>
-    </Routes>
-  )
+  useEffect(() => {}, [])
+  return <Routes>{RoutesElement}</Routes>
 }
 
 export default App
