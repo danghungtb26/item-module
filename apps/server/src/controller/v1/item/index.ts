@@ -91,7 +91,7 @@ export class ItemController {
     return Item.getAttributes()
   }
 
-  static get attibutes() {
-    return Item.attibutes
+  static get attributes() {
+    return Item.attributes
   }
 }

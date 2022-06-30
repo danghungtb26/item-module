@@ -64,10 +64,10 @@ export class Item extends Base {
   type: ItemType
 
   override getAttributes() {
-    return Item.attibutes
+    return Item.attributes
   }
 
-  static get attibutes() {
+  static get attributes() {
     return Object.keys(this.getAttributes()).filter(
       i => i !== 'order' && !i.toLowerCase().includes('id') && !i.toLowerCase().includes('at')
     )

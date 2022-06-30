@@ -11,7 +11,7 @@ const route = Express()
 route.get('/attribute', (_, res: Response) => {
   res.status(200)
   res.json({
-    data: controller.attibutes,
+    data: controller.attributes,
   })
 })
 
