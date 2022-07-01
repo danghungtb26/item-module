@@ -37,7 +37,7 @@ exports["default"] = {
                 primaryKey: true,
                 unique: true,
             },
-            parentId: {
+            parent_id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
                 references: {
                     model: 'Categories',
@@ -51,7 +51,7 @@ exports["default"] = {
             description: {
                 type: sequelize_typescript_1.DataType.STRING,
             },
-            subCategoryCount: {
+            sub_category_count: {
                 type: sequelize_typescript_1.DataType.INTEGER,
                 defaultValue: 0,
             },
@@ -59,14 +59,14 @@ exports["default"] = {
                 type: sequelize_typescript_1.DataType.INTEGER,
                 autoIncrement: true,
             },
-            deletedAt: {
+            deleted_at: {
                 type: sequelize_typescript_1.DataType.DATE,
             },
-            createdAt: {
+            created_at: {
                 type: sequelize_typescript_1.DataType.DATE,
                 allowNull: false,
             },
-            updatedAt: {
+            updated_at: {
                 type: sequelize_typescript_1.DataType.DATE,
                 allowNull: false,
             },

@@ -11,7 +11,7 @@ export default {
         primaryKey: true,
         unique: true,
       },
-      parentId: {
+      parent_id: {
         type: DataType.BIGINT,
         references: {
           model: 'Categories',
@@ -25,7 +25,7 @@ export default {
       description: {
         type: DataType.STRING,
       },
-      subCategoryCount: {
+      sub_category_count: {
         type: DataType.INTEGER,
         defaultValue: 0,
       },
@@ -33,14 +33,14 @@ export default {
         type: DataType.INTEGER,
         autoIncrement: true,
       },
-      deletedAt: {
+      deleted_at: {
         type: DataType.DATE,
       },
-      createdAt: {
+      created_at: {
         type: DataType.DATE,
         allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
         type: DataType.DATE,
         allowNull: false,
       },

@@ -89,10 +89,10 @@ __decorate([
 ], Category.prototype, "order", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => Category_1),
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.BIGINT)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'parent_id' })
 ], Category.prototype, "parentId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: 'sub_category_count' })
 ], Category.prototype, "subCategoryCount", void 0);
 __decorate([
     (0, sequelize_typescript_1.HasMany)(() => Category_1)
@@ -119,13 +119,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var Item_1;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Item = void 0;
 const sequelize_typescript_1 = __webpack_require__(4464);
 const base_1 = __webpack_require__(18796);
 const _1 = __webpack_require__(46584);
-let Item = class Item extends base_1.Base {
-    static get attibutes() {
+let Item = Item_1 = class Item extends base_1.Base {
+    getAttributes() {
+        return Item_1.attributes;
+    }
+    static get attributes() {
         return Object.keys(this.getAttributes()).filter(i => i !== 'order' && !i.toLowerCase().includes('id') && !i.toLowerCase().includes('at'));
     }
 };
@@ -154,20 +158,22 @@ __decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.NUMBER)
 ], Item.prototype, "price", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.BIGINT)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'supplier_id' })
 ], Item.prototype, "supplierId", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER)
 ], Item.prototype, "order", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => _1.ItemStatus),
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.BIGINT)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'status_id' })
 ], Item.prototype, "statusId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => _1.Category)
+    (0, sequelize_typescript_1.ForeignKey)(() => _1.Category),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'category_id' })
 ], Item.prototype, "categoryId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => _1.ItemType)
+    (0, sequelize_typescript_1.ForeignKey)(() => _1.ItemType),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'type_id' })
 ], Item.prototype, "typeId", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => _1.Category)
@@ -178,7 +184,7 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => _1.ItemType)
 ], Item.prototype, "type", void 0);
-Item = __decorate([
+Item = Item_1 = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: 'Items', modelName: 'Items' })
 ], Item);
 exports.Item = Item;
@@ -271,12 +277,32 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Base = void 0;
 const sequelize_typescript_1 = __webpack_require__(4464);
 let Base = class Base extends sequelize_typescript_1.Model {
+    // @CreatedAt
+    // @Column({ field: 'created_at' })
+    // created_at?: Date
+    // @UpdatedAt
+    // @Column({ field: 'updated_at' })
+    // updated_at?: Date
+    // @DeletedAt
+    // @Column({ field: 'deleted_at' })
+    // deleted_at?: Date
+    upsert(options) {
+        const keys = Object.keys(options);
+        keys.forEach(i => {
+            if (this.getAttributes().includes(i)) {
+                this.setDataValue(i, options[i]);
+            }
+        });
+    }
+    getAttributes() {
+        return [];
+    }
 };
 __decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER)
 ], Base.prototype, "order", void 0);
 Base = __decorate([
-    sequelize_typescript_1.Table
+    (0, sequelize_typescript_1.Table)({ createdAt: 'created_at', updatedAt: 'updated_at', deletedAt: 'deleted_at' })
 ], Base);
 exports.Base = Base;
 
@@ -331,7 +357,7 @@ const ItemType_1 = __webpack_require__(54169);
 const models_1 = __webpack_require__(46584);
 exports["default"] = {
     up: (_queryInterface, _sequelize) => __awaiter(void 0, void 0, void 0, function* () {
-        yield ItemType_1.ItemType.create({ name: 'Type 1', includes: models_1.Item.attibutes });
+        yield ItemType_1.ItemType.create({ name: 'Type 1', includes: models_1.Item.attributes });
     }),
     down: (queryInterface, _sequelize) => __awaiter(void 0, void 0, void 0, function* () {
         yield queryInterface.bulkDelete('ItemTypes', {});

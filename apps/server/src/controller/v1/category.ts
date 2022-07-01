@@ -14,7 +14,7 @@ export class CategoryController {
       limit,
     })
     return {
-      data: categories.rows,
+      data: categories.rows.map(i => i.toJSON()),
       paging: {
         current_page: page,
         limit,

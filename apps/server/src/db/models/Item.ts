@@ -38,20 +38,22 @@ export class Item extends Base {
   @Column(DataType.NUMBER)
   price: number
 
-  @Column(DataType.BIGINT)
+  @Column({ type: DataType.BIGINT, field: 'supplier_id' })
   supplierId: number
 
   @Column(DataType.INTEGER)
   override order: number
 
   @ForeignKey(() => ItemStatus)
-  @Column(DataType.BIGINT)
+  @Column({ type: DataType.BIGINT, field: 'status_id' })
   statusId: number
 
   @ForeignKey(() => Category)
+  @Column({ type: DataType.BIGINT, field: 'category_id' })
   categoryId: number
 
   @ForeignKey(() => ItemType)
+  @Column({ type: DataType.BIGINT, field: 'type_id' })
   typeId: number
 
   @BelongsTo(() => Category)

@@ -26,14 +26,14 @@ export default {
         type: DataType.ARRAY(DataType.STRING),
         defaultValue: [],
       },
-      deletedAt: {
+      deleted_at: {
         type: DataType.DATE,
       },
-      createdAt: {
+      created_at: {
         type: DataType.DATE,
         allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
         type: DataType.DATE,
         allowNull: false,
       },

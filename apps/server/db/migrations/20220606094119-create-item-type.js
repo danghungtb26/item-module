@@ -52,14 +52,14 @@ exports["default"] = {
                 type: sequelize_typescript_1.DataType.ARRAY(sequelize_typescript_1.DataType.STRING),
                 defaultValue: [],
             },
-            deletedAt: {
+            deleted_at: {
                 type: sequelize_typescript_1.DataType.DATE,
             },
-            createdAt: {
+            created_at: {
                 type: sequelize_typescript_1.DataType.DATE,
                 allowNull: false,
             },
-            updatedAt: {
+            updated_at: {
                 type: sequelize_typescript_1.DataType.DATE,
                 allowNull: false,
             },

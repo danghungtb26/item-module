@@ -1,6 +1,11 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript'
 
-@Table
+@Table({
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+  deletedAt: 'deleted_at',
+  underscored: true,
+})
 export class Base extends Model {
   @Column(DataType.INTEGER)
   order: number

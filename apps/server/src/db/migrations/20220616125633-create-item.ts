@@ -38,24 +38,24 @@ export default {
         type: DataType.INTEGER,
         defaultValue: 0,
       },
-      supplierId: {
+      supplier_id: {
         type: DataType.BIGINT,
       },
-      statusId: {
+      status_id: {
         type: DataType.BIGINT,
         references: {
           model: 'ItemStatuses',
           key: 'id',
         },
       },
-      categoryId: {
+      category_id: {
         type: DataType.BIGINT,
         references: {
           model: 'Categories',
           key: 'id',
         },
       },
-      typeId: {
+      type_id: {
         type: DataType.BIGINT,
         references: {
           model: 'ItemTypes',
@@ -66,14 +66,14 @@ export default {
         type: DataType.INTEGER,
         autoIncrement: true,
       },
-      deletedAt: {
+      deleted_at: {
         type: DataType.DATE,
       },
-      createdAt: {
+      created_at: {
         type: DataType.DATE,
         allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
         type: DataType.DATE,
         allowNull: false,
       },

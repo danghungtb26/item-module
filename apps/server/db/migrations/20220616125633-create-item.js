@@ -64,24 +64,24 @@ exports["default"] = {
                 type: sequelize_typescript_1.DataType.INTEGER,
                 defaultValue: 0,
             },
-            supplierId: {
+            supplier_id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
             },
-            statusId: {
+            status_id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
                 references: {
                     model: 'ItemStatuses',
                     key: 'id',
                 },
             },
-            categoryId: {
+            category_id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
                 references: {
                     model: 'Categories',
                     key: 'id',
                 },
             },
-            typeId: {
+            type_id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
                 references: {
                     model: 'ItemTypes',
@@ -92,14 +92,14 @@ exports["default"] = {
                 type: sequelize_typescript_1.DataType.INTEGER,
                 autoIncrement: true,
             },
-            deletedAt: {
+            deleted_at: {
                 type: sequelize_typescript_1.DataType.DATE,
             },
-            createdAt: {
+            created_at: {
                 type: sequelize_typescript_1.DataType.DATE,
                 allowNull: false,
             },
-            updatedAt: {
+            updated_at: {
                 type: sequelize_typescript_1.DataType.DATE,
                 allowNull: false,
             },

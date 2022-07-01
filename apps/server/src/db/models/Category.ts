@@ -1,12 +1,10 @@
 import {
-  BeforeUpdate,
   BelongsTo,
   Column,
   DataType,
   ForeignKey,
   HasMany,
   NotEmpty,
-  NotNull,
   Table,
 } from 'sequelize-typescript'
 import { Base } from './base'
@@ -24,10 +22,10 @@ export class Category extends Base {
   override order: number
 
   @ForeignKey(() => Category)
-  @Column(DataType.BIGINT)
+  @Column({ type: DataType.BIGINT, field: 'parent_id' })
   parentId: number
 
-  @Column(DataType.INTEGER)
+  @Column({ type: DataType.INTEGER, field: 'sub_category_count' })
   subCategoryCount: number
 
   @HasMany(() => Category)

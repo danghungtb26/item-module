@@ -22,14 +22,14 @@ export default {
         type: DataType.INTEGER,
         autoIncrement: true,
       },
-      deletedAt: {
+      deleted_at: {
         type: DataType.DATE,
       },
-      createdAt: {
+      created_at: {
         type: DataType.DATE,
         allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
         type: DataType.DATE,
         allowNull: false,
       },
