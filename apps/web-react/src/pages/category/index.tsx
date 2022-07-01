@@ -1,18 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { Button, Space, Table, TableProps } from 'antd'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Page from '@components/Page'
+import { useCategories } from '@hooks/category'
+import { useMounted } from '@hooks/lifecycle'
 import Filter from './components/Filter'
 import ModalForm, { ModalFormMethod } from './components/Modal'
 
 const CategoryPage: React.FC = () => {
-  const [data, setData] = useState<any[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
-  const param = useParams()
+  const { loading, data, fetch } = useCategories()
+
+  useMounted(fetch)
+
   const navigate = useNavigate()
   const location = useLocation()
-
-  useEffect(() => {}, [param.id])
 
   const modal = useRef<ModalFormMethod>(null)
 
@@ -26,7 +27,7 @@ const CategoryPage: React.FC = () => {
     },
     {
       title: 'Name',
-      dataIndex: 'version',
+      dataIndex: 'name',
       key: 'name',
       render: (text: string, record) => (
         <Link to={`${location.pathname}/${record.id}/edit`}>{text}</Link>
@@ -45,8 +46,8 @@ const CategoryPage: React.FC = () => {
     },
     {
       title: 'Created At',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
+      dataIndex: 'created_at',
+      key: 'created_at',
     },
     {
       title: 'Updated At',

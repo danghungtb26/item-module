@@ -7,13 +7,22 @@ const packages = []
 // packages.push(path.join(__dirname, '../../packages/model'))
 // packages.push(path.join(__dirname, '../../packages/api'))
 
-const route = ['components', 'pages', 'hooks', 'layouts', 'routes', 'themes']
+const route = ['components', 'pages', 'hooks', 'layouts', 'routes', 'themes', 'apis', 'models']
 
 const aliases = route.reduce((a, b) => {
   return { ...a, [`@${b}`]: path.resolve(__dirname, `src/${b}`) }
 }, {})
 
 module.exports = {
+  devServer: {
+    proxy: {
+      '/api/**': {
+        target: 'http://localhost:4000/',
+        pathRewrite: { '^/api': '' },
+        secure: false,
+      },
+    },
+  },
   webpack: {
     alias: {
       '@': path.resolve(__dirname, 'src/'),

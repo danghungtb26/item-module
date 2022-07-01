@@ -1,6 +1,6 @@
-import { api_item_type } from '@api/config'
-import { handleRequest } from '@api/handle'
-import { BaseParam } from '@api/types'
+import { api_item_type } from '@apis/config'
+import { handleRequest } from '@apis/handle'
+import { BaseParam } from '@apis/types'
 import { ItemStatus } from '@models/item/status'
 
 const getListItemStatus = (param?: BaseParam) => {

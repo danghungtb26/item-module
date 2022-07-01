@@ -11,9 +11,13 @@ export class BaseClass implements Base {
 
   constructor(json: any) {
     const keys = Object.keys(json)
-    keys.forEach(key => {
+    for (let index = 0; index < keys.length; index += 1) {
+      const key = keys[index]
       this[key] = json[key]
-    })
+    }
+    // keys.forEach(key => {
+    //   this[key] = json[key]
+    // })
   }
 
   get createdAt() {
@@ -21,7 +25,11 @@ export class BaseClass implements Base {
   }
 
   get updatedAt() {
-    return this.deleted_at
+    return this.updatedAt
+  }
+
+  get deletedAt() {
+    return this.deletedAt
   }
 
   static fromJson(json: any) {

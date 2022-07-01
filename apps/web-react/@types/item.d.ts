@@ -8,7 +8,7 @@ declare global {
       category: CategoryInterface
     }
 
-    export type Data = Pick<Interface, 'categoryId'>
+    export type Data = DataType<Interface>
 
     export interface TypeInterface extends Base {
       id: string | number
@@ -24,10 +24,9 @@ declare global {
       includes: AttributeInterface[]
     }
 
-    export type TypeData = Pick<
-      TypeInterface,
-      'attach_to_sidebar' | 'name' | 'description' | 'includes' | 'order' | 'slug'
-    >
+    export type TypeData = DataType<TypeInterface>
+
+    type TypeQuery = TypeData
 
     export interface StatusInterface extends Base {
       name: string
@@ -35,7 +34,9 @@ declare global {
       description: string
     }
 
-    export type StatusData = Pick<StatusInterface, 'name' | 'description' | 'order'>
+    export type StatusData = DataType<StatusInterface>
+
+    type StatusQuery = StatusData
   }
 }
 

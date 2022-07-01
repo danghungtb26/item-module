@@ -1,11 +1,18 @@
-import { api_item_type } from '@api/config'
-import { handleRequest } from '@api/handle'
-import { BaseParam } from '@api/types'
+import { api_item_type } from '@apis/config'
+import { handleRequest } from '@apis/handle'
+import { BaseParam } from '@apis/types'
 import { ItemType } from '@models/item/type'
 
-const getListItemType = (param?: BaseParam) => {
+const getListItemType = (param?: BaseParam<Item.TypeData>) => {
+  const { input = {} } = param || {}
+  const keys = Object.keys(input)
+  const query = keys.reduce((a, b) => {
+    return `${a}&${b}=${input[b]}`
+  }, '')
+
   return handleRequest<Item.TypeInterface[]>(
-    request => request.get(`${api_item_type}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}`),
+    request =>
+      request.get(`${api_item_type}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}${query}`),
     r => ({
       data: r.data.data.map(i => ItemType.fromJson(i)),
     })

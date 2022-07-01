@@ -7,6 +7,14 @@ export class Category extends BaseClass implements CategoryInterface {
 
   parentId: CategoryInterface['parentId']
 
+  constructor(json: any) {
+    super(json)
+    const keys = Object.keys(json)
+    keys.forEach(key => {
+      this[key] = json[key]
+    })
+  }
+
   static fromJson(json: any) {
     return new Category(json)
   }

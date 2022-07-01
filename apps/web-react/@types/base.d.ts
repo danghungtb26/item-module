@@ -10,10 +10,15 @@ declare global {
 
     deleted_at: string
 
-    // method
     readonly createdAt: string
 
     readonly updatedAt: string
+
+    readonly deletedAt: string
+  }
+
+  type DataType<T> = {
+    [x in keyof T]?: T[x] extends () => any ? never : T[x]
   }
 }
 
