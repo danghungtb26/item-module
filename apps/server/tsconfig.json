@@ -2,11 +2,12 @@
     // "extends": "../../tsconfig.json",
     "compilerOptions": {
         "paths": {
-            // "@*": ["./src/*"],
-            "*": ["@types/*.d.ts"]
+            "@*": ["./src/*"],
+            // "*": ["@types/*.d.ts"]
           },
         "baseUrl": ".",
         "rootDir": ".",
+        "types": ["reflect-metadata"],
         "typeRoots": ["node", "@types", "global.d.ts"],
         "outDir": "dist",
         "target": "es6",
@@ -18,6 +19,7 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "allowJs": true,
         "strictPropertyInitialization": false,
         "noImplicitOverride": false,

@@ -1,7 +1,9 @@
+import { injectable } from 'inversify'
 import { ItemType } from '../../../db/models'
 
+@injectable()
 export class ItemTypeController {
-  static findByPk = async (id: string) => {
+  findByPk = async (id: string) => {
     const type = await ItemType.findByPk(id)
     if (type) {
       return {
@@ -12,7 +14,7 @@ export class ItemTypeController {
     throw new Error('Not found')
   }
 
-  static findAll: (p: { page?: number; limit?: number }) => Promise<API.V1.Response> = async ({
+  findAll: (p: { page?: number; limit?: number }) => Promise<API.V1.Response> = async ({
     page = 1,
     limit = 10,
   }) => {
@@ -31,7 +33,7 @@ export class ItemTypeController {
     }
   }
 
-  static findOne = async (id: number | string) => {
+  findOne = async (id: number | string) => {
     const status = await ItemType.findOne({
       where: {
         id,
@@ -46,7 +48,7 @@ export class ItemTypeController {
     throw new Error('Not found')
   }
 
-  static create = async (body: Record<string, any>) => {
+  create = async (body: Record<string, any>) => {
     const status = await ItemType.create(body)
     if (status) {
       return {
@@ -57,7 +59,7 @@ export class ItemTypeController {
     throw new Error('Cannot create')
   }
 
-  static update = async (id: number | string, body: Record<string, any>) => {
+  update = async (id: number | string, body: Record<string, any>) => {
     const status = await ItemType.findOne({
       where: {
         id,
@@ -75,7 +77,7 @@ export class ItemTypeController {
     throw new Error('Cannot update')
   }
 
-  static deleteByPk = async (id: string) => {
+  deleteByPk = async (id: string) => {
     return ItemType.destroy({ where: { id } })
       .then(num => {
         if (num === 1) {

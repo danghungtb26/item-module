@@ -2,6 +2,12 @@ import path from 'path'
 import nodeExternals from 'webpack-node-externals'
 import { Configuration } from 'webpack'
 
+const route = ['db', 'container', 'controller', 'routes']
+
+const aliases = route.reduce((a, b) => {
+  return { ...a, [`@${b}`]: path.resolve(__dirname, `src/${b}`) }
+}, {})
+
 const config: Configuration = {
   entry: {
     main: path.resolve('src/index.ts'),
@@ -35,9 +41,7 @@ const config: Configuration = {
     extensions: ['.ts', '.js'],
     alias: {
       '~': path.resolve('src'),
-      '@db': path.resolve('src/db'),
-      '@resque': path.resolve('src/resque'),
-      '@models': path.resolve('src/db/models'),
+      ...aliases,
     },
   },
 

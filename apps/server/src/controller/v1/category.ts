@@ -1,11 +1,13 @@
-import { Category } from '../../db/models'
+import { injectable } from 'inversify'
+import { Category } from '@db/models'
 
+@injectable()
 export class CategoryController {
-  static findByPk = (id: string) => {
+  findByPk = (id: string) => {
     return Category.findByPk(id)
   }
 
-  static findAll: (p: { page?: number; limit?: number }) => Promise<API.V1.Response> = async ({
+  findAll: (p: { page?: number; limit?: number }) => Promise<API.V1.Response> = async ({
     page = 1,
     limit = 10,
   }) => {
@@ -24,7 +26,7 @@ export class CategoryController {
     }
   }
 
-  static findOne = async (id: number | string) => {
+  findOne = async (id: number | string) => {
     const category = await Category.findOne({
       where: {
         id,
@@ -39,7 +41,7 @@ export class CategoryController {
     throw new Error('Not found')
   }
 
-  static create = async (body: Record<string, any>) => {
+  create = async (body: Record<string, any>) => {
     const category = await Category.create(body)
     if (category) {
       return {
@@ -50,7 +52,7 @@ export class CategoryController {
     throw new Error('Cannot create')
   }
 
-  static update = async (id: number | string, body: Record<string, any>) => {
+  update = async (id: number | string, body: Record<string, any>) => {
     const category = await Category.findOne({
       where: {
         id,
@@ -68,7 +70,7 @@ export class CategoryController {
     throw new Error('Cannot update')
   }
 
-  static deleteByPk = async (id: string) => {
+  deleteByPk = async (id: string) => {
     return Category.destroy({ where: { id } })
       .then(num => {
         if (num === 1) {
