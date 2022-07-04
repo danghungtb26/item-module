@@ -1,5 +1,6 @@
-import { ColDefaultProps, defaultFormItemLayout } from '@themes/styles'
-import { Col, Form, Input } from 'antd'
+import TreeSelect from '@components/TreeSelect'
+import { defaultFormItemLayout } from '@themes/styles'
+import { Form, Input } from 'antd'
 import React, { useImperativeHandle, useState } from 'react'
 
 export type CategoryFormMethod = {
@@ -33,6 +34,7 @@ const CategoryForm: React.FC<CategoryFormProps> = React.forwardRef<
       <Form.Item name="description" label="Description" hasFeedback {...defaultFormItemLayout}>
         <Input placeholder="Description" />
       </Form.Item>
+      <TreeSelect treeData={[]} />
     </Form>
   )
 })

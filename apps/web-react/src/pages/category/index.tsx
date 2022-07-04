@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { Button, Space, Table, TableProps } from 'antd'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Page from '@components/Page'
 import { useCategories } from '@hooks/category'
 import { useMounted } from '@hooks/lifecycle'
@@ -12,7 +12,6 @@ const CategoryPage: React.FC = () => {
 
   useMounted(fetch)
 
-  const navigate = useNavigate()
   const location = useLocation()
 
   const modal = useRef<ModalFormMethod>(null)
@@ -30,14 +29,9 @@ const CategoryPage: React.FC = () => {
       dataIndex: 'name',
       key: 'name',
       render: (text: string, record) => (
-        <Link to={`${location.pathname}/${record.id}/edit`}>{text}</Link>
+        <Link to={`${location.pathname}/${record.id}`}>{text}</Link>
       ),
     },
-    // {
-    //   title: 'Author',
-    //   dataIndex: 'author',
-    //   key: 'author',
-    // },
     {
       title: 'Description',
       dataIndex: 'description',
@@ -45,9 +39,26 @@ const CategoryPage: React.FC = () => {
       width: '25%',
     },
     {
+      title: 'Parent',
+      dataIndex: 'parent',
+      key: 'parentId',
+      render: (_, record) => {
+        if (record.parentId) {
+          return <Link to={`${location.pathname}/${record.parentId}`}>{record.parentId}</Link>
+        }
+
+        return null
+      },
+    },
+    {
+      title: 'Sub count',
+      dataIndex: 'subChildrenCount',
+      key: 'subChildrenCount',
+    },
+    {
       title: 'Created At',
-      dataIndex: 'created_at',
-      key: 'created_at',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
     },
     {
       title: 'Updated At',
@@ -55,12 +66,12 @@ const CategoryPage: React.FC = () => {
       key: 'updatedAt',
     },
     {
-      title: 'Action',
+      title: '',
       key: 'action',
       align: 'center',
       render: (_, record) => (
         <Space size="middle">
-          <Button onClick={() => navigate(`${location.pathname}/${record.id}/edit`)} type="ghost">
+          <Button onClick={() => onPressEdit(record)} type="ghost">
             Edit
           </Button>
         </Space>
@@ -68,10 +79,31 @@ const CategoryPage: React.FC = () => {
     },
   ])
 
+  const showModal = () => {
+    if (modal.current) {
+      modal.current.visible = true
+    }
+  }
+
+  const setModalData = (value: CategoryInterface) => {
+    if (modal.current) {
+      modal.current.initData = value
+    }
+  }
+
+  const onPressCreate = () => {
+    showModal()
+  }
+
+  const onPressEdit = (value: CategoryInterface) => {
+    setModalData(value)
+    showModal()
+  }
+
   return (
     <Page inner>
       <div className="container">
-        <Filter />
+        <Filter onCreate={onPressCreate} />
         <Table
           scroll={{ x: 1200 }}
           rowKey={i => i.name}
