@@ -1,10 +1,11 @@
+import container from '@container'
 import Express, { Response, Request } from 'express'
 import { isNumber } from 'lodash'
-import ControllerV1 from '../../../controller/v1'
+import ControllerV1 from '@controller/v1'
 import status from './status'
 import type from './type'
 
-const controller = ControllerV1.Item.Item
+const controller = container.get(ControllerV1.Item.Item)
 
 const route = Express()
 

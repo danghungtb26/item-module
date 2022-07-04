@@ -7,18 +7,23 @@ import db from './db'
 
 dotenv.config()
 
-const app: Express = express()
-const port = process.env.PORT
+db.authenticate()
+  .then(() => {
+    const app: Express = express()
+    const port = process.env.PORT
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
+    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: true }))
+    app.use(cors())
 
-app.use(cors({ origin: '*', methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'] }))
-db.sync()
+    app.use(cors({ origin: '*', methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'] }))
 
-app.use('', routes)
+    app.use('', routes)
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
-})
+    app.listen(port, () => {
+      console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
+    })
+  })
+  .catch(() => {
+    process.exit(1)
+  })

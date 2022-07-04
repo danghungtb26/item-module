@@ -1,11 +1,13 @@
+import { injectable } from 'inversify'
 import { Category, Item, ItemStatus, ItemType } from '../../../db/models'
 
+@injectable()
 export class ItemController {
-  static findByPk = (id: string) => {
+  findByPk = (id: string) => {
     return Item.findByPk(id)
   }
 
-  static findAll: (p: { page?: number; limit?: number }) => Promise<API.V1.Response> = async ({
+  findAll: (p: { page?: number; limit?: number }) => Promise<API.V1.Response> = async ({
     page = 1,
     limit = 10,
   }) => {
@@ -25,7 +27,7 @@ export class ItemController {
     }
   }
 
-  static findOne = async (id: number | string) => {
+  findOne = async (id: number | string) => {
     const item = await Item.findOne({
       where: {
         id,
@@ -41,7 +43,7 @@ export class ItemController {
     throw new Error('Item not found')
   }
 
-  static create = async (body: Record<string, any>) => {
+  create = async (body: Record<string, any>) => {
     const item = await Item.create(body)
     if (item) {
       return {
@@ -52,7 +54,7 @@ export class ItemController {
     throw new Error('Item cannot create')
   }
 
-  static update = async (id: number | string, body: Record<string, any>) => {
+  update = async (id: number | string, body: Record<string, any>) => {
     const item = await Item.findOne({
       where: {
         id,
@@ -70,7 +72,7 @@ export class ItemController {
     throw new Error('Cannot update')
   }
 
-  static deleteByPk = async (id: string) => {
+  deleteByPk = async (id: string) => {
     return Item.destroy({ where: { id } })
       .then(num => {
         if (num === 1) {
@@ -83,15 +85,15 @@ export class ItemController {
       })
   }
 
-  static getInclude() {
+  getInclude() {
     return [Category, ItemStatus, ItemType]
   }
 
-  static getAttributes = () => {
+  getAttributes = () => {
     return Item.getAttributes()
   }
 
-  static get attributes() {
+  get attributes() {
     return Item.attributes
   }
 }

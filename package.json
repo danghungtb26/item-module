@@ -29,7 +29,9 @@
       "**/pixi.js",
       "**/@inlet/react-pixi",
       "**/craco-less",
-      "**/less-loader"
+      "**/less-loader",
+      "**/inversify",
+      "**/routing-controllers"
     ]
   },
   "scripts": {
