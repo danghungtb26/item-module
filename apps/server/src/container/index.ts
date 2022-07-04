@@ -1,5 +1,5 @@
 import { Container } from 'inversify'
-import ControllerV1 from '@controller/v1'
+import ControllerV1 from '@controllers/v1'
 
 const container = new Container()
 

@@ -2,7 +2,7 @@ import path from 'path'
 import nodeExternals from 'webpack-node-externals'
 import { Configuration } from 'webpack'
 
-const route = ['db', 'container', 'controller', 'routes']
+const route = ['db', 'container', 'controllers', 'routes']
 
 const aliases = route.reduce((a, b) => {
   return { ...a, [`@${b}`]: path.resolve(__dirname, `src/${b}`) }

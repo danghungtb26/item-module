@@ -10,6 +10,16 @@ declare global {
           total: number
         }
       }
+
+      interface ResponseList<T extends any = any> {
+        rows: T[]
+        paging?: {
+          current_page: number
+          limit: number
+          total_page: number
+          total: number
+        }
+      }
     }
   }
 }
