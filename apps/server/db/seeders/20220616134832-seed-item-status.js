@@ -70,6 +70,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var Category_1;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Category = void 0;
@@ -79,26 +82,33 @@ let Category = Category_1 = class Category extends base_1.Base {
 };
 __decorate([
     sequelize_typescript_1.NotEmpty,
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
+    __metadata("design:type", String)
 ], Category.prototype, "name", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
+    __metadata("design:type", String)
 ], Category.prototype, "description", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER),
+    __metadata("design:type", Number)
 ], Category.prototype, "order", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => Category_1),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'parent_id' })
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'parent_id' }),
+    __metadata("design:type", Number)
 ], Category.prototype, "parentId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: 'sub_category_count' })
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: 'sub_category_count' }),
+    __metadata("design:type", Number)
 ], Category.prototype, "subCategoryCount", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => Category_1)
+    (0, sequelize_typescript_1.HasMany)(() => Category_1),
+    __metadata("design:type", Array)
 ], Category.prototype, "categories", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => Category_1)
+    (0, sequelize_typescript_1.BelongsTo)(() => Category_1),
+    __metadata("design:type", Category)
 ], Category.prototype, "parent", void 0);
 Category = Category_1 = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: 'Categories', modelName: 'Categories' })
@@ -119,6 +129,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var Item_1;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Item = void 0;
@@ -134,55 +147,71 @@ let Item = Item_1 = class Item extends base_1.Base {
     }
 };
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.TEXT)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.TEXT),
+    __metadata("design:type", String)
 ], Item.prototype, "name", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.TEXT)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.TEXT),
+    __metadata("design:type", String)
 ], Item.prototype, "description", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
+    __metadata("design:type", String)
 ], Item.prototype, "slug", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
+    __metadata("design:type", String)
 ], Item.prototype, "title", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
+    __metadata("design:type", String)
 ], Item.prototype, "subtitle", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
+    __metadata("design:type", String)
 ], Item.prototype, "image", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.ARRAY(sequelize_typescript_1.DataType.STRING))
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.ARRAY(sequelize_typescript_1.DataType.STRING)),
+    __metadata("design:type", Array)
 ], Item.prototype, "images", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.NUMBER)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.NUMBER),
+    __metadata("design:type", Number)
 ], Item.prototype, "price", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'supplier_id' })
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'supplier_id' }),
+    __metadata("design:type", Number)
 ], Item.prototype, "supplierId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER),
+    __metadata("design:type", Number)
 ], Item.prototype, "order", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => _1.ItemStatus),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'status_id' })
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'status_id' }),
+    __metadata("design:type", Number)
 ], Item.prototype, "statusId", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => _1.Category),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'category_id' })
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'category_id' }),
+    __metadata("design:type", Number)
 ], Item.prototype, "categoryId", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => _1.ItemType),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'type_id' })
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BIGINT, field: 'type_id' }),
+    __metadata("design:type", Number)
 ], Item.prototype, "typeId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => _1.Category)
+    (0, sequelize_typescript_1.BelongsTo)(() => _1.Category),
+    __metadata("design:type", _1.Category)
 ], Item.prototype, "category", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => _1.ItemStatus)
+    (0, sequelize_typescript_1.BelongsTo)(() => _1.ItemStatus),
+    __metadata("design:type", _1.ItemStatus)
 ], Item.prototype, "status", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => _1.ItemType)
+    (0, sequelize_typescript_1.BelongsTo)(() => _1.ItemType),
+    __metadata("design:type", _1.ItemType)
 ], Item.prototype, "type", void 0);
 Item = Item_1 = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: 'Items', modelName: 'Items' })
@@ -203,6 +232,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ItemStatus = void 0;
 const sequelize_typescript_1 = __webpack_require__(4464);
@@ -211,13 +243,16 @@ let ItemStatus = class ItemStatus extends base_1.Base {
 };
 __decorate([
     sequelize_typescript_1.NotEmpty,
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
+    __metadata("design:type", String)
 ], ItemStatus.prototype, "name", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
+    __metadata("design:type", String)
 ], ItemStatus.prototype, "description", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER),
+    __metadata("design:type", Number)
 ], ItemStatus.prototype, "order", void 0);
 ItemStatus = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: 'ItemStatuses', modelName: 'ItemStatuses' })
@@ -238,6 +273,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ItemType = void 0;
 const sequelize_typescript_1 = __webpack_require__(4464);
@@ -246,13 +284,16 @@ let ItemType = class ItemType extends base_1.Base {
 };
 __decorate([
     sequelize_typescript_1.NotEmpty,
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
+    __metadata("design:type", String)
 ], ItemType.prototype, "name", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING),
+    __metadata("design:type", String)
 ], ItemType.prototype, "description", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.ARRAY(sequelize_typescript_1.DataType.STRING))
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.ARRAY(sequelize_typescript_1.DataType.STRING)),
+    __metadata("design:type", Array)
 ], ItemType.prototype, "includes", void 0);
 ItemType = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: 'ItemTypes', modelName: 'ItemTypes' })
@@ -273,19 +314,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Base = void 0;
 const sequelize_typescript_1 = __webpack_require__(4464);
 let Base = class Base extends sequelize_typescript_1.Model {
-    // @CreatedAt
-    // @Column({ field: 'created_at' })
-    // created_at?: Date
-    // @UpdatedAt
-    // @Column({ field: 'updated_at' })
-    // updated_at?: Date
-    // @DeletedAt
-    // @Column({ field: 'deleted_at' })
-    // deleted_at?: Date
     upsert(options) {
         const keys = Object.keys(options);
         keys.forEach(i => {
@@ -299,10 +334,16 @@ let Base = class Base extends sequelize_typescript_1.Model {
     }
 };
 __decorate([
-    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER)
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER),
+    __metadata("design:type", Number)
 ], Base.prototype, "order", void 0);
 Base = __decorate([
-    (0, sequelize_typescript_1.Table)({ createdAt: 'created_at', updatedAt: 'updated_at', deletedAt: 'deleted_at' })
+    (0, sequelize_typescript_1.Table)({
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        deletedAt: 'deleted_at',
+        underscored: true,
+    })
 ], Base);
 exports.Base = Base;
 
