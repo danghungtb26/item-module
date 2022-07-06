@@ -1,21 +1,4 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else {
-		var a = factory();
-		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
-	}
-})(global, () => {
-return /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
-
-/***/ 79499:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -25,11 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const sequelize_typescript_1 = __webpack_require__(4464);
-exports["default"] = {
+Object.defineProperty(exports, "__esModule", { value: true });
+const sequelize_typescript_1 = require("sequelize-typescript");
+exports.default = {
     up: (queryInterface, _sequelize) => __awaiter(void 0, void 0, void 0, function* () {
-        yield queryInterface.createTable('Items', {
+        yield queryInterface.createTable('items', {
             id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
                 allowNull: false,
@@ -70,21 +53,21 @@ exports["default"] = {
             status_id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
                 references: {
-                    model: 'ItemStatuses',
+                    model: 'item_statuses',
                     key: 'id',
                 },
             },
             category_id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
                 references: {
-                    model: 'Categories',
+                    model: 'categories',
                     key: 'id',
                 },
             },
             type_id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
                 references: {
-                    model: 'ItemTypes',
+                    model: 'item_types',
                     key: 'id',
                 },
             },
@@ -97,63 +80,15 @@ exports["default"] = {
             },
             created_at: {
                 type: sequelize_typescript_1.DataType.DATE,
-                allowNull: false,
+                defaultValue: new Date(),
             },
             updated_at: {
                 type: sequelize_typescript_1.DataType.DATE,
-                allowNull: false,
+                defaultValue: new Date(),
             },
         });
     }),
     down: (queryInterface, _sequelize) => __awaiter(void 0, void 0, void 0, function* () {
-        yield queryInterface.dropTable('Items');
+        yield queryInterface.dropTable('items');
     }),
 };
-
-
-/***/ }),
-
-/***/ 4464:
-/***/ ((module) => {
-
-module.exports = require("sequelize-typescript");
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(79499);
-/******/ 	
-/******/ 	return __webpack_exports__;
-/******/ })()
-;
-});

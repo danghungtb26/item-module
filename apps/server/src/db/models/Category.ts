@@ -5,11 +5,17 @@ import {
   ForeignKey,
   HasMany,
   NotEmpty,
+  Scopes,
   Table,
 } from 'sequelize-typescript'
 import { Base } from './base'
 
-@Table({ tableName: 'Categories', modelName: 'Categories' })
+@Table({ tableName: 'categories', modelName: 'categories' })
+@Scopes({
+  haveNotParent: {
+    where: { parentId: null },
+  },
+})
 export class Category extends Base {
   @NotEmpty
   @Column(DataType.STRING)

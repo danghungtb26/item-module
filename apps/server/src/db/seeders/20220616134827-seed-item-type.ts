@@ -1,15 +1,16 @@
-import '..'
 import { QueryInterface } from 'sequelize'
 import { Sequelize } from 'sequelize-typescript'
-import { ItemType } from '../models/ItemType'
-import { Item } from '../models'
 
 export default {
-  up: async (_queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    await ItemType.create({ name: 'Type 1', includes: Item.attributes })
+  up: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
+    await queryInterface.bulkInsert('item_types', [
+      {
+        name: 'type 1',
+      },
+    ])
   },
 
   down: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    await queryInterface.bulkDelete('ItemTypes', {})
+    await queryInterface.bulkDelete('item_types', {})
   },
 }

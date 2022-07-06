@@ -1,7 +1,9 @@
-import { Column, DataType, NotEmpty, Table } from 'sequelize-typescript'
+import { BelongsToMany, Column, DataType, HasMany, NotEmpty, Table } from 'sequelize-typescript'
+import { Attribute } from './Attribute'
+import { AttributeType } from './AttributeType'
 import { Base } from './base'
 
-@Table({ tableName: 'ItemTypes', modelName: 'ItemTypes' })
+@Table({ tableName: 'item_types' })
 export class ItemType extends Base {
   @NotEmpty
   @Column(DataType.STRING)
@@ -10,6 +12,12 @@ export class ItemType extends Base {
   @Column(DataType.STRING)
   description: string
 
-  @Column(DataType.ARRAY(DataType.STRING))
-  includes: string[]
+  @HasMany(() => AttributeType, { as: 'attributeTypes' })
+  attributeTypes: AttributeType[]
+
+  @BelongsToMany(() => Attribute, {
+    as: 'attributes',
+    through: () => AttributeType,
+  })
+  attributes: Attribute[]
 }

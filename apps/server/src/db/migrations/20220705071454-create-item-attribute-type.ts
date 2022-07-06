@@ -1,9 +1,9 @@
 import { QueryInterface } from 'sequelize'
-import { Sequelize, DataType } from 'sequelize-typescript'
+import { DataType, Sequelize } from 'sequelize-typescript'
 
 export default {
-  up: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    await queryInterface.createTable('categories', {
+  up: async (queryInterface: QueryInterface, sequelize: Sequelize) => {
+    await queryInterface.createTable('item_attribute_types', {
       id: {
         type: DataType.BIGINT,
         allowNull: false,
@@ -11,23 +11,19 @@ export default {
         primaryKey: true,
         unique: true,
       },
-      parent_id: {
+      item_type_id: {
         type: DataType.BIGINT,
         references: {
-          model: 'categories',
+          model: 'item_types',
           key: 'id',
         },
       },
-      name: {
-        type: DataType.STRING,
-        allowNull: false,
-      },
-      description: {
-        type: DataType.STRING,
-      },
-      sub_category_count: {
-        type: DataType.INTEGER,
-        defaultValue: 0,
+      attribute_id: {
+        type: DataType.BIGINT,
+        references: {
+          model: 'item_attributes',
+          key: 'id',
+        },
       },
       order: {
         type: DataType.INTEGER,
@@ -46,7 +42,8 @@ export default {
       },
     })
   },
-  down: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    await queryInterface.dropTable('categories')
+
+  down: async (queryInterface: QueryInterface, sequelize: Sequelize) => {
+    await queryInterface.dropTable('item_attribute_types', {})
   },
 }

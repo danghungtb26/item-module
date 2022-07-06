@@ -3,6 +3,7 @@ import { injectable } from 'inversify'
 import { ItemStatus } from '@db/models'
 import { HttpResponse } from '@responses/HttpResponse'
 import { HttpException } from '@exceptions/HttpException'
+import { Transaction } from 'sequelize/types'
 
 @injectable()
 export class ItemStatusController {
@@ -61,6 +62,7 @@ export class ItemStatusController {
   update = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id
     const body = req.body
+
     try {
       const status = await ItemStatus.findOne({
         where: {
@@ -148,17 +150,23 @@ export class ItemStatusController {
       })
   }
 
-  wrapOrder = async (start: string | number, end: string | number) => {
-    const [startStatus, endStatus] = await Promise.all([
-      ItemStatus.findByPk(start),
-      ItemStatus.findByPk(end),
-    ])
-    if (!startStatus || !endStatus) {
-      throw new Error('Status not found')
-    }
-
-    const transaction = await ItemStatus.sequelize?.transaction()
+  swapOrder = async (req: Request, res: Response, next: NextFunction) => {
+    let transaction: Transaction | undefined
     try {
+      transaction = await ItemStatus.sequelize?.transaction()
+
+      const start = Number(req.body.start)
+      const end = Number(req.body.end)
+
+      const [startStatus, endStatus] = await Promise.all([
+        ItemStatus.findByPk(start),
+        ItemStatus.findByPk(end),
+      ])
+
+      if (!startStatus || !endStatus) {
+        throw new Error('Status not found')
+      }
+
       await Promise.all([
         ItemStatus.update(
           { order: endStatus.order },
@@ -179,20 +187,25 @@ export class ItemStatusController {
           }
         ),
       ])
+
       const [newStart, newEnd] = await Promise.all([
         ItemStatus.findByPk(start),
         ItemStatus.findByPk(end),
       ])
+
       await transaction?.commit()
-      return {
-        data: {
-          start: newStart,
-          end: newEnd,
-        },
-      }
-    } catch (error) {
+
+      return res.json(
+        new HttpResponse({
+          data: {
+            start: newStart,
+            end: newEnd,
+          },
+        })
+      )
+    } catch (error: any) {
       await transaction?.rollback()
-      throw new Error('Server error')
+      return next(new HttpException(500, error.message))
     }
   }
 }

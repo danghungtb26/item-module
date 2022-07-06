@@ -1,9 +1,9 @@
 import { QueryInterface } from 'sequelize'
-import { Sequelize, DataType } from 'sequelize-typescript'
+import { DataType, Sequelize } from 'sequelize-typescript'
 
 export default {
-  up: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    await queryInterface.createTable('item_statuses', {
+  up: async (queryInterface: QueryInterface, sequelize: Sequelize) => {
+    await queryInterface.createTable('item_attributes', {
       id: {
         type: DataType.BIGINT,
         allowNull: false,
@@ -16,7 +16,15 @@ export default {
         allowNull: false,
       },
       description: {
-        type: DataType.STRING,
+        type: DataType.TEXT,
+      },
+      value_type: {
+        type: DataType.ENUM('string', 'number', 'boolean', 'array', 'json'),
+        defaultValue: 'string',
+      },
+      required: {
+        type: DataType.BOOLEAN,
+        defaultValue: false,
       },
       order: {
         type: DataType.INTEGER,
@@ -35,7 +43,8 @@ export default {
       },
     })
   },
-  down: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    await queryInterface.dropTable('item_statuses')
+
+  down: async (queryInterface: QueryInterface, sequelize: Sequelize) => {
+    await queryInterface.dropTable('item_attributes', {})
   },
 }

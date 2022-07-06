@@ -3,7 +3,7 @@ import { Sequelize, DataType } from 'sequelize-typescript'
 
 export default {
   up: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    await queryInterface.createTable('ItemTypes', {
+    await queryInterface.createTable('item_types', {
       id: {
         type: DataType.BIGINT,
         allowNull: false,
@@ -22,24 +22,20 @@ export default {
         type: DataType.INTEGER,
         autoIncrement: true,
       },
-      includes: {
-        type: DataType.ARRAY(DataType.STRING),
-        defaultValue: [],
-      },
       deleted_at: {
         type: DataType.DATE,
       },
       created_at: {
         type: DataType.DATE,
-        allowNull: false,
+        defaultValue: new Date(),
       },
       updated_at: {
         type: DataType.DATE,
-        allowNull: false,
+        defaultValue: new Date(),
       },
     })
   },
   down: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    await queryInterface.dropTable('ItemTypes')
+    await queryInterface.dropTable('item_types')
   },
 }

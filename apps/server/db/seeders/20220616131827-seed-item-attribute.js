@@ -11,13 +11,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     up: (queryInterface, _sequelize) => __awaiter(void 0, void 0, void 0, function* () {
-        yield queryInterface.bulkInsert('categories', [
-            {
-                name: 'Category 1',
-            },
-        ]);
+        const attributes = [
+            { name: 'name', value_type: 'string' },
+            { name: 'description', value_type: 'string' },
+            { name: 'slug', value_type: 'string' },
+            { name: 'title', value_type: 'string' },
+            { name: 'subtitle', value_type: 'string' },
+            { name: 'image', value_type: 'string' },
+            { name: 'images', value_type: 'array' },
+            { name: 'price', value_type: 'number' },
+        ];
+        yield queryInterface.bulkInsert('item_attributes', attributes);
     }),
     down: (queryInterface, _sequelize) => __awaiter(void 0, void 0, void 0, function* () {
-        yield queryInterface.bulkDelete('categories', {});
+        yield queryInterface.bulkDelete('item_attributes', {});
     }),
 };

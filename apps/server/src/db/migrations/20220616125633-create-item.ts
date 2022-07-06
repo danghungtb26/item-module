@@ -3,7 +3,7 @@ import { Sequelize, DataType } from 'sequelize-typescript'
 
 export default {
   up: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    await queryInterface.createTable('Items', {
+    await queryInterface.createTable('items', {
       id: {
         type: DataType.BIGINT,
         allowNull: false,
@@ -44,21 +44,21 @@ export default {
       status_id: {
         type: DataType.BIGINT,
         references: {
-          model: 'ItemStatuses',
+          model: 'item_statuses',
           key: 'id',
         },
       },
       category_id: {
         type: DataType.BIGINT,
         references: {
-          model: 'Categories',
+          model: 'categories',
           key: 'id',
         },
       },
       type_id: {
         type: DataType.BIGINT,
         references: {
-          model: 'ItemTypes',
+          model: 'item_types',
           key: 'id',
         },
       },
@@ -71,15 +71,15 @@ export default {
       },
       created_at: {
         type: DataType.DATE,
-        allowNull: false,
+        defaultValue: new Date(),
       },
       updated_at: {
         type: DataType.DATE,
-        allowNull: false,
+        defaultValue: new Date(),
       },
     })
   },
   down: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    await queryInterface.dropTable('Items')
+    await queryInterface.dropTable('items')
   },
 }

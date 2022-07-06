@@ -1,7 +1,7 @@
-import { Column, DataType, NotEmpty, NotNull, Table } from 'sequelize-typescript'
+import { Column, DataType, NotEmpty, Table } from 'sequelize-typescript'
 import { Base } from './base'
 
-@Table({ tableName: 'ItemStatuses', modelName: 'ItemStatuses' })
+@Table({ tableName: 'item_statuses' })
 export class ItemStatus extends Base {
   @NotEmpty
   @Column(DataType.STRING)

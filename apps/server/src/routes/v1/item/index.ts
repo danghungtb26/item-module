@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable prettier/prettier */
 import container from '@container'
 import Express from 'express'
 import ControllerV1 from '@controllers/v1'
@@ -10,16 +12,16 @@ const route = Express()
 
 route.get('/attribute', controller.getAttributes)
 
+route.use('/type', type)
+route.use('/status', status)
+
 route.get('', controller.index)
-route.get('/:id', controller.show)
+route.get('/:id(\d+)', controller.show)
 
 route.post('', controller.create)
 
-route.put('/:id', controller.update)
+route.put('/:id(\d+)', controller.update)
 
-route.delete('/:id', controller.delete)
-
-route.use('/type', type)
-route.use('/status', status)
+route.delete('/:id(\d+)', controller.delete)
 
 export default route

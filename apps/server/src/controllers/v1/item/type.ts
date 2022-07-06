@@ -2,7 +2,7 @@ import { HttpException } from '@exceptions/HttpException'
 import { HttpResponse } from '@responses/HttpResponse'
 import { NextFunction, Request, Response } from 'express'
 import { injectable } from 'inversify'
-import { ItemType } from '../../../db/models'
+import { Attribute, ItemType } from '@db/models'
 
 @injectable()
 export class ItemTypeController {
@@ -13,6 +13,13 @@ export class ItemTypeController {
       const types = await ItemType.findAndCountAll({
         offset: (page - 1) * 10,
         limit,
+        include: [
+          {
+            model: Attribute,
+            through: { attributes: [] },
+          },
+        ],
+        distinct: true,
       })
       return res.json(
         new HttpResponse<API.V1.ResponseList>({

@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 exports.default = {
-    up: (queryInterface, _sequelize) => __awaiter(void 0, void 0, void 0, function* () {
-        yield queryInterface.createTable('item_types', {
+    up: (queryInterface, sequelize) => __awaiter(void 0, void 0, void 0, function* () {
+        yield queryInterface.createTable('item_attribute_types', {
             id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
                 allowNull: false,
@@ -20,12 +20,19 @@ exports.default = {
                 primaryKey: true,
                 unique: true,
             },
-            name: {
-                type: sequelize_typescript_1.DataType.STRING,
-                allowNull: false,
+            item_type_id: {
+                type: sequelize_typescript_1.DataType.BIGINT,
+                references: {
+                    model: 'item_types',
+                    key: 'id',
+                },
             },
-            description: {
-                type: sequelize_typescript_1.DataType.TEXT,
+            attribute_id: {
+                type: sequelize_typescript_1.DataType.BIGINT,
+                references: {
+                    model: 'item_attributes',
+                    key: 'id',
+                },
             },
             order: {
                 type: sequelize_typescript_1.DataType.INTEGER,
@@ -44,7 +51,7 @@ exports.default = {
             },
         });
     }),
-    down: (queryInterface, _sequelize) => __awaiter(void 0, void 0, void 0, function* () {
-        yield queryInterface.dropTable('item_types');
+    down: (queryInterface, sequelize) => __awaiter(void 0, void 0, void 0, function* () {
+        yield queryInterface.dropTable('item_attribute_types', {});
     }),
 };

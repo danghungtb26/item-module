@@ -3,7 +3,8 @@ import { Category } from '@db/models'
 import { NextFunction, Request, Response } from 'express'
 import { HttpException } from '@exceptions/HttpException'
 import { HttpResponse } from '@responses/HttpResponse'
-import { isString } from 'lodash'
+import { isNull, isString, isUndefined } from 'lodash'
+import { Transaction } from 'sequelize/types'
 
 @injectable()
 export class CategoryController {
@@ -62,7 +63,10 @@ export class CategoryController {
   update = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id
     const body = req.body
+    let transaction: Transaction | undefined
+
     try {
+      transaction = await Category.sequelize?.transaction()
       const category = await Category.findOne({
         where: {
           id,
@@ -70,11 +74,41 @@ export class CategoryController {
       })
 
       if (category) {
-        await Category.update(body, { where: { id } })
-        const category = await Category.findOne({ where: { id } })
+        const preParentId = category.parentId
+
+        const newParentId = req.body?.parentId
+
+        if (!isUndefined(newParentId) && preParentId !== newParentId) {
+          if (!isNull(newParentId)) {
+            const newParentCategory = await Category.findOne({
+              where: {
+                id: newParentId,
+              },
+            })
+
+            if (!newParentCategory) {
+              throw new Error('Parent category not found')
+            }
+
+            await newParentCategory.increment('subCategoryCount', { by: 1, transaction })
+          }
+
+          if (!isNull(preParentId)) {
+            const parentCategory = await Category.findOne({
+              where: {
+                id: preParentId,
+              },
+            })
+            await parentCategory?.decrement('subCategoryCount', { by: 1, transaction })
+          }
+        }
+
+        await Category.update(body, { where: { id }, transaction })
+
+        const categoryRes = await Category.findOne({ where: { id }, transaction })
         return res.json(
           new HttpResponse({
-            data: category,
+            data: categoryRes,
           })
         )
       }
