@@ -31,7 +31,8 @@
       "**/craco-less",
       "**/less-loader",
       "**/inversify",
-      "**/routing-controllers"
+      "**/routing-controllers",
+      "**/express-validator"
     ]
   },
   "scripts": {

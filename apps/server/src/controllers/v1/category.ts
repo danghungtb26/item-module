@@ -15,6 +15,7 @@ export class CategoryController {
       const categories = await Category.findAndCountAll({
         offset: (page - 1) * 10,
         limit,
+        include: [{ model: Category, as: 'parent' }],
       })
       return res.json(
         new HttpResponse({
@@ -106,6 +107,7 @@ export class CategoryController {
         await Category.update(body, { where: { id }, transaction })
 
         const categoryRes = await Category.findOne({ where: { id }, transaction })
+        await transaction?.commit()
         return res.json(
           new HttpResponse({
             data: categoryRes,
@@ -114,6 +116,7 @@ export class CategoryController {
       }
       throw new Error('Not found')
     } catch (error: any) {
+      console.log('🚀 ~ file: category.ts ~ line 117 ~ CategoryController ~ update= ~ error', error)
       return next(new HttpException(500, error.message))
     }
   }

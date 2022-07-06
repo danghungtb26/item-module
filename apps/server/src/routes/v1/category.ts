@@ -1,31 +1,20 @@
 import container from '@container'
-import Express, { Response, Request } from 'express'
-import { isNumber } from 'lodash'
+import Express from 'express'
 import ControllerV1 from '@controllers/v1'
+import { CategoryValidator } from '@validators'
+import { handleValidationError } from '@middlewares/handleValidationError'
 
 const controller = container.get<ControllerV1.Category>(ControllerV1.Category)
 
 const route = Express()
-route.get('/', controller.index)
+route.get('/', CategoryValidator.list, handleValidationError, controller.index)
 
-route.get('/:id', controller.show)
+route.get('/:id', CategoryValidator.show, handleValidationError, controller.show)
 
-route.post('', controller.create)
+route.post('', CategoryValidator.create, handleValidationError, controller.create)
 
-route.put('/:id', controller.update)
+route.put('/:id', CategoryValidator.update, handleValidationError, controller.update)
 
-route.delete('/:id', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params || {}
-
-    const deleted = await controller.deleteByPk(id)
-    res.json(deleted)
-  } catch (error: any) {
-    res.status(500)
-    res.json({
-      message: error.message,
-    })
-  }
-})
+route.delete('/:id', CategoryValidator.delete, handleValidationError, controller.delete)
 
 export default route
