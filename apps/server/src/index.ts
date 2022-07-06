@@ -25,5 +25,7 @@ db.authenticate()
     })
   })
   .catch(() => {
+    console.log('db not running')
+
     process.exit(1)
   })

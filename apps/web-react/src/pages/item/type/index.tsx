@@ -1,9 +1,9 @@
 import Page from '@components/Page'
-import { useAttributes } from '@hooks/attribute'
 import { useItemTypes } from '@hooks/itemType'
-import { Button, Space, Table, TableProps } from 'antd'
+import { Button, Space, Table, TableProps, Tag } from 'antd'
 import React, { useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { ModalFormMethod } from './components/Modal'
 import styles from './index.less'
 
 type ItemTypePageProps = {}
@@ -33,7 +33,7 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
       key: 'name',
       width: '10%',
       render: (text: string, record) => (
-        <Link to={`${location.pathname}/${record.id}/edit`}>{text}</Link>
+        <Link to={`${location.pathname}/${record.id}`}>{text}</Link>
       ),
     },
     {
@@ -59,6 +59,15 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
       title: 'Attributes',
       dataIndex: 'includes',
       key: 'includes',
+      render: (_, record) => {
+        return (
+          <>
+            {record.includes.map(i => {
+              return <Tag key={i.name}>{i.name}</Tag>
+            })}
+          </>
+        )
+      },
     },
     {
       title: 'Action',
@@ -66,16 +75,35 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
       align: 'center',
       render: (_, record) => (
         <Space size="middle">
-          <Button
-            onClick={() => navigate(`${location.pathname}/${record.id}/rule-file`)}
-            type="primary"
-          >
+          <Button onClick={() => onPressEdit(record)} type="primary">
             View
           </Button>
         </Space>
       ),
     },
   ]).current
+  const modal = useRef<ModalFormMethod>(null)
+
+  const showModal = () => {
+    if (modal.current) {
+      modal.current.visible = true
+    }
+  }
+
+  const setModalData = (value: Item.TypeInterface) => {
+    if (modal.current) {
+      modal.current.initData = value
+    }
+  }
+
+  const onPressCreate = () => {
+    showModal()
+  }
+
+  const onPressEdit = (value: Item.TypeInterface) => {
+    setModalData(value)
+    showModal()
+  }
 
   return (
     <Page inner>

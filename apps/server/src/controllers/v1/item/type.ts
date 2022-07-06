@@ -2,7 +2,7 @@ import { HttpException } from '@exceptions/HttpException'
 import { HttpResponse } from '@responses/HttpResponse'
 import { NextFunction, Request, Response } from 'express'
 import { injectable } from 'inversify'
-import { Attribute, ItemType } from '@db/models'
+import { Attribute, ItemStatus, ItemType } from '@db/models'
 
 @injectable()
 export class ItemTypeController {
@@ -16,6 +16,10 @@ export class ItemTypeController {
         include: [
           {
             model: Attribute,
+            through: { attributes: [] },
+          },
+          {
+            model: ItemStatus,
             through: { attributes: [] },
           },
         ],

@@ -1,5 +1,8 @@
 import { MainLayout } from '@layouts'
 import CategoryPage from '@pages/category'
+import ItemPage from '@pages/item/self'
+import CreateItemPage from '@pages/item/self/create'
+import EditItemPage from '@pages/item/self/[id]/edit'
 import StatusPage from '@pages/item/status'
 import ItemTypePage from '@pages/item/type'
 
@@ -26,6 +29,27 @@ const routes: RouteInterface[] = [
         path: '/item',
         children: [
           {
+            path: '/self',
+            children: [
+              {
+                path: '',
+                element: <ItemPage />,
+              },
+              {
+                path: '/:id',
+                element: <ItemPage />,
+              },
+              {
+                path: '/create',
+                element: <CreateItemPage />,
+              },
+              {
+                path: '/:id/edit',
+                element: <EditItemPage />,
+              },
+            ],
+          },
+          {
             path: '/status',
             element: <StatusPage />,
           },
@@ -40,10 +64,15 @@ const routes: RouteInterface[] = [
           },
         ],
       },
+      {
+        path: '/type/:type',
+        children: [
+          {
+            path: '/item',
+          },
+        ],
+      },
     ],
   },
 ]
-
-console.log('xin chao', window.location)
-
 export default routes

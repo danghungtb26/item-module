@@ -15,7 +15,7 @@ export interface BaseResponse<T = any> {
 export type PBaseResponse<T = any> = Promise<BaseResponse<T>>
 
 export interface BaseResponseList<T> {
-  data: T[]
+  rows: T[]
   paging: {
     next_page?: number
     current_link?: string

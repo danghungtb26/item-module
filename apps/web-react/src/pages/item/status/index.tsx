@@ -1,22 +1,26 @@
 import Page from '@components/Page'
-import { useAttributes } from '@hooks/attribute'
 import { useItemTypes } from '@hooks/itemType'
 import { Button, Space, Table, TableProps } from 'antd'
 import React, { useEffect, useRef } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useSearchParams } from 'react-router-dom'
+import ModalForm, { ModalFormMethod } from './components/Modal'
 
 type ItemStatusPageProps = {}
 
 const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
-  const { data, loading, fetch, page } = useItemTypes({ init: { page: 1, limit: 10 } })
+  const [searchParams] = useSearchParams()
+  const { data, loading, fetch, page } = useItemTypes({
+    init: {
+      page: Number(searchParams.get('page') ?? 1),
+      limit: Number(searchParams.get('limit') ?? 10),
+    },
+  })
+
+  const location = useLocation()
 
   useEffect(() => {
     fetch()
   }, [fetch])
-
-  const param = useParams()
-  const navigate = useNavigate()
-  const location = useLocation()
 
   const columns = useRef<TableProps<Item.StatusInterface>['columns']>([
     {
@@ -32,7 +36,7 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
       key: 'name',
       width: '10%',
       render: (text: string, record) => (
-        <Link to={`${location.pathname}/${record.id}/edit`}>{text}</Link>
+        <Link to={`${location.pathname}/${record.id}`}>{text}</Link>
       ),
     },
     {
@@ -53,13 +57,36 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
       align: 'center',
       render: (_, record) => (
         <Space size="middle">
-          <Button onClick={() => navigate(`${location.pathname}/${record.id}/edit`)} type="primary">
+          <Button onClick={() => onPressEdit(record)} type="primary">
             View
           </Button>
         </Space>
       ),
     },
   ]).current
+
+  const modal = useRef<ModalFormMethod>(null)
+
+  const showModal = () => {
+    if (modal.current) {
+      modal.current.visible = true
+    }
+  }
+
+  const setModalData = (value: Item.StatusInterface) => {
+    if (modal.current) {
+      modal.current.initData = value
+    }
+  }
+
+  const onPressCreate = () => {
+    showModal()
+  }
+
+  const onPressEdit = (value: Item.StatusInterface) => {
+    setModalData(value)
+    showModal()
+  }
 
   return (
     <Page inner>
@@ -71,8 +98,14 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
           columns={columns}
           scroll={{ x: 1200 }}
           rowKey={i => i.name}
+          pagination={{
+            total: page.count,
+            pageSize: Number(searchParams.get('limit') ?? 10),
+            current: page.current,
+          }}
         />
       </div>
+      <ModalForm ref={modal} />
     </Page>
   )
 }

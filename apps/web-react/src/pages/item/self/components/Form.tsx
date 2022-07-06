@@ -1,15 +1,38 @@
 import TreeSelect from '@components/TreeSelect'
+import { useAttributes } from '@hooks/attribute'
+import { useItemStatuses } from '@hooks/itemStatus'
+import { useItemTypes } from '@hooks/itemType'
+import { useMounted } from '@hooks/lifecycle'
 import { defaultFormItemLayout } from '@themes/styles'
 import { Form, Input, Select } from 'antd'
 import React from 'react'
 
-type ItemFormProps = {}
+type ItemFormProps = {
+  initData?: Item.Interface
+  initLoading?: boolean
+}
 
-const ItemForm: React.FC<ItemFormProps> = () => {
+const ItemForm: React.FC<ItemFormProps> = ({ initData, initLoading = false }) => {
+  const { data: attributes, fetch: fetchAttributes } = useAttributes()
+  const { data: types, fetch: fetchTypes } = useItemTypes()
+  const { data: statuses, fetch: fetchStatuses } = useItemStatuses()
+
+  useMounted(() => {
+    fetchAttributes()
+    fetchTypes()
+    fetchStatuses()
+  })
+
   const renderForm = () => {
     return (
       <Form>
-        <Form.Item name="name" label="Name" hasFeedback {...defaultFormItemLayout}>
+        <Form.Item
+          initialValue={initData}
+          name="name"
+          label="Name"
+          hasFeedback
+          {...defaultFormItemLayout}
+        >
           <Input placeholder="Name" />
         </Form.Item>
         <Form.Item name="description" label="Description" hasFeedback {...defaultFormItemLayout}>

@@ -3,11 +3,17 @@ import { useMounted } from '@hooks/lifecycle'
 import { Form, Input, Select } from 'antd'
 import React, { useEffect, useMemo } from 'react'
 
+const { Option } = Select
+
 const { Item } = Form
 
-type ItemTypeFormProps = {}
+type ItemTypeFormProps = {
+  initData?: Item.TypeInterface
+  // initLoading?: boolean
+  // initError?: boolean
+}
 
-const ItemTypeForm: React.FC<ItemTypeFormProps> = () => {
+const ItemTypeForm: React.FC<ItemTypeFormProps> = ({ initData }) => {
   const { fetch: fetchAttributes, data: attributes } = useAttributes()
 
   useMounted(() => {
@@ -15,7 +21,7 @@ const ItemTypeForm: React.FC<ItemTypeFormProps> = () => {
   })
 
   const children = useMemo(() => {
-    return attributes.map(i => i.name)
+    return attributes.map(i => <Option key={i.name}>{i.name}</Option>)
   }, [attributes])
 
   const handleChange = (value: string[]) => {
@@ -36,7 +42,7 @@ const ItemTypeForm: React.FC<ItemTypeFormProps> = () => {
           allowClear
           style={{ width: '100%' }}
           placeholder="Please select"
-          defaultValue={[]}
+          defaultValue={initData?.includes?.map(i => i.name) ?? []}
           onChange={handleChange}
         >
           {children}

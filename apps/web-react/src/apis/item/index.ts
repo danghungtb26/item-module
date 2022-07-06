@@ -3,9 +3,14 @@ import { handleRequest } from '@apis/handle'
 import { BaseParam } from '@apis/types'
 import { ItemClass } from '@models/item'
 
-const getListItem = (param?: BaseParam) => {
+const getListItem = (param?: BaseParam<Item.DataQuery>) => {
   return handleRequest<Item.Interface[]>(
-    request => request.get(`${api_item_type}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}`),
+    request =>
+      request.get(
+        `${api_item_type}?page=${param?.page ?? 1}&limit=${
+          param?.limit ?? 10
+        }&${new URLSearchParams(param?.input ?? {}).toString()}`
+      ),
     r => ({
       data: r.data.data.map(i => ItemClass.fromJson(i)),
     })

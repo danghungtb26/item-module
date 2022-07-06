@@ -10,6 +10,14 @@ declare global {
 
     export type Data = DataType<Interface>
 
+    export type DataQuery = {
+      type?: string
+
+      category?: string
+
+      search?: string
+    }
+
     export interface TypeInterface extends Base {
       id: string | number
 

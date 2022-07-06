@@ -34,7 +34,7 @@ const ModalForm = React.forwardRef<ModalFormMethod, ModalFormProps>((_, ref) => 
 
   return (
     <Modal visible={visible}>
-      <ItemTypeForm />
+      <ItemTypeForm initData={initData} />
     </Modal>
   )
 })

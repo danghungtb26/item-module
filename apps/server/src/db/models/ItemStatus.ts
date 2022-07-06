@@ -1,5 +1,7 @@
-import { Column, DataType, NotEmpty, Table } from 'sequelize-typescript'
+import { BelongsToMany, Column, DataType, HasMany, NotEmpty, Table } from 'sequelize-typescript'
 import { Base } from './base'
+import { ItemType } from './ItemType'
+import { StatusType } from './StatusType'
 
 @Table({ tableName: 'item_statuses' })
 export class ItemStatus extends Base {
@@ -10,6 +12,12 @@ export class ItemStatus extends Base {
   @Column(DataType.STRING)
   description: string
 
-  @Column(DataType.INTEGER)
-  override order: number
+  @HasMany(() => StatusType, { as: 'statusTypes' })
+  statusTypes: StatusType[]
+
+  @BelongsToMany(() => ItemType, {
+    as: 'types',
+    through: () => StatusType,
+  })
+  types: ItemType[]
 }

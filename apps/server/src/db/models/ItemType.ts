@@ -2,6 +2,8 @@ import { BelongsToMany, Column, DataType, HasMany, NotEmpty, Table } from 'seque
 import { Attribute } from './Attribute'
 import { AttributeType } from './AttributeType'
 import { Base } from './base'
+import { ItemStatus } from './ItemStatus'
+import { StatusType } from './StatusType'
 
 @Table({ tableName: 'item_types' })
 export class ItemType extends Base {
@@ -20,4 +22,13 @@ export class ItemType extends Base {
     through: () => AttributeType,
   })
   attributes: Attribute[]
+
+  @HasMany(() => StatusType, { as: 'statusTypes' })
+  statusTypes: StatusType[]
+
+  @BelongsToMany(() => ItemStatus, {
+    as: 'statuses',
+    through: () => StatusType,
+  })
+  statuses: ItemStatus[]
 }

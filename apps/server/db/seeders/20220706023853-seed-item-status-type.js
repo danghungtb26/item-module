@@ -12,17 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 exports.default = {
     up: (queryInterface, sequelize) => __awaiter(void 0, void 0, void 0, function* () {
-        const attributes = yield queryInterface.sequelize.query('SELECT * FROM "item_attributes" ', {
+        const statuses = yield queryInterface.sequelize.query('SELECT * FROM "item_statuses" ', {
             type: sequelize_1.QueryTypes.SELECT,
         });
         const types = yield queryInterface.sequelize.query('SELECT * FROM "item_types"', {
             type: sequelize_1.QueryTypes.SELECT,
         });
-        if (types.length === 0 || attributes.length === 0)
+        if (types.length === 0 || statuses.length === 0)
             return;
-        yield queryInterface.bulkInsert('item_attribute_types', attributes.map(i => ({ attribute_id: i.id, item_type_id: types[0].id })));
+        yield queryInterface.bulkInsert('item_status_types', statuses.map(i => ({ status_id: i.id, item_type_id: types[0].id })));
     }),
     down: (queryInterface, _sequelize) => __awaiter(void 0, void 0, void 0, function* () {
-        yield queryInterface.bulkDelete('item_attribute_types', {});
+        yield queryInterface.bulkDelete('item_status_types', {});
     }),
 };
