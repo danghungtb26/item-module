@@ -1,6 +1,5 @@
 import { api_category } from '@apis/config'
 import { handleRequest } from '@apis/handle'
-import { BaseParam } from '@apis/types'
 import { Category } from '@models/category'
 
 const getListCategory = (param?: BaseParam) => {

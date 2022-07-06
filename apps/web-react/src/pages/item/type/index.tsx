@@ -62,7 +62,7 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
       render: (_, record) => {
         return (
           <>
-            {record.includes.map(i => {
+            {record.attributes.map(i => {
               return <Tag key={i.name}>{i.name}</Tag>
             })}
           </>

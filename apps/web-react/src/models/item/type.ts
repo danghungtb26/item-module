@@ -9,7 +9,9 @@ export class ItemType extends BaseClass implements Item.TypeInterface {
 
   attach_to_sidebar?: boolean | undefined
 
-  includes: AttributeInterface[]
+  attributes: AttributeInterface[]
+
+  statuses: Item.StatusInterface[]
 
   static fromJson(json: any): ItemType {
     return new ItemType(json)

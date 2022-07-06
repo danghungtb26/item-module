@@ -1,9 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import request, { RequestType } from '../request'
-import type { BaseParam, BaseResponse, BaseResponseServer } from '../types'
 
 export const handleError: (error: any) => BaseResponse<any> = error => {
-  console.log('🚀 ~ file: index.ts ~ line 6 ~ error', error)
   if (axios.isCancel(error)) {
     return {
       status: 500,

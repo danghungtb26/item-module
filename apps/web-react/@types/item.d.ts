@@ -29,7 +29,9 @@ declare global {
 
       attach_to_sidebar?: boolean
 
-      includes: AttributeInterface[]
+      attributes: AttributeInterface[]
+
+      statuses: StatusInterface[]
     }
 
     export type TypeData = DataType<TypeInterface>

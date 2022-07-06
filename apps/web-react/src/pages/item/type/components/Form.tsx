@@ -42,7 +42,7 @@ const ItemTypeForm: React.FC<ItemTypeFormProps> = ({ initData }) => {
           allowClear
           style={{ width: '100%' }}
           placeholder="Please select"
-          defaultValue={initData?.includes?.map(i => i.name) ?? []}
+          defaultValue={initData?.attributes?.map(i => i.name) ?? []}
           onChange={handleChange}
         >
           {children}

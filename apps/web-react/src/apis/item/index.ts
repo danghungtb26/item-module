@@ -1,6 +1,5 @@
 import { api_item_type } from '@apis/config'
 import { handleRequest } from '@apis/handle'
-import { BaseParam } from '@apis/types'
 import { ItemClass } from '@models/item'
 
 const getListItem = (param?: BaseParam<Item.DataQuery>) => {
