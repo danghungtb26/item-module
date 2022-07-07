@@ -3,6 +3,9 @@ import { HttpResponse } from '@responses/HttpResponse'
 import { NextFunction, Request, Response } from 'express'
 import { injectable } from 'inversify'
 import { Attribute, ItemStatus, ItemType } from '@db/models'
+import { Transaction } from 'sequelize'
+import db from '@db'
+import { isUndefined } from 'lodash'
 
 @injectable()
 export class ItemTypeController {
@@ -57,39 +60,99 @@ export class ItemTypeController {
   }
 
   create = async (req: Request, res: Response, next: NextFunction) => {
+    let transaction: Transaction | undefined
+
     try {
-      const type = await ItemType.create(req.body)
+      transaction = await db.transaction()
+      const body = {
+        name: req.body.name,
+        description: req.body.description,
+      }
+
+      const type = await ItemType.create(body, { transaction })
+
+      // @ts-ignore
+      await type.setAttribute(req.body.attributes, { transaction })
+
+      // @ts-ignore
+      await type.setStatuses(req.body.statuses, { transaction })
+      // await AttributeType.bulkCreate(
+      //   req.body.attributes.map((i: number) => ({
+      //     attributeId: i,
+      //     itemTypeId: type.id,
+      //   })),
+      //   { transaction }
+      // )
+
+      // await StatusType.bulkCreate(
+      //   req.body.statuses.map((i: number) => ({
+      //     statusId: i,
+      //     itemTypeId: type.id,
+      //   })),
+      //   { transaction }
+      // )
+
+      const newType = await this.findByPk(type.id, { transaction })
+      await transaction?.commit()
       return res.json(
         new HttpResponse({
-          data: type,
+          data: newType,
         }).toJson()
       )
     } catch (error: any) {
+      transaction?.rollback()
       return next(new HttpException(500, error.message))
     }
   }
 
   update = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id
-    const body = req.body
+
+    let transaction: Transaction | undefined
+
     try {
+      transaction = await db.transaction()
+
+      const { name, description, statuses, attributes } = req.body
+
+      const body: Record<string, any> = {}
+      if (!isUndefined(name)) {
+        body.name = name
+      }
+
+      if (!isUndefined(description)) {
+        body.description = description
+      }
+
       const type = await ItemType.findOne({
         where: {
           id,
         },
       })
 
+      if (!isUndefined(statuses)) {
+        // @ts-ignore
+        await type?.setStatuses(statuses, { transaction })
+      }
+
+      if (!isUndefined(attributes)) {
+        // @ts-ignore
+        await type?.setAttribute(attributes, { transaction })
+      }
+
       if (type) {
-        await ItemType.update(body, { where: { id } })
-        const type = await ItemType.findOne({ where: { id } })
+        await ItemType.update(req.body, { where: { id } })
+        const newType = await this.findByPk(id, { transaction })
+        await transaction.commit()
         return res.json(
           new HttpResponse({
-            data: type,
+            data: newType,
           })
         )
       }
       throw new Error('Not found')
     } catch (error: any) {
+      await transaction?.rollback()
       return next(new HttpException(500, error.message))
     }
   }
@@ -107,12 +170,22 @@ export class ItemTypeController {
       })
   }
 
-  findByPk = async (id: string) => {
-    const type = await ItemType.findByPk(id)
+  findByPk = async (id: string, options?: Parameters<typeof ItemType['findByPk']>[1]) => {
+    const type = await ItemType.findByPk(id, {
+      include: [
+        {
+          model: Attribute,
+          through: { as: 'more', attributes: ['id'] },
+        },
+        {
+          model: ItemStatus,
+          through: { as: 'more', attributes: ['id'] },
+        },
+      ],
+      ...options,
+    })
     if (type) {
-      return {
-        data: type,
-      }
+      return type
     }
 
     throw new Error('Not found')

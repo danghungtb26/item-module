@@ -5,6 +5,8 @@ import { HttpException } from '@exceptions/HttpException'
 import { HttpResponse } from '@responses/HttpResponse'
 import { isNull, isString, isUndefined } from 'lodash'
 import { Transaction } from 'sequelize/types'
+import db from '@db'
+import { pick } from '@utils/lodash'
 
 @injectable()
 export class CategoryController {
@@ -40,7 +42,14 @@ export class CategoryController {
       const id = isString(req.params.id) ? req.params.id : ''
       return res.json(
         new HttpResponse({
-          data: Category.findByPk(id),
+          data: Category.findByPk(id, {
+            include: [
+              {
+                model: Category,
+                as: 'parent',
+              },
+            ],
+          }),
         }).toJson()
       )
     } catch (error: any) {
@@ -49,25 +58,51 @@ export class CategoryController {
   }
 
   create = async (req: Request, res: Response, next: NextFunction) => {
+    let transaction: Transaction | undefined
+
     try {
-      const category = await Category.create(req.body)
+      transaction = await db.transaction()
+      const parentId = req.body.parentId
+      const body = this.getAttributeBody(req)
+
+      if (!isNull(parentId)) {
+        const num = await Category.findByPk(parentId)
+        if (!num) {
+          throw new Error('Wrong parameter')
+        }
+
+        num.increment('subCategoryCount', { transaction })
+      }
+
+      const category = await Category.create(body, {
+        transaction,
+        include: [
+          {
+            model: Category,
+            as: 'parent',
+          },
+        ],
+      })
+
+      await transaction.commit()
       return res.json(
         new HttpResponse({
           data: category,
         }).toJson()
       )
     } catch (error: any) {
+      await transaction?.rollback()
       return next(new HttpException(500, error.message))
     }
   }
 
   update = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id
-    const body = req.body
+    const body = this.getAttributeBody(req)
     let transaction: Transaction | undefined
 
     try {
-      transaction = await Category.sequelize?.transaction()
+      transaction = await db.transaction()
       const category = await Category.findOne({
         where: {
           id,
@@ -106,7 +141,11 @@ export class CategoryController {
 
         await Category.update(body, { where: { id }, transaction })
 
-        const categoryRes = await Category.findOne({ where: { id }, transaction })
+        const categoryRes = await Category.findOne({
+          where: { id },
+          transaction,
+          include: [{ model: Category, as: 'parent' }],
+        })
         await transaction?.commit()
         return res.json(
           new HttpResponse({
@@ -116,7 +155,6 @@ export class CategoryController {
       }
       throw new Error('Not found')
     } catch (error: any) {
-      console.log('🚀 ~ file: category.ts ~ line 117 ~ CategoryController ~ update= ~ error', error)
       return next(new HttpException(500, error.message))
     }
   }
@@ -183,5 +221,9 @@ export class CategoryController {
       .catch(() => {
         return false
       })
+  }
+
+  private getAttributeBody = (req: Request) => {
+    return pick(req.body, ['name', 'description', 'parentId'])
   }
 }

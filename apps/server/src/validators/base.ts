@@ -5,7 +5,7 @@ export class BaseValidator {
     return [
       query('page')
         .optional({ nullable: true })
-        .isInt({ min: 1 })
+        .isInt({ min: 0 })
         .withMessage('Page must be number and than 0 !'),
       query('limit')
         .optional({ nullable: true })

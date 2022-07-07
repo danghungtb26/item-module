@@ -9,14 +9,14 @@ const controller = container.get(ControllerV1.Item.Type)
 // type
 const route = Express()
 
-route.get('/', controller.index)
+route.get('/', ItemTypeValidator.list, handleValidationError, controller.index)
 
-route.get('/:id', controller.show)
+route.get('/:id', ItemTypeValidator.show, handleValidationError, controller.show)
 
 route.post('', ItemTypeValidator.create, handleValidationError, controller.create)
 
 route.put('/:id', ItemTypeValidator.update, handleValidationError, controller.update)
 
-route.delete('/:id', controller.delete)
+route.delete('/:id', ItemTypeValidator.delete, handleValidationError, controller.delete)
 
 export default route

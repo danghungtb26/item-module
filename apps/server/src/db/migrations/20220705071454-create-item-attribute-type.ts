@@ -13,6 +13,7 @@ export default {
       },
       item_type_id: {
         type: DataType.BIGINT,
+        allowNull: false,
         references: {
           model: 'item_types',
           key: 'id',
@@ -20,6 +21,7 @@ export default {
       },
       attribute_id: {
         type: DataType.BIGINT,
+        allowNull: false,
         references: {
           model: 'item_attributes',
           key: 'id',

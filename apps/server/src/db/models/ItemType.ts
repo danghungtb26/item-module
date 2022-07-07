@@ -18,10 +18,10 @@ export class ItemType extends Base {
   attributeTypes: AttributeType[]
 
   @BelongsToMany(() => Attribute, {
-    as: 'attributes',
+    as: 'attribute',
     through: () => AttributeType,
   })
-  attributes: Attribute[]
+  attribute: Attribute[]
 
   @HasMany(() => StatusType, { as: 'statusTypes' })
   statusTypes: StatusType[]

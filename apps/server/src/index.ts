@@ -1,4 +1,4 @@
-import express, { Express } from 'express'
+import express, { Express, NextFunction, Request } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import bodyParser from 'body-parser'

@@ -4,6 +4,8 @@ import { ItemStatus } from '@db/models'
 import { HttpResponse } from '@responses/HttpResponse'
 import { HttpException } from '@exceptions/HttpException'
 import { Transaction } from 'sequelize/types'
+import db from '@db'
+import { pick } from '@utils/lodash'
 
 @injectable()
 export class ItemStatusController {
@@ -48,7 +50,8 @@ export class ItemStatusController {
 
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const status = await ItemStatus.create(req.body)
+      const body = this.getAttributeBody(req)
+      const status = await ItemStatus.create(body)
       return res.json(
         new HttpResponse({
           data: status,
@@ -61,7 +64,7 @@ export class ItemStatusController {
 
   update = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id
-    const body = req.body
+    const body = this.getAttributeBody(req.body)
 
     try {
       const status = await ItemStatus.findOne({
@@ -153,7 +156,7 @@ export class ItemStatusController {
   swapOrder = async (req: Request, res: Response, next: NextFunction) => {
     let transaction: Transaction | undefined
     try {
-      transaction = await ItemStatus.sequelize?.transaction()
+      transaction = await db.transaction()
 
       const start = Number(req.body.start)
       const end = Number(req.body.end)
@@ -207,5 +210,9 @@ export class ItemStatusController {
       await transaction?.rollback()
       return next(new HttpException(500, error.message))
     }
+  }
+
+  private getAttributeBody = (req: Request) => {
+    return pick(req.body, ['name', 'description'])
   }
 }

@@ -3,6 +3,7 @@ import { Category, Item, ItemStatus, ItemType } from '@db/models'
 import { HttpResponse } from '@responses/HttpResponse'
 import { HttpException } from '@exceptions/HttpException'
 import { NextFunction, Request, Response } from 'express'
+import { pick } from '@utils/lodash'
 
 @injectable()
 export class ItemController {
@@ -48,7 +49,8 @@ export class ItemController {
 
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const item = await Item.create(req.body, { include: this.getInclude() })
+      const body = this.getAttributeBody(req)
+      const item = await Item.create(body, { include: this.getInclude() })
       return res.json(
         new HttpResponse({
           data: item,
@@ -61,7 +63,7 @@ export class ItemController {
 
   update = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id
-    const body = req.body
+    const body = this.getAttributeBody(req)
     try {
       const item = await Item.findOne({
         where: {
@@ -160,5 +162,9 @@ export class ItemController {
 
   get attributes() {
     return Item.attributes
+  }
+
+  private getAttributeBody = (req: Request) => {
+    return pick(req.body, ['name', 'description'])
   }
 }

@@ -22,6 +22,7 @@ exports.default = {
             },
             item_type_id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
+                allowNull: false,
                 references: {
                     model: 'item_types',
                     key: 'id',
@@ -29,6 +30,7 @@ exports.default = {
             },
             attribute_id: {
                 type: sequelize_typescript_1.DataType.BIGINT,
+                allowNull: false,
                 references: {
                     model: 'item_attributes',
                     key: 'id',
