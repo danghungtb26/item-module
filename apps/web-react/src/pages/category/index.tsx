@@ -4,8 +4,10 @@ import { Link, useLocation } from 'react-router-dom'
 import Page from '@components/Page'
 import { useCategories } from '@hooks/category'
 import { useMounted } from '@hooks/lifecycle'
+import ModalForm, { ModalFormMethod } from '@components/ModalForm'
 import Filter from './components/Filter'
-import ModalForm, { ModalFormMethod } from './components/Modal'
+import CategoryForm, { CategoryFormMethod } from './components/Form'
+// import ModalForm, { ModalFormMethod } from './components/Modal'
 
 const CategoryPage: React.FC = () => {
   const { loading, data, fetch } = useCategories()
@@ -13,8 +15,6 @@ const CategoryPage: React.FC = () => {
   useMounted(fetch)
 
   const location = useLocation()
-
-  const modal = useRef<ModalFormMethod>(null)
 
   const columns = useRef<TableProps<CategoryInterface>['columns']>([
     {
@@ -79,15 +79,24 @@ const CategoryPage: React.FC = () => {
     },
   ])
 
+  const modal = useRef<ModalFormMethod>(null)
+  const form = useRef<CategoryFormMethod>(null)
+
   const showModal = () => {
     if (modal.current) {
       modal.current.visible = true
     }
   }
 
-  const setModalData = (value: CategoryInterface) => {
+  const hideModal = () => {
     if (modal.current) {
-      modal.current.initData = value
+      modal.current.visible = false
+    }
+  }
+
+  const setModalData = (value: CategoryInterface) => {
+    if (form.current) {
+      form.current.initData = value
     }
   }
 
@@ -96,8 +105,14 @@ const CategoryPage: React.FC = () => {
   }
 
   const onPressEdit = (value: CategoryInterface) => {
-    setModalData(value)
     showModal()
+    setModalData(value)
+  }
+
+  const onFinishedForm = (value: CategoryInterface) => {
+    console.log('🚀 ~ file: index.tsx ~ line 104 ~ onFinishedForm ~ value', value)
+    hideModal()
+    fetch()
   }
 
   return (
@@ -111,7 +126,9 @@ const CategoryPage: React.FC = () => {
           dataSource={data}
           loading={loading}
         />
-        <ModalForm ref={modal} />
+        <ModalForm ref={modal} forceRender>
+          <CategoryForm ref={form} onFinished={onFinishedForm} />
+        </ModalForm>
       </div>
     </Page>
   )

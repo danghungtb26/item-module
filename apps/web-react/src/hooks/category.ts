@@ -1,5 +1,5 @@
 import CategoryApi from '@apis/category'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 type P = { pre?: CategoryInterface[]; page?: number; limit?: number }
 
@@ -16,7 +16,6 @@ export const useCategories = (options?: { init: { page: number; limit: number } 
   const fetch = useCallback<(p?: P) => Promise<void>>(async p => {
     CategoryApi.getListCategory({ page: p?.page, limit: p?.limit })
       .then(r => {
-        console.log('🚀 ~ file: category.ts ~ line 19 ~ useCategories ~ r', r)
         if (r.cancel) return
 
         if (r.success) {
@@ -71,5 +70,91 @@ export const useCategory = (p: { id: CategoryInterface['id'] }) => {
     setLoading,
     setError,
     setData,
+  }
+}
+
+export const useCreateCategory = () => {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<boolean | string>(false)
+
+  const fetching = (p: Parameters<typeof CategoryApi['createCategory']>[0]) => {
+    setLoading(true)
+    return CategoryApi.createCategory(p).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return r.data
+      }
+
+      setError(true)
+
+      return null
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
+  }
+}
+
+export const useUpdateCategory = () => {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<boolean | string>(false)
+
+  const fetching = (p: Parameters<typeof CategoryApi['updateCategory']>[0]) => {
+    setLoading(true)
+    return CategoryApi.updateCategory(p).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return r.data
+      }
+
+      setError(true)
+
+      return null
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
+  }
+}
+
+export const useCreateOrUpdateCategory = (id?: CategoryInterface['id']) => {
+  if (id) return useCreateCategory
+
+  return useUpdateCategory
+}
+
+export const useDeleteCategory = () => {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<boolean | string>(false)
+
+  const fetching = (id: Parameters<typeof CategoryApi['deleteCategory']>[0]['id']) => {
+    return CategoryApi.deleteCategory({ id }).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return true
+      }
+
+      setError(true)
+
+      return false
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
   }
 }

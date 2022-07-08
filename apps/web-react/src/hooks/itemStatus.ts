@@ -73,3 +73,87 @@ export const useItemStatus = (p: { id: Item.StatusInterface['id'] }) => {
     setData,
   }
 }
+
+export const useCreateItemStatus = () => {
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<boolean | string>(false)
+
+  const fetching = (p: Parameters<typeof ItemStatusApi['createItemStatus']>[0]) => {
+    return ItemStatusApi.createItemStatus(p).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return r.data
+      }
+
+      setError(true)
+
+      return null
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
+  }
+}
+
+export const useUpdateItemStatus = () => {
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<boolean | string>(false)
+
+  const fetching = (p: Parameters<typeof ItemStatusApi['updateItemStatus']>[0]) => {
+    return ItemStatusApi.updateItemStatus(p).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return r.data
+      }
+
+      setError(true)
+
+      return null
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
+  }
+}
+
+export const useCreateOrUpdateItemStatus = (id?: Item.StatusInterface['id']) => {
+  if (id) return useCreateItemStatus
+
+  return useUpdateItemStatus
+}
+
+export const useDeleteItemStatus = () => {
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<boolean | string>(false)
+
+  const fetching = (id: Parameters<typeof ItemStatusApi['deleteItemStatus']>[0]['id']) => {
+    return ItemStatusApi.deleteItemStatus({ id }).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return true
+      }
+
+      setError(true)
+
+      return false
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
+  }
+}

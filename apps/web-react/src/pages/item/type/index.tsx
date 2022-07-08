@@ -1,9 +1,11 @@
+import ModalForm, { ModalFormMethod } from '@components/ModalForm'
 import Page from '@components/Page'
 import { useItemTypes } from '@hooks/itemType'
+import { useMounted } from '@hooks/lifecycle'
 import { Button, Space, Table, TableProps, Tag } from 'antd'
 import React, { useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { ModalFormMethod } from './components/Modal'
+import ItemTypeForm, { ItemTypeFormMethod } from './components/Form'
 import styles from './index.less'
 
 type ItemTypePageProps = {}
@@ -13,9 +15,7 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
   const navigate = useNavigate()
   const { data, loading, fetch, page } = useItemTypes({ init: { page: 1, limit: 10 } })
 
-  useEffect(() => {
-    fetch()
-  }, [fetch])
+  useMounted(fetch)
 
   const location = useLocation()
 
@@ -83,6 +83,7 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
     },
   ]).current
   const modal = useRef<ModalFormMethod>(null)
+  const form = useRef<ItemTypeFormMethod>(null)
 
   const showModal = () => {
     if (modal.current) {
@@ -90,9 +91,9 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
     }
   }
 
-  const setModalData = (value: Item.TypeInterface) => {
-    if (modal.current) {
-      modal.current.initData = value
+  const setModalData = (value?: Item.TypeInterface) => {
+    if (form.current) {
+      form.current.initData = value
     }
   }
 
@@ -101,9 +102,11 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
   }
 
   const onPressEdit = (value: Item.TypeInterface) => {
-    setModalData(value)
     showModal()
+    setModalData(value)
   }
+
+  const onFinish = () => {}
 
   return (
     <Page inner>
@@ -118,6 +121,9 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
           rowKey={i => i.name}
         />
       </div>
+      <ModalForm ref={modal} forceRender>
+        <ItemTypeForm ref={form} onFinish={onFinish} />
+      </ModalForm>
     </Page>
   )
 }

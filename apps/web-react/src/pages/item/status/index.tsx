@@ -1,9 +1,10 @@
+import ModalForm, { ModalFormMethod } from '@components/ModalForm'
 import Page from '@components/Page'
 import { useItemTypes } from '@hooks/itemType'
 import { Button, Space, Table, TableProps } from 'antd'
 import React, { useEffect, useRef } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
-import ModalForm, { ModalFormMethod } from './components/Modal'
+import ItemStatusForm, { ItemStatusFormMethod } from './components/Form'
 
 type ItemStatusPageProps = {}
 
@@ -66,6 +67,7 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
   ]).current
 
   const modal = useRef<ModalFormMethod>(null)
+  const form = useRef<ItemStatusFormMethod>(null)
 
   const showModal = () => {
     if (modal.current) {
@@ -74,8 +76,8 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
   }
 
   const setModalData = (value: Item.StatusInterface) => {
-    if (modal.current) {
-      modal.current.initData = value
+    if (form.current) {
+      form.current.initData = value
     }
   }
 
@@ -87,6 +89,8 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
     setModalData(value)
     showModal()
   }
+
+  const onFinish = () => {}
 
   return (
     <Page inner>
@@ -105,7 +109,9 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
           }}
         />
       </div>
-      <ModalForm ref={modal} />
+      <ModalForm ref={modal} forceRender>
+        <ItemStatusForm ref={form} onFinish={onFinish} />
+      </ModalForm>
     </Page>
   )
 }

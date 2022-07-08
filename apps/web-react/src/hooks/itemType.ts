@@ -1,5 +1,5 @@
 import ItemTypeApi from '@apis/item/type'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export const useItemTypes = (options?: { init: { page: number; limit: number } }) => {
   const [data, setData] = useState<any[]>([])
@@ -16,7 +16,7 @@ export const useItemTypes = (options?: { init: { page: number; limit: number } }
     page?: number
     limit?: number
     query?: Item.TypeQuery
-  }) => Promise<void> = async p => {
+  }) => Promise<void> = useCallback(async p => {
     return ItemTypeApi.getListItemType({ page: p?.page, limit: p?.limit })
       .then(r => {
         if (r.cancel) return
@@ -31,7 +31,7 @@ export const useItemTypes = (options?: { init: { page: number; limit: number } }
       .finally(() => {
         setLoading(false)
       })
-  }
+  }, [])
 
   return {
     data,
@@ -72,5 +72,89 @@ export const useItemType = (p: { id: Item.TypeInterface['id'] }) => {
     setLoading,
     setError,
     setData,
+  }
+}
+
+export const useCreateItemType = () => {
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<boolean | string>(false)
+
+  const fetching = (p: Parameters<typeof ItemTypeApi['createItemType']>[0]) => {
+    return ItemTypeApi.createItemType(p).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return r.data
+      }
+
+      setError(true)
+
+      return null
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
+  }
+}
+
+export const useUpdateItemType = () => {
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<boolean | string>(false)
+
+  const fetching = (p: Parameters<typeof ItemTypeApi['updateItemType']>[0]) => {
+    return ItemTypeApi.updateItemType(p).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return r.data
+      }
+
+      setError(true)
+
+      return null
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
+  }
+}
+
+export const useCreateOrUpdateItemType = (id?: Item.TypeInterface['id']) => {
+  if (id) return useCreateItemType
+
+  return useUpdateItemType
+}
+
+export const useDeleteItemType = () => {
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<boolean | string>(false)
+
+  const fetching = (id: Parameters<typeof ItemTypeApi['deleteItemType']>[0]['id']) => {
+    return ItemTypeApi.deleteItemType({ id }).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return true
+      }
+
+      setError(true)
+
+      return false
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
   }
 }

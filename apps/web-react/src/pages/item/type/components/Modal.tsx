@@ -1,6 +1,6 @@
 import { Modal } from 'antd'
 import React, { useImperativeHandle, useState } from 'react'
-import ItemTypeForm from './Form'
+import ItemTypeForm, { ItemTypeFormProps } from './Form'
 
 export type ModalFormMethod = {
   visible: boolean
@@ -8,9 +8,9 @@ export type ModalFormMethod = {
   initData?: Item.TypeInterface
 }
 
-type ModalFormProps = {}
+type ModalFormProps = ItemTypeFormProps & {}
 
-const ModalForm = React.forwardRef<ModalFormMethod, ModalFormProps>((_, ref) => {
+const ModalForm = React.forwardRef<ModalFormMethod, ModalFormProps>((props, ref) => {
   const [visible, setVisible] = useState<boolean>(false)
   const [initData, setInitData] = useState<Item.TypeInterface>()
 
@@ -34,7 +34,7 @@ const ModalForm = React.forwardRef<ModalFormMethod, ModalFormProps>((_, ref) => 
 
   return (
     <Modal visible={visible}>
-      <ItemTypeForm initData={initData} />
+      <ItemTypeForm {...props} initData={initData} />
     </Modal>
   )
 })
