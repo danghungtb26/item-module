@@ -9,14 +9,14 @@ import styles from './index.less'
 type ItemTypePageProps = {}
 
 const ItemTypePage: React.FC<ItemTypePageProps> = () => {
+  const param = useParams()
+  const navigate = useNavigate()
   const { data, loading, fetch, page } = useItemTypes({ init: { page: 1, limit: 10 } })
 
   useEffect(() => {
     fetch()
   }, [fetch])
 
-  const param = useParams()
-  const navigate = useNavigate()
   const location = useLocation()
 
   const columns = useRef<TableProps<Item.TypeInterface>['columns']>([
@@ -62,7 +62,7 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
       render: (_, record) => {
         return (
           <>
-            {record.attributes.map(i => {
+            {record.attribute.map(i => {
               return <Tag key={i.name}>{i.name}</Tag>
             })}
           </>

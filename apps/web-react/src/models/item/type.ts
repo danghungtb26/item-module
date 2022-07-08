@@ -9,7 +9,7 @@ export class ItemType extends BaseClass implements Item.TypeInterface {
 
   attach_to_sidebar?: boolean | undefined
 
-  attributes: AttributeInterface[]
+  attribute: Item.AttributeInterface[]
 
   statuses: Item.StatusInterface[]
 

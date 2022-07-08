@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 export const useAttributes = (options?: { callAfterInit: boolean }) => {
-  const [data, setData] = useState<AttributeInterface[]>([])
+  const [data, setData] = useState<Item.AttributeInterface[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<boolean>(false)
 

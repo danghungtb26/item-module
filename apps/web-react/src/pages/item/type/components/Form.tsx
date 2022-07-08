@@ -1,4 +1,5 @@
 import { useAttributes } from '@hooks/attribute'
+import { useItemStatuses } from '@hooks/itemStatus'
 import { useMounted } from '@hooks/lifecycle'
 import { Form, Input, Select } from 'antd'
 import React, { useEffect, useMemo } from 'react'
@@ -14,18 +15,31 @@ type ItemTypeFormProps = {
 }
 
 const ItemTypeForm: React.FC<ItemTypeFormProps> = ({ initData }) => {
-  const { fetch: fetchAttributes, data: attributes } = useAttributes()
-
+  const { fetch: fetchAttributes, data: attributes, error: errorAttribute } = useAttributes()
+  const {
+    fetch: fetchStatus,
+    data: statuses,
+    error: errorStatus,
+  } = useItemStatuses({ init: { page: 1, limit: 100 } })
   useMounted(() => {
     fetchAttributes()
+    fetchStatus()
   })
 
-  const children = useMemo(() => {
-    return attributes.map(i => <Option key={i.name}>{i.name}</Option>)
+  const childrenAttribute = useMemo(() => {
+    return attributes.map(i => <Option key={i.id}>{i.name}</Option>)
   }, [attributes])
 
-  const handleChange = (value: string[]) => {
+  const childrenStatus = useMemo(() => {
+    return statuses.map(i => <Option key={i.id}>{i.name}</Option>)
+  }, [statuses])
+
+  const handleChangeAttribute = (value: string[]) => {
     console.log(`selected ${value}`)
+  }
+
+  const handleChangeStatus = (value: string[]) => {
+    console.log('🚀 ~ file: Form.tsx ~ line 42 ~ handleChangeStatus ~ value', value)
   }
 
   const renderForm = () => {
@@ -37,16 +51,30 @@ const ItemTypeForm: React.FC<ItemTypeFormProps> = ({ initData }) => {
         <Item label="Description">
           <Input.TextArea rows={4} />
         </Item>
-        <Select
-          mode="multiple"
-          allowClear
-          style={{ width: '100%' }}
-          placeholder="Please select"
-          defaultValue={initData?.attributes?.map(i => i.name) ?? []}
-          onChange={handleChange}
-        >
-          {children}
-        </Select>
+        <Item label="Attribute">
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: '100%' }}
+            placeholder="Please select"
+            defaultValue={initData?.attribute?.map(i => i.name) ?? []}
+            onChange={handleChangeAttribute}
+          >
+            {childrenAttribute}
+          </Select>
+        </Item>
+        <Item label="Status">
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: '100%' }}
+            placeholder="Please select"
+            defaultValue={initData?.statuses?.map(i => i.name) ?? []}
+            onChange={handleChangeStatus}
+          >
+            {childrenStatus}
+          </Select>
+        </Item>
       </Form>
     )
   }

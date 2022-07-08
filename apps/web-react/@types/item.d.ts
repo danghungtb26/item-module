@@ -29,7 +29,7 @@ declare global {
 
       attach_to_sidebar?: boolean
 
-      attributes: AttributeInterface[]
+      attribute: AttributeInterface[]
 
       statuses: StatusInterface[]
     }
