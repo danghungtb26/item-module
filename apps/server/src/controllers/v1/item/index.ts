@@ -19,7 +19,7 @@ export class ItemController {
       return res.json(
         new HttpResponse({
           data: {
-            data: items.rows,
+            rows: items.rows,
             paging: {
               current_page: page,
               limit,
