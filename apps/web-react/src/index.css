@@ -19,3 +19,11 @@ code {
 .margin-right {
   margin-right: 16px;
 }
+
+.example {
+  margin: 20px 0;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  text-align: center;
+  border-radius: 4px;
+}

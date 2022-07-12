@@ -37,9 +37,10 @@ export class ItemController {
   show = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = req.params.id
+      const item = await Item.findByPk(id, { include: this.getInclude() })
       return res.json(
         new HttpResponse({
-          data: Item.findByPk(id, { include: this.getInclude() }),
+          data: item,
         }).toJson()
       )
     } catch (error: any) {

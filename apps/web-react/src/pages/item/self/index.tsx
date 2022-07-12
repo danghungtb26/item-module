@@ -3,12 +3,12 @@ import { useItems } from '@hooks/item'
 import { Button, Space, Table, TableProps } from 'antd'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import Filter from './components/FIlter'
 
 type ItemPageProps = {}
 
 const ItemPage: React.FC<ItemPageProps> = () => {
   const { data, loading, fetch } = useItems()
-  console.log('🚀 ~ file: index.tsx ~ line 11 ~ data', data)
   const [searchParams] = useSearchParams()
   const param = useParams()
   const navigate = useNavigate()
@@ -76,6 +76,7 @@ const ItemPage: React.FC<ItemPageProps> = () => {
   return (
     <Page inner>
       <div className="container">
+        <Filter />
         <Table
           dataSource={data}
           bordered

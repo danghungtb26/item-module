@@ -132,9 +132,31 @@ export const useUpdateItem = () => {
 }
 
 export const useCreateOrUpdateItem = (id?: Item.Interface['id']) => {
-  if (id) return useCreateItem
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<boolean | string>(false)
 
-  return useUpdateItem
+  const fetching = (p: Parameters<typeof ItemApi['updateItem']>[0]) => {
+    setLoading(true)
+    const method = id ? ItemApi.updateItem : ItemApi.createItem
+    return method(p).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return r.data
+      }
+      setLoading(false)
+      setError(true)
+
+      return null
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
+  }
 }
 
 export const useDeleteItem = () => {

@@ -98,7 +98,6 @@ const ItemTypeForm = React.forwardRef<ItemTypeFormMethod, ItemTypeFormProps>(
     useSetOK(() => form.current?.submit())
 
     const onSubmit = value => {
-      console.log('🚀 ~ file: Form.tsx ~ line 101 ~ value', value)
       const input: Item.TypeData = {
         ...value,
         attributes: value.attribute.map(i => Number(i)) ?? [],

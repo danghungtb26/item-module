@@ -1,5 +1,6 @@
 import { useItem } from '@hooks/item'
 import { useMounted } from '@hooks/lifecycle'
+import { Spin } from 'antd'
 import React from 'react'
 import { useParams } from 'react-router'
 import ItemForm from '../components/Form'
@@ -14,7 +15,19 @@ const EditItemPage: React.FC<EditItemPageProps> = () => {
     fetch()
   })
 
-  return <ItemForm initData={data} initLoading={loading} />
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <div className="loading">
+          <Spin />
+        </div>
+      )
+    }
+
+    return <ItemForm initData={data} initLoading={loading} />
+  }
+
+  return renderContent()
 }
 
 export default EditItemPage

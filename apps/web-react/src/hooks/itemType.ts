@@ -2,7 +2,7 @@ import ItemTypeApi from '@apis/item/type'
 import { useCallback, useState } from 'react'
 
 export const useItemTypes = (options?: { init: { page: number; limit: number } }) => {
-  const [data, setData] = useState<any[]>([])
+  const [data, setData] = useState<Item.TypeInterface[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<boolean | string>(false)
   const [page, setPage] = useState<{ current: number; max: number; count: number }>({

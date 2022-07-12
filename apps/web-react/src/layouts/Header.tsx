@@ -1,7 +1,7 @@
-import { Layout, Dropdown, Menu } from 'antd'
+import { Layout } from 'antd'
 import styled from 'styled-components'
 
-import { MenuFoldOutlined, MenuUnfoldOutlined, UserAddOutlined } from '@ant-design/icons'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 
 const { Header } = Layout
 

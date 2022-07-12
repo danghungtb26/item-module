@@ -17,12 +17,13 @@ route.use('/type', type)
 route.use('/status', status)
 
 route.get('', controller.index)
-route.get('/:id(\d+)', controller.show)
+
+route.get('/:id', controller.show)
 
 route.post('', controller.create)
 
-route.put('/:id(\d+)', controller.update)
+route.put('/:id', controller.update)
 
-route.delete('/:id(\d+)', controller.delete)
+route.delete('/:id', controller.delete)
 
 export default route
