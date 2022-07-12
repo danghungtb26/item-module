@@ -1,4 +1,4 @@
-import { api_item_type } from '@apis/config'
+import { api_item } from '@apis/config'
 import { handleRequest } from '@apis/handle'
 import { ItemClass } from '@models/item'
 
@@ -6,9 +6,9 @@ const getListItem = (param?: BaseParam<Item.DataQuery>) => {
   return handleRequest<Item.Interface[]>(
     request =>
       request.get(
-        `${api_item_type}?page=${param?.page ?? 1}&limit=${
-          param?.limit ?? 10
-        }&${new URLSearchParams(param?.input ?? {}).toString()}`
+        `${api_item}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}&${new URLSearchParams(
+          param?.input ?? {}
+        ).toString()}`
       ),
     r => ({
       data: r.data.data.rows.map(i => ItemClass.fromJson(i)),
@@ -23,7 +23,7 @@ const getListItem = (param?: BaseParam<Item.DataQuery>) => {
 
 const getItem = (param: BaseParam) => {
   return handleRequest<Item.Interface>(
-    request => request.get(`${api_item_type}/${param.id}`),
+    request => request.get(`${api_item}/${param.id}`),
     r => ({
       data: ItemClass.fromJson(r.data.data),
     })
@@ -32,7 +32,7 @@ const getItem = (param: BaseParam) => {
 
 const createItem = (param: BaseParam<Item.Data>) => {
   return handleRequest<Item.Interface>(
-    request => request.post(`${api_item_type}`, param.input),
+    request => request.post(`${api_item}`, param.input),
     r => ({
       data: ItemClass.fromJson(r.data.data),
     })
@@ -41,7 +41,7 @@ const createItem = (param: BaseParam<Item.Data>) => {
 
 const updateItem = (param: BaseParam<Item.Data>) => {
   return handleRequest<Item.Interface>(
-    request => request.put(`${api_item_type}/${param.id}`, param.input),
+    request => request.put(`${api_item}/${param.id}`, param.input),
     r => ({
       data: ItemClass.fromJson(r.data.data),
     })
@@ -50,7 +50,7 @@ const updateItem = (param: BaseParam<Item.Data>) => {
 
 const deleteItem = (param: BaseParam) => {
   return handleRequest<boolean>(
-    request => request.delete(`${api_item_type}/${param.id}`),
+    request => request.delete(`${api_item}/${param.id}`),
     r => ({
       data: r.data.data,
     })

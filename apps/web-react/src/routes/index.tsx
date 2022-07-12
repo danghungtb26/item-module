@@ -30,26 +30,42 @@ const routes: RouteInterface[] = [
         path: '/item',
         children: [
           {
-            path: '/self',
-            children: [
-              {
-                path: '',
-                element: <ItemPage />,
-              },
-              {
-                path: '/:id',
-                element: <ItemPage />,
-              },
-              {
-                path: '/create',
-                element: <CreateItemPage />,
-              },
-              {
-                path: '/:id/edit',
-                element: <EditItemPage />,
-              },
-            ],
+            path: '',
+            element: <ItemPage />,
           },
+          {
+            path: '/:id',
+            element: <ItemPage />,
+          },
+          {
+            path: '/create',
+            element: <CreateItemPage />,
+          },
+          {
+            path: '/:id/edit',
+            element: <EditItemPage />,
+          },
+          // {
+          //   path: '/self',
+          //   children: [
+          //     {
+          //       path: '',
+          //       element: <ItemPage />,
+          //     },
+          //     {
+          //       path: '/:id',
+          //       element: <ItemPage />,
+          //     },
+          //     {
+          //       path: '/create',
+          //       element: <CreateItemPage />,
+          //     },
+          //     {
+          //       path: '/:id/edit',
+          //       element: <EditItemPage />,
+          //     },
+          //   ],
+          // },
           {
             path: '/status',
             element: <StatusPage />,

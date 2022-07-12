@@ -5133,6 +5133,11 @@ commander@^8.3.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-8.3.0.tgz#4837ea1b2da67b9c616a67afbb0fafee567bca66"
   integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
 
+commander@^9.0.0:
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.3.0.tgz#f619114a5a2d2054e0d9ff1b31d5ccf89255e26b"
+  integrity sha512-hv95iU5uXPbK83mjrJKuZyFM/LBAoCV/XhVGkS5Je6tl7sxr6A0ITMw5WoRV46/UaJ46Nllm3Xt7IaJhXTIkzw==
+
 commitlint@^16.2.1:
   version "16.2.4"
   resolved "https://registry.yarnpkg.com/commitlint/-/commitlint-16.2.4.tgz#36063a40ec5f51b3e65458e737cf6ca8aa9d9756"
@@ -9816,6 +9821,11 @@ mute-stream@0.0.8, mute-stream@~0.0.4:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
+mylas@^2.1.9:
+  version "2.1.11"
+  resolved "https://registry.yarnpkg.com/mylas/-/mylas-2.1.11.tgz#1827462533977bed1c4251317aa84254e3ca94c7"
+  integrity sha512-krnPUl3n9/k52FGCltWMYcqp9SttxjRJEy0sWLk+g7mIa7wnZrmNSZ40Acx7ghzRSOsxt2rEqMbaq4jWlnTDKg==
+
 nanoid@^3.3.3:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
@@ -10738,6 +10748,13 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
+plimit-lit@^1.2.6:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/plimit-lit/-/plimit-lit-1.2.7.tgz#ae16e6e5eadf87924e574337b4c01d140b986c4a"
+  integrity sha512-ce/kfCHFJ2sIK1IuSnXfVBxoMaIwuAF9J5NjFwxng1j+r8XguGxXMK87dBSODQfY+se2Raj/grpx5EAK9kapEA==
+  dependencies:
+    queue-lit "^1.2.8"
+
 postcss-attribute-case-insensitive@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/postcss-attribute-case-insensitive/-/postcss-attribute-case-insensitive-5.0.0.tgz#39cbf6babf3ded1e4abf37d09d6eda21c644105c"
@@ -11500,6 +11517,11 @@ querystring@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
   integrity sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=
+
+queue-lit@^1.2.8:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/queue-lit/-/queue-lit-1.2.8.tgz#2bafa0eafb8db0380ab2301d90c52a065c4baad0"
+  integrity sha512-CR0/8Xb0oRk4rZrteSZcjrrPhWfXGBAWa/ATxYCqpdM4fnZu8M3zob5ajLxLUCXmpOzhHZ1+zgscrlzQtEOM0A==
 
 queue-microtask@^1.2.2:
   version "1.2.3"
@@ -13756,6 +13778,18 @@ ts-node@^10.8.1:
     make-error "^1.1.1"
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
+
+tsc-alias@^1.6.11:
+  version "1.6.11"
+  resolved "https://registry.yarnpkg.com/tsc-alias/-/tsc-alias-1.6.11.tgz#d6d83f030ad11f48e4ead8ec5729929e5e60519b"
+  integrity sha512-mXEM21WriTJMQyo07B4Kc2nNFFk/1qOjU+jZ0ymXOyLz/A8J+dIBkimqZrh3s/x1qLGoJ1cNZQxa8GGoWOGX1Q==
+  dependencies:
+    chokidar "^3.5.3"
+    commander "^9.0.0"
+    globby "^11.0.4"
+    mylas "^2.1.9"
+    normalize-path "^3.0.0"
+    plimit-lit "^1.2.6"
 
 tsconfig-paths@^3.14.1:
   version "3.14.1"

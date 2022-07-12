@@ -1,26 +1,35 @@
 import Page from '@components/Page'
 import { useItems } from '@hooks/item'
-import { useMounted } from '@hooks/lifecycle'
 import { Button, Space, Table, TableProps } from 'antd'
-import React, { useRef } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import React, { useEffect, useMemo, useRef } from 'react'
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 type ItemPageProps = {}
 
 const ItemPage: React.FC<ItemPageProps> = () => {
   const { data, loading, fetch } = useItems()
-
+  console.log('🚀 ~ file: index.tsx ~ line 11 ~ data', data)
+  const [searchParams] = useSearchParams()
   const param = useParams()
   const navigate = useNavigate()
   const location = useLocation()
 
-  useMounted(() => {
+  const page = useMemo(() => {
+    return Number(searchParams.get('page') ?? 1)
+  }, [searchParams])
+
+  const limit = useMemo(() => Number(searchParams.get('limit') ?? 10), [searchParams])
+
+  useEffect(() => {
     fetch({
+      page,
+
+      limit,
       query: {
         type: param.type,
       },
     })
-  })
+  }, [limit, page, param.type])
 
   const columns = useRef<TableProps<Item.StatusInterface>['columns']>([
     {
