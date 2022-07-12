@@ -12,6 +12,7 @@
         "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
         "build:db:ts": "rm -rf db && tsc --project src/db/tsconfig.build.json --outDir db",
         "build:db": "rm -rf db && webpack --config webpack.sequelize.ts",
+        "migrate": "sequelize-cli db:migrate && sequelize-cli db:seed:all",
         "reset": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
         "reset:db": "yarn build:db && sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
         "reset:db:ts": "yarn build:db:ts && sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all"
