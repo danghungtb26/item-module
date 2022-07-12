@@ -39,7 +39,7 @@ const ModalForm = React.forwardRef<ModalFormMethod, ModalFormProps>(({ onFinishe
     },
   }))
 
-  const { loading, fetching } = useCreateOrUpdateCategory(initData?.id)()
+  const { loading, fetching } = useCreateOrUpdateCategory(initData?.id)
 
   const onCancel = () => {
     if (loading) return
@@ -48,8 +48,11 @@ const ModalForm = React.forwardRef<ModalFormMethod, ModalFormProps>(({ onFinishe
     setInitData(undefined)
   }
 
-  const onSubmit = () => {
-    const input: CategoryData = {}
+  const onSubmit = value => {
+    const input: CategoryData = {
+      name: value.name,
+      description: value.description,
+    }
     fetching({ id: initData?.id, input }).then(r => {
       if (r) {
         onFinished?.(r)

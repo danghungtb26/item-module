@@ -25,11 +25,11 @@ export class BaseClass implements Base {
   }
 
   get updatedAt() {
-    return this.updatedAt
+    return this.updated_at
   }
 
   get deletedAt() {
-    return this.deletedAt
+    return this.deleted_at
   }
 
   static fromJson(json: any) {

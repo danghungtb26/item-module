@@ -20,7 +20,11 @@ export const useCategories = (options?: { init: { page: number; limit: number } 
 
         if (r.success) {
           setData((p?.pre ?? []).concat(r.data ?? []))
-          setPage({ count: 0, max: 10, current: 1 })
+          setPage({
+            count: r.page?.count ?? 0,
+            max: r.page?.max ?? 1,
+            current: r.page?.current ?? 1,
+          })
           return
         }
         setError(r.message ?? true)
@@ -86,7 +90,7 @@ export const useCreateCategory = () => {
 
         return r.data
       }
-
+      setLoading(false)
       setError(true)
 
       return null
@@ -113,7 +117,7 @@ export const useUpdateCategory = () => {
 
         return r.data
       }
-
+      setLoading(false)
       setError(true)
 
       return null
@@ -128,9 +132,31 @@ export const useUpdateCategory = () => {
 }
 
 export const useCreateOrUpdateCategory = (id?: CategoryInterface['id']) => {
-  if (id) return useCreateCategory
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<boolean | string>(false)
 
-  return useUpdateCategory
+  const fetching = (p: Parameters<typeof CategoryApi['updateCategory']>[0]) => {
+    setLoading(true)
+    const method = id ? CategoryApi.updateCategory : CategoryApi.createCategory
+    return method(p).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return r.data
+      }
+      setLoading(false)
+      setError(true)
+
+      return null
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
+  }
 }
 
 export const useDeleteCategory = () => {
@@ -145,7 +171,7 @@ export const useDeleteCategory = () => {
 
         return true
       }
-
+      setLoading(false)
       setError(true)
 
       return false

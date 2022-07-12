@@ -1,5 +1,6 @@
 const path = require('path')
 const { getLoader, loaderByName } = require('@craco/craco')
+require('react-scripts/config/env')
 
 const CracoLessPlugin = require('craco-less')
 
@@ -20,6 +21,7 @@ module.exports = {
         target: process.env.API_HOST,
         pathRewrite: { '^/api': '' },
         secure: false,
+        changeOrigin: true,
       },
     },
   },

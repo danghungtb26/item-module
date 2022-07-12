@@ -1,17 +1,17 @@
 import ModalForm, { ModalFormMethod } from '@components/ModalForm'
 import Page from '@components/Page'
-import { useItemStatuses } from '@hooks/itemStatus'
+import { useAttributes } from '@hooks/attribute'
 import { useFetchPage } from '@hooks/lifecycle'
-import { Button, Space, Table, TableProps } from 'antd'
-import React, { useEffect, useRef } from 'react'
+import { Table, TableProps } from 'antd'
+import React, { useRef } from 'react'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import ItemStatusForm, { ItemStatusFormMethod } from './components/Form'
+import ItemAttributeForm, { ItemAttributeFormMethod } from './components/Form'
 
-type ItemStatusPageProps = {}
+type ItemAttributePageProps = {}
 
-const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
+const ItemAttributePage: React.FC<ItemAttributePageProps> = () => {
   const [searchParams] = useSearchParams()
-  const { data, loading, fetch, page } = useItemStatuses({
+  const { data, loading, fetch, page } = useAttributes({
     init: {
       page: Number(searchParams.get('page') ?? 1),
       limit: Number(searchParams.get('limit') ?? 10),
@@ -22,12 +22,12 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
 
   useFetchPage(fetch)
 
-  const columns = useRef<TableProps<Item.StatusInterface>['columns']>([
+  const columns = useRef<TableProps<Item.AttributeInterface>['columns']>([
     {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
-      width: '60px',
+      width: '10%',
       align: 'center',
     },
     {
@@ -36,7 +36,7 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
       key: 'name',
       width: '10%',
       render: (text: string, record) => (
-        <Link to={`${location.pathname}/${record.id}`}>{text}</Link>
+        <Link to={`${location.pathname}/${record.id}`}>{record.name}</Link>
       ),
     },
     {
@@ -46,21 +46,15 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
       width: '25%',
     },
     {
-      title: 'Action',
-      key: 'action',
-      align: 'center',
-      render: (_, record) => (
-        <Space size="middle">
-          <Button onClick={() => onPressEdit(record)} type="primary">
-            View
-          </Button>
-        </Space>
-      ),
+      width: '25%',
+      title: 'Required',
+      dataIndex: 'required',
+      key: 'required',
     },
   ]).current
 
   const modal = useRef<ModalFormMethod>(null)
-  const form = useRef<ItemStatusFormMethod>(null)
+  const form = useRef<ItemAttributeFormMethod>(null)
 
   const showModal = () => {
     if (modal.current) {
@@ -68,18 +62,7 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
     }
   }
 
-  const setModalData = (value: Item.StatusInterface) => {
-    if (form.current) {
-      form.current.initData = value
-    }
-  }
-
   const onPressCreate = () => {
-    showModal()
-  }
-
-  const onPressEdit = (value: Item.StatusInterface) => {
-    setModalData(value)
     showModal()
   }
 
@@ -87,7 +70,7 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
 
   const navigate = useNavigate()
 
-  const onChange: TableProps<Item.StatusInterface>['onChange'] = ({ current }) => {
+  const onChange: TableProps<Item.AttributeInterface>['onChange'] = ({ current }) => {
     navigate(`${location.pathname}?page=${current}`)
   }
 
@@ -110,10 +93,10 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
         />
       </div>
       <ModalForm ref={modal} forceRender>
-        <ItemStatusForm ref={form} onFinish={onFinish} />
+        <ItemAttributeForm ref={form} onFinish={onFinish} />
       </ModalForm>
     </Page>
   )
 }
 
-export default ItemStatusPage
+export default ItemAttributePage

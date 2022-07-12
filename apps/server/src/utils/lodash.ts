@@ -1,1 +1,3 @@
-export const pick = require('lodash/pick').default
+import p from 'lodash/pick'
+
+export const pick = p

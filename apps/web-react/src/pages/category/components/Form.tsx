@@ -1,9 +1,13 @@
-import { useSetLoadingModalForm, useSetOK } from '@components/ModalForm/context'
+import {
+  useListenerModalVisibleChange,
+  useSetLoadingModalForm,
+  useSetOK,
+} from '@components/ModalForm/context'
 import TreeSelect from '@components/TreeSelect'
-import { useCreateOrUpdateCategory } from '@hooks/category'
+import { useCategories, useCreateOrUpdateCategory } from '@hooks/category'
 import { defaultFormItemLayout } from '@themes/styles'
-import { Button, Form, FormInstance, Input } from 'antd'
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { Form, FormInstance, Input } from 'antd'
+import React, { useImperativeHandle, useRef, useState } from 'react'
 
 export type CategoryFormMethod = {
   initData?: CategoryInterface
@@ -19,23 +23,59 @@ const CategoryForm = React.forwardRef<CategoryFormMethod, CategoryFormProps>(
   ({ initData, onFinished }, ref) => {
     const [data, setData] = useState<CategoryFormProps['initData']>(initData)
 
+    const { data: categories, fetch } = useCategories()
+
     useImperativeHandle(ref, () => ({
       get initData() {
         return data
       },
       set initData(data) {
         setData(data)
+        if (data) {
+          setField(data)
+        }
       },
       submit: () => {},
     }))
 
-    const { loading, fetching } = useCreateOrUpdateCategory(data?.id)()
+    const setField = (d?: CategoryInterface) => {
+      form.current?.setFields([
+        {
+          name: 'name',
+          value: d?.name,
+        },
+        {
+          name: 'description',
+          value: d?.description,
+        },
+        {
+          name: 'parentId',
+          value: d?.parentId,
+        },
+      ])
+    }
+
+    const { loading, fetching } = useCreateOrUpdateCategory(data?.id)
 
     useSetLoadingModalForm(loading)
     useSetOK(() => form.current?.submit())
+    useListenerModalVisibleChange(value => {
+      if (!value) {
+        form.current?.resetFields()
+        setData(undefined)
+      }
 
-    const onSubmit = () => {
-      const input: CategoryData = {}
+      if (value) {
+        fetch()
+      }
+    })
+
+    const onSubmit = value => {
+      const input: CategoryData = {
+        name: value.name,
+        description: value.description,
+        parentId: value.parentId,
+      }
       fetching({ id: data?.id, input }).then(r => {
         if (r) {
           onFinished?.(r)
@@ -53,8 +93,8 @@ const CategoryForm = React.forwardRef<CategoryFormMethod, CategoryFormProps>(
         <Form.Item name="description" label="Description" hasFeedback {...defaultFormItemLayout}>
           <Input placeholder="Description" />
         </Form.Item>
-        <Form.Item name="parent" label="Parent" hasFeedback {...defaultFormItemLayout}>
-          <TreeSelect treeData={[]} />
+        <Form.Item name="parentId" label="Parent" hasFeedback {...defaultFormItemLayout}>
+          <TreeSelect treeData={categories.map(i => ({ key: i.id, value: i.id, title: i.name }))} />
         </Form.Item>
       </Form>
     )

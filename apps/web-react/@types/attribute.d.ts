@@ -3,10 +3,14 @@ declare global {
     interface AttributeInterface extends Base {
       name: string
 
+      description: string
+
       required?: boolean
 
       valueType: 'string' | 'boolean' | 'number' | 'array' | 'json'
     }
+
+    type AttributeData = DataType<AttributeData>
   }
 }
 

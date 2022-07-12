@@ -13,7 +13,12 @@ const getListItemType = (param?: BaseParam<Item.TypeData>) => {
     request =>
       request.get(`${api_item_type}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}${query}`),
     r => ({
-      data: r.data.data.map(i => ItemType.fromJson(i)),
+      data: r.data.data.rows.map(i => ItemType.fromJson(i)),
+      page: {
+        current: r.data.data.paging?.current_page ?? 1,
+        max: r.data.data.paging.total_page ?? 1,
+        count: r.data.data.paging.total ?? 0,
+      },
     })
   )
 }

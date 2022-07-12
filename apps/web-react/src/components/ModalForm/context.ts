@@ -7,12 +7,15 @@ export interface ModalFormContextInterface {
   setLoading: (value: boolean) => void
 
   setOnOK: (p: () => void) => void
+
+  listenerVisibleChange: (p: (value: boolean) => void) => (id?: number) => void
 }
 
 export const ModalFormDefaultValue: ModalFormContextInterface = {
   loading: false,
   setLoading: () => {},
   setOnOK: () => {},
+  listenerVisibleChange: () => () => {},
 }
 
 export const ModalFormContext =
@@ -34,4 +37,16 @@ export const useSetOK = (value: Parameters<ModalFormContextInterface['setOnOK']>
   useMounted(() => {
     setOnOK(value)
   })
+}
+
+export const useListenerModalVisibleChange = (
+  listener: Parameters<ModalFormContextInterface['listenerVisibleChange']>[0]
+) => {
+  const { listenerVisibleChange } = useModalForm()
+
+  useEffect(() => {
+    const l = listenerVisibleChange(listener)
+    return l
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listenerVisibleChange])
 }

@@ -23,7 +23,11 @@ export const useItems = (options?: { init: { page: number; limit: number } }) =>
 
         if (r.success) {
           setData((p?.pre ?? []).concat(r.data ?? []))
-          setPage({ count: 0, max: 10, current: 1 })
+          setPage({
+            count: r.page?.count ?? 0,
+            max: r.page?.max ?? 1,
+            current: r.page?.current ?? 1,
+          })
           return
         }
         setError(r.message ?? true)

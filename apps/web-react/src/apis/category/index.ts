@@ -6,7 +6,12 @@ const getListCategory = (param?: BaseParam) => {
   return handleRequest<CategoryInterface[]>(
     request => request.get(`${api_category}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}`),
     r => ({
-      data: r.data.data.map(i => Category.fromJson(i)),
+      data: r.data.data.rows.map(i => Category.fromJson(i)),
+      page: {
+        current: r.data.data.paging?.current_page ?? 1,
+        max: r.data.data.paging.total_page ?? 1,
+        count: r.data.data.paging.total ?? 0,
+      },
     })
   )
 }

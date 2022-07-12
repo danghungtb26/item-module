@@ -2,7 +2,7 @@ import { Menu } from 'antd'
 import { DashboardFilled, TrophyFilled } from '@ant-design/icons'
 import { Link, useLocation } from 'react-router-dom'
 
-const keys = ['/', '/category', '/item/type']
+const keys = ['/', '/category', '/item/type', '/item/status', '/item/attribute']
 
 const menu = [
   <Menu.Item key={keys[0]}>
@@ -21,6 +21,18 @@ const menu = [
     <Link to={keys[2]}>
       <TrophyFilled type="trophy" />
       <span>Item Type</span>
+    </Link>
+  </Menu.Item>,
+  <Menu.Item key={keys[3]}>
+    <Link to={keys[3]}>
+      <TrophyFilled type="trophy" />
+      <span>Item Status</span>
+    </Link>
+  </Menu.Item>,
+  <Menu.Item key={keys[4]}>
+    <Link to={keys[4]}>
+      <TrophyFilled type="trophy" />
+      <span>Item Attribute</span>
     </Link>
   </Menu.Item>,
 ]

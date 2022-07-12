@@ -3,16 +3,15 @@ import { Button, Space, Table, TableProps } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 import Page from '@components/Page'
 import { useCategories } from '@hooks/category'
-import { useMounted } from '@hooks/lifecycle'
+import { useFetchPage } from '@hooks/lifecycle'
 import ModalForm, { ModalFormMethod } from '@components/ModalForm'
 import Filter from './components/Filter'
 import CategoryForm, { CategoryFormMethod } from './components/Form'
-// import ModalForm, { ModalFormMethod } from './components/Modal'
 
 const CategoryPage: React.FC = () => {
   const { loading, data, fetch } = useCategories()
 
-  useMounted(fetch)
+  useFetchPage(fetch)
 
   const location = useLocation()
 
@@ -44,7 +43,7 @@ const CategoryPage: React.FC = () => {
       key: 'parentId',
       render: (_, record) => {
         if (record.parentId) {
-          return <Link to={`${location.pathname}/${record.parentId}`}>{record.parentId}</Link>
+          return <Link to={`${location.pathname}/${record.parentId}`}>{record.parent?.name}</Link>
         }
 
         return null
@@ -109,8 +108,7 @@ const CategoryPage: React.FC = () => {
     setModalData(value)
   }
 
-  const onFinishedForm = (value: CategoryInterface) => {
-    console.log('🚀 ~ file: index.tsx ~ line 104 ~ onFinishedForm ~ value', value)
+  const onFinishedForm = () => {
     hideModal()
     fetch()
   }
@@ -121,7 +119,7 @@ const CategoryPage: React.FC = () => {
         <Filter onCreate={onPressCreate} />
         <Table
           scroll={{ x: 1200 }}
-          rowKey={i => i.name}
+          rowKey={i => i.id}
           columns={columns.current}
           dataSource={data}
           loading={loading}

@@ -1,19 +1,25 @@
-import { api_item_type } from '@apis/config'
+import { api_item_status } from '@apis/config'
 import { handleRequest } from '@apis/handle'
 import { ItemStatus } from '@models/item/status'
 
 const getListItemStatus = (param?: BaseParam) => {
   return handleRequest<Item.StatusInterface[]>(
-    request => request.get(`${api_item_type}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}`),
+    request =>
+      request.get(`${api_item_status}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}`),
     r => ({
-      data: r.data.data.map(i => ItemStatus.fromJson(i)),
+      data: r.data.data.rows.map(i => ItemStatus.fromJson(i)),
+      page: {
+        current: r.data.data.paging?.current_page ?? 1,
+        max: r.data.data.paging.total_page ?? 1,
+        count: r.data.data.paging.total ?? 0,
+      },
     })
   )
 }
 
 const getItemStatus = (param: BaseParam) => {
   return handleRequest<Item.StatusInterface>(
-    request => request.get(`${api_item_type}/${param.id}`),
+    request => request.get(`${api_item_status}/${param.id}`),
     r => ({
       data: ItemStatus.fromJson(r.data.data),
     })
@@ -22,7 +28,7 @@ const getItemStatus = (param: BaseParam) => {
 
 const createItemStatus = (param: BaseParam<Item.StatusData>) => {
   return handleRequest<Item.StatusInterface>(
-    request => request.post(`${api_item_type}`, param.input),
+    request => request.post(`${api_item_status}`, param.input),
     r => ({
       data: ItemStatus.fromJson(r.data.data),
     })
@@ -31,7 +37,7 @@ const createItemStatus = (param: BaseParam<Item.StatusData>) => {
 
 const updateItemStatus = (param: BaseParam<Item.StatusData>) => {
   return handleRequest<Item.StatusInterface>(
-    request => request.put(`${api_item_type}/${param.id}`, param.input),
+    request => request.put(`${api_item_status}/${param.id}`, param.input),
     r => ({
       data: ItemStatus.fromJson(r.data.data),
     })
@@ -40,7 +46,7 @@ const updateItemStatus = (param: BaseParam<Item.StatusData>) => {
 
 const deleteItemStatus = (param: BaseParam) => {
   return handleRequest<boolean>(
-    request => request.delete(`${api_item_type}/${param.id}`),
+    request => request.delete(`${api_item_status}/${param.id}`),
     r => ({
       data: r.data.data,
     })

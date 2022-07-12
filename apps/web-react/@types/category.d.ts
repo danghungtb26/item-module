@@ -7,6 +7,8 @@ declare global {
     description: string
 
     parentId?: string | number
+
+    parent?: CategoryInterface
   }
 
   export type CategoryData = DataType<CategoryInterface>

@@ -3,22 +3,22 @@ import {
   useSetLoadingModalForm,
   useSetOK,
 } from '@components/ModalForm/context'
-import { useCreateOrUpdateItemStatus } from '@hooks/itemStatus'
+import { useCreateItemAttribute } from '@hooks/attribute'
 import { Button, Form, FormInstance, Input } from 'antd'
 import React, { useImperativeHandle, useRef } from 'react'
 
 const { Item } = Form
 
-export type ItemStatusFormMethod = {
+export type ItemAttributeFormMethod = {
   initData?: Item.StatusInterface
 }
 
-export type ItemStatusFormProps = {
+export type ItemAttributeFormProps = {
   initialData?: Item.StatusInterface
   onFinish?: (data: Item.StatusInterface) => void
 }
 
-const ItemStatusForm = React.forwardRef<ItemStatusFormMethod, ItemStatusFormProps>(
+const ItemAttributeForm = React.forwardRef<ItemAttributeFormMethod, ItemAttributeFormProps>(
   ({ onFinish, initialData }, ref) => {
     const data = useRef<Item.StatusInterface | undefined>(initialData)
 
@@ -48,7 +48,7 @@ const ItemStatusForm = React.forwardRef<ItemStatusFormMethod, ItemStatusFormProp
       ])
     }
 
-    const { loading, fetching } = useCreateOrUpdateItemStatus(data.current?.id)
+    const { loading, fetching } = useCreateItemAttribute()
 
     useSetLoadingModalForm(loading)
     useSetOK(() => form.current?.submit())
@@ -60,10 +60,7 @@ const ItemStatusForm = React.forwardRef<ItemStatusFormMethod, ItemStatusFormProp
     })
 
     const onSubmit = value => {
-      const input: Item.StatusData = {
-        name: value.name,
-        description: value.description,
-      }
+      const input: Item.AttributeData = value
       fetching({ id: data.current?.id, input }).then(r => {
         if (r) {
           onFinish?.(r)
@@ -76,10 +73,10 @@ const ItemStatusForm = React.forwardRef<ItemStatusFormMethod, ItemStatusFormProp
     const renderForm = () => {
       return (
         <Form onFinish={onSubmit}>
-          <Item label="Name">
+          <Item label="Name" name="name">
             <Input />
           </Item>
-          <Item label="Description">
+          <Item label="Description" name="description">
             <Input.TextArea rows={4} />
           </Item>
           <Button title="Save" loading={loading} />
@@ -90,4 +87,4 @@ const ItemStatusForm = React.forwardRef<ItemStatusFormMethod, ItemStatusFormProp
   }
 )
 
-export default ItemStatusForm
+export default ItemAttributeForm

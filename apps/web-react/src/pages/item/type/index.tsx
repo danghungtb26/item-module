@@ -1,23 +1,28 @@
 import ModalForm, { ModalFormMethod } from '@components/ModalForm'
 import Page from '@components/Page'
 import { useItemTypes } from '@hooks/itemType'
-import { useMounted } from '@hooks/lifecycle'
+import { useFetchPage } from '@hooks/lifecycle'
 import { Button, Space, Table, TableProps, Tag } from 'antd'
-import React, { useEffect, useRef } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import React, { useRef } from 'react'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import ItemTypeForm, { ItemTypeFormMethod } from './components/Form'
-import styles from './index.less'
 
 type ItemTypePageProps = {}
 
 const ItemTypePage: React.FC<ItemTypePageProps> = () => {
-  const param = useParams()
-  const navigate = useNavigate()
-  const { data, loading, fetch, page } = useItemTypes({ init: { page: 1, limit: 10 } })
+  const [searchParams] = useSearchParams()
 
-  useMounted(fetch)
+  const { data, loading, fetch, page } = useItemTypes({
+    init: {
+      page: Number(searchParams.get('page') ?? 1),
+      limit: Number(searchParams.get('limit') ?? 10),
+    },
+  })
+
+  useFetchPage(fetch)
 
   const location = useLocation()
+  const navigate = useNavigate()
 
   const columns = useRef<TableProps<Item.TypeInterface>['columns']>([
     {
@@ -29,7 +34,7 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
     },
     {
       title: 'Name',
-      dataIndex: 'version',
+      dataIndex: 'name',
       key: 'name',
       width: '10%',
       render: (text: string, record) => (
@@ -60,6 +65,7 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
       dataIndex: 'includes',
       key: 'includes',
       render: (_, record) => {
+        if (!Array.isArray(record.attribute)) return null
         return (
           <>
             {record.attribute.map(i => {
@@ -91,6 +97,12 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
     }
   }
 
+  const hideModal = () => {
+    if (modal.current) {
+      modal.current.visible = false
+    }
+  }
+
   const setModalData = (value?: Item.TypeInterface) => {
     if (form.current) {
       form.current.initData = value
@@ -106,7 +118,17 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
     setModalData(value)
   }
 
-  const onFinish = () => {}
+  const onFinish = () => {
+    hideModal()
+    fetch({
+      page: Number(searchParams.get('page') ?? 1),
+      limit: Number(searchParams.get('limit') ?? 10),
+    })
+  }
+
+  const onChange: TableProps<Item.TypeInterface>['onChange'] = ({ current }) => {
+    navigate(`${location.pathname}?page=${current}`)
+  }
 
   return (
     <Page inner>
@@ -116,9 +138,14 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
           bordered
           loading={loading}
           columns={columns}
-          className={styles.table}
           scroll={{ x: 1200 }}
-          rowKey={i => i.name}
+          rowKey={i => i.id}
+          pagination={{
+            total: page.count,
+            pageSize: Number(searchParams.get('limit') ?? 10),
+            current: page.current,
+          }}
+          onChange={onChange}
         />
       </div>
       <ModalForm ref={modal} forceRender>

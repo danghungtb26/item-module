@@ -5,6 +5,14 @@ export class ItemStatus extends BaseClass implements Item.StatusInterface {
 
   description: string
 
+  constructor(json: any) {
+    super(json)
+    const keys = Object.keys(json)
+    keys.forEach(key => {
+      this[key] = json[key]
+    })
+  }
+
   static fromJson(json: any): ItemStatus {
     return new ItemStatus(json)
   }

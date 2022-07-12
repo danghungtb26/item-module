@@ -1,4 +1,4 @@
-import express, { Express, NextFunction, Request } from 'express'
+import express, { Express } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import bodyParser from 'body-parser'
@@ -18,7 +18,7 @@ db.authenticate()
 
     app.use(cors({ origin: '*', methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'] }))
 
-    app.use('', routes)
+    app.use('/api', routes)
 
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`)

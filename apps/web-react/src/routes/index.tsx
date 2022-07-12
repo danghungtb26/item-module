@@ -1,5 +1,6 @@
 import { MainLayout } from '@layouts'
 import CategoryPage from '@pages/category'
+import ItemAttributePage from '@pages/item/attribute'
 import ItemPage from '@pages/item/self'
 import CreateItemPage from '@pages/item/self/create'
 import EditItemPage from '@pages/item/self/[id]/edit'
@@ -61,6 +62,10 @@ const routes: RouteInterface[] = [
                 element: <ItemTypePage />,
               },
             ],
+          },
+          {
+            path: '/attribute',
+            element: <ItemAttributePage />,
           },
         ],
       },

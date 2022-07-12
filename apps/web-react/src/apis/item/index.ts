@@ -11,7 +11,12 @@ const getListItem = (param?: BaseParam<Item.DataQuery>) => {
         }&${new URLSearchParams(param?.input ?? {}).toString()}`
       ),
     r => ({
-      data: r.data.data.map(i => ItemClass.fromJson(i)),
+      data: r.data.data.rows.map(i => ItemClass.fromJson(i)),
+      page: {
+        current: r.data.data.paging?.current_page ?? 1,
+        max: r.data.data.paging.total_page ?? 1,
+        count: r.data.data.paging.total ?? 0,
+      },
     })
   )
 }

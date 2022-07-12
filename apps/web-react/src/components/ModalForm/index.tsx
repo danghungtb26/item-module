@@ -1,5 +1,5 @@
 import { Modal, ModalProps } from 'antd'
-import React, { useImperativeHandle, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { ModalFormContext, ModalFormContextInterface } from './context'
 
 export type ModalFormMethod = {
@@ -16,6 +16,28 @@ const ModalForm = React.forwardRef<ModalFormMethod, ModalFormProps>(
   ({ children, onCancel: cancel, ...props }, ref) => {
     const [visible, setVisible] = useState<boolean>(false)
     const [loading, setLoading] = useState<ModalFormContextInterface['loading']>(false)
+    const index = useRef<number>(0)
+    const listeners = useRef<
+      {
+        id: number
+        listener: Parameters<ModalFormContextInterface['listenerVisibleChange']>[0]
+      }[]
+    >([])
+
+    const listenerVisibleChange = useRef<ModalFormContextInterface['listenerVisibleChange']>(
+      listener => {
+        const currentIndex = index.current
+        listeners.current.push({ id: index.current, listener })
+        index.current += 1
+        return () => {
+          listeners.current = listeners.current.filter(i => i.id !== currentIndex)
+        }
+      }
+    )
+
+    useEffect(() => {
+      listeners.current.map(i => i.listener(visible))
+    }, [visible])
 
     const onOk = useRef<() => void>(() => {})
 
@@ -37,6 +59,7 @@ const ModalForm = React.forwardRef<ModalFormMethod, ModalFormProps>(
         loading,
         setLoading,
         setOnOK: setOnOk.current,
+        listenerVisibleChange: listenerVisibleChange.current,
       }
     }, [loading])
 

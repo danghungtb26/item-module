@@ -26,6 +26,7 @@ export class ItemTypeController {
             through: { attributes: [] },
           },
         ],
+        order: [['updated_at', 'DESC']],
         distinct: true,
       })
       return res.json(

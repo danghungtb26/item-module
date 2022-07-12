@@ -65,7 +65,7 @@ export class CategoryController {
       const parentId = req.body.parentId
       const body = this.getAttributeBody(req)
 
-      if (!isNull(parentId)) {
+      if (!isNull(parentId) && !isUndefined(parentId)) {
         const num = await Category.findByPk(parentId)
         if (!num) {
           throw new Error('Wrong parameter')

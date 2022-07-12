@@ -17,13 +17,18 @@ export const useItemTypes = (options?: { init: { page: number; limit: number } }
     limit?: number
     query?: Item.TypeQuery
   }) => Promise<void> = useCallback(async p => {
+    setLoading(true)
     return ItemTypeApi.getListItemType({ page: p?.page, limit: p?.limit })
       .then(r => {
         if (r.cancel) return
 
         if (r.success) {
           setData((p?.pre ?? []).concat(r.data ?? []))
-          setPage({ count: 0, max: 10, current: 1 })
+          setPage({
+            count: r.page?.count ?? 0,
+            max: r.page?.max ?? 1,
+            current: r.page?.current ?? 1,
+          })
           return
         }
         setError(r.message ?? true)
@@ -87,7 +92,7 @@ export const useCreateItemType = () => {
 
         return r.data
       }
-
+      setLoading(false)
       setError(true)
 
       return null
@@ -113,7 +118,7 @@ export const useUpdateItemType = () => {
 
         return r.data
       }
-
+      setLoading(false)
       setError(true)
 
       return null
@@ -128,9 +133,30 @@ export const useUpdateItemType = () => {
 }
 
 export const useCreateOrUpdateItemType = (id?: Item.TypeInterface['id']) => {
-  if (id) return useCreateItemType
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<boolean | string>(false)
 
-  return useUpdateItemType
+  const fetching = (p: Parameters<typeof ItemTypeApi['updateItemType']>[0]) => {
+    const method = id ? ItemTypeApi.updateItemType : ItemTypeApi.createItemType
+    return method(p).then(r => {
+      if (r.success) {
+        setLoading(false)
+        setError(false)
+
+        return r.data
+      }
+      setLoading(false)
+      setError(true)
+
+      return null
+    })
+  }
+
+  return {
+    loading,
+    error,
+    fetching,
+  }
 }
 
 export const useDeleteItemType = () => {

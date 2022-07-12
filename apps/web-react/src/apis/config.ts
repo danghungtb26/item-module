@@ -11,3 +11,5 @@ export const api_item = `${api}/item`
 export const api_item_type = `${api_item}/type`
 
 export const api_item_status = `${api_item}/status`
+
+export const api_item_attribute = `${api_item}/attribute`
