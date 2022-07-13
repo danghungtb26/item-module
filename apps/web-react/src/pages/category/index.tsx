@@ -12,7 +12,7 @@ import DeleteCategory from './components/Delete'
 const CategoryPage: React.FC = () => {
   const { loading, data, fetch } = useCategories()
 
-  useFetchPage(fetch)
+  const refetch = useFetchPage(fetch)
 
   const location = useLocation()
 
@@ -74,7 +74,7 @@ const CategoryPage: React.FC = () => {
           <Button onClick={() => onPressEdit(record)} type="ghost">
             Edit
           </Button>
-          <DeleteCategory category={record} />
+          <DeleteCategory category={record} onFinish={refetch} />
         </Space>
       ),
     },
@@ -112,7 +112,7 @@ const CategoryPage: React.FC = () => {
 
   const onFinishedForm = () => {
     hideModal()
-    fetch()
+    refetch()
   }
 
   return (

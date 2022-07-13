@@ -21,7 +21,7 @@ const ItemAttributePage: React.FC<ItemAttributePageProps> = () => {
 
   const location = useLocation()
 
-  useFetchPage(fetch)
+  const refetch = useFetchPage(fetch)
 
   const columns = useRef<TableProps<Item.AttributeInterface>['columns']>([
     {
@@ -66,8 +66,9 @@ const ItemAttributePage: React.FC<ItemAttributePageProps> = () => {
   const onPressCreate = () => {
     showModal()
   }
-
-  const onFinish = () => {}
+  const onFinish = () => {
+    refetch()
+  }
 
   const navigate = useNavigate()
 

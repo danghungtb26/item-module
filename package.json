@@ -33,7 +33,8 @@
       "**/inversify",
       "**/routing-controllers",
       "**/express-validator",
-      "**/sequelize"
+      "**/sequelize",
+      "**/moment"
     ]
   },
   "scripts": {

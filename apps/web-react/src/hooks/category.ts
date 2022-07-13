@@ -1,7 +1,7 @@
 import CategoryApi from '@apis/category'
 import { useCallback, useState } from 'react'
 
-type P = { pre?: CategoryInterface[]; page?: number; limit?: number }
+type P = { pre?: CategoryInterface[]; page?: number; limit?: number; input?: any }
 
 export const useCategories = (options?: { init: { page: number; limit: number } }) => {
   const [data, setData] = useState<CategoryInterface[]>([])
@@ -14,7 +14,7 @@ export const useCategories = (options?: { init: { page: number; limit: number } 
   })
 
   const fetch = useCallback<(p?: P) => Promise<void>>(async p => {
-    CategoryApi.getListCategory({ page: p?.page, limit: p?.limit })
+    CategoryApi.getListCategory({ page: p?.page, limit: p?.limit, input: p?.input })
       .then(r => {
         if (r.cancel) return
 

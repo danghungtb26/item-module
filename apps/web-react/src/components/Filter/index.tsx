@@ -1,5 +1,7 @@
 import FilterItem from '@components/FilterItem'
 import { ColDefaultProps, TwoColDefaultProps } from '@themes/styles'
+import { removeUndefined } from '@utils'
+import moment from 'moment'
 import { Button, Col, DatePicker, Form, FormInstance, Input, Row } from 'antd'
 import React, { useMemo, useRef } from 'react'
 import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
@@ -14,9 +16,12 @@ const Filter: React.FC<FilterProps> = ({ onCreate }) => {
   const form = useRef<FormInstance>(null)
   const [searchParams] = useSearchParams()
   const initValue = useMemo(() => {
+    const start = searchParams.get('start')
+    const end = searchParams.get('end')
     return {
-      search: searchParams.get('search'),
-      createTime: [searchParams.get('start'), searchParams.get('end')],
+      search: searchParams.get('search') ?? undefined,
+      createTime:
+        start && end ? [moment(searchParams.get('start')), moment(searchParams.get('end'))] : [],
     }
   }, [searchParams])
 
@@ -28,11 +33,11 @@ const Filter: React.FC<FilterProps> = ({ onCreate }) => {
   }
 
   const onSearch = value => {
-    const query = {
+    const query = removeUndefined({
       search: value.search,
-      start: value.createTime[0],
-      end: value.createTime[1],
-    }
+      start: value.createTime?.[0],
+      end: value.createTime?.[1],
+    })
 
     navigate({ pathname: location.pathname, search: `?${createSearchParams(query)}` })
   }

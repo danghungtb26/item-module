@@ -4,9 +4,10 @@ import React from 'react'
 
 type DeleteCategoryProps = {
   category: CategoryInterface
+  onFinish?: () => void
 }
 
-const DeleteCategory: React.FC<DeleteCategoryProps> = ({ category }) => {
+const DeleteCategory: React.FC<DeleteCategoryProps> = ({ category, onFinish }) => {
   const { fetching, loading } = useDeleteCategory()
 
   const onClick = () => {
@@ -16,6 +17,7 @@ const DeleteCategory: React.FC<DeleteCategoryProps> = ({ category }) => {
       onOk: () => {
         fetching(category.id).then(() => {
           notification.success({ message: `Category ${category.id} is deleted` })
+          onFinish?.()
         })
       },
     })

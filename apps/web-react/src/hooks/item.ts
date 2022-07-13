@@ -17,6 +17,7 @@ export const useItems = (options?: { init: { page: number; limit: number } }) =>
     limit?: number
     query?: Item.DataQuery
   }) => Promise<void> = async p => {
+    setLoading(true)
     return ItemApi.getListItem({ page: p?.page, limit: p?.limit, input: p?.query })
       .then(r => {
         if (r.cancel) return
@@ -160,7 +161,7 @@ export const useCreateOrUpdateItem = (id?: Item.Interface['id']) => {
 }
 
 export const useDeleteItem = () => {
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<boolean | string>(false)
 
   const fetching = (id: Parameters<typeof ItemApi['deleteItem']>[0]['id']) => {

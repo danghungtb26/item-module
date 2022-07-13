@@ -1,7 +1,8 @@
 import Page from '@components/Page'
 import { useItems } from '@hooks/item'
+import { removeUndefined } from '@utils'
 import { Button, Space, Table, TableProps } from 'antd'
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import DeleteItem from './components/Delete'
 import Filter from './components/FIlter'
@@ -21,28 +22,31 @@ const ItemPage: React.FC<ItemPageProps> = () => {
 
   const limit = useMemo(() => Number(searchParams.get('limit') ?? 10), [searchParams])
 
-  useEffect(() => {
-    const search = searchParams.get('search') ?? ''
-    const start = searchParams.get('start') ?? ''
-    const end = searchParams.get('end') ?? ''
-    const type = searchParams.get('type') ?? ''
-    const category = searchParams.get('category') ?? ''
-    const status = searchParams.get('status') ?? ''
-
+  const fetching = useCallback(() => {
+    const search = searchParams.get('search') ?? undefined
+    const start = searchParams.get('start') ?? undefined
+    const end = searchParams.get('end') ?? undefined
+    const type = searchParams.get('type') ?? undefined
+    const category = searchParams.get('category') ?? undefined
+    const status = searchParams.get('status') ?? undefined
     fetch({
       page,
 
       limit,
-      query: {
+      query: removeUndefined({
         type: param.type ?? type,
         start,
         end,
         category,
         status,
         search,
-      },
+      }),
     })
   }, [limit, page, param.type, searchParams])
+
+  useEffect(() => {
+    fetching()
+  }, [fetching])
 
   const columns = useRef<TableProps<Item.Interface>['columns']>([
     {
@@ -82,7 +86,7 @@ const ItemPage: React.FC<ItemPageProps> = () => {
           <Button onClick={() => navigate(`${location.pathname}/${record.id}/edit`)} type="primary">
             View
           </Button>
-          <DeleteItem item={record} />
+          <DeleteItem item={record} onFinish={fetching} />
         </Space>
       ),
     },

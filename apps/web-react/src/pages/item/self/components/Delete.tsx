@@ -4,9 +4,10 @@ import React from 'react'
 
 type DeleteItemProps = {
   item: Item.Interface
+  onFinish: () => void
 }
 
-const DeleteItem: React.FC<DeleteItemProps> = ({ item }) => {
+const DeleteItem: React.FC<DeleteItemProps> = ({ item, onFinish }) => {
   const { fetching, loading } = useDeleteItem()
 
   const onClick = () => {
@@ -16,6 +17,7 @@ const DeleteItem: React.FC<DeleteItemProps> = ({ item }) => {
       onOk: () => {
         fetching(item.id).then(() => {
           notification.success({ message: `Item ${item.id} is deleted` })
+          onFinish?.()
         })
       },
     })

@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { removeUndefined } from '@utils'
+import { useCallback, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 export const useMounted = (callback: () => void) => {
@@ -28,22 +29,29 @@ export const useFetchPage = (
   fetch: (p: { page: number; limit: number; input?: Record<string, any> }) => void
 ) => {
   const [searchParams] = useSearchParams()
-  useEffect(() => {
+
+  const refetch = useCallback(() => {
     const page = Number(searchParams.get('page') ?? 1)
     const limit = Number(searchParams.get('limit') ?? 10)
-    const search = searchParams.get('search') ?? ''
-    const start = searchParams.get('start') ?? ''
-    const end = searchParams.get('end') ?? ''
+    const search = searchParams.get('search') ?? undefined
+    const start = searchParams.get('start') ?? undefined
+    const end = searchParams.get('end') ?? undefined
     fetch({
       page,
       limit,
 
-      input: {
+      input: removeUndefined({
         search,
         start,
         end,
-      },
+      }),
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
+
+  useEffect(() => {
+    refetch()
+  }, [refetch])
+
+  return refetch
 }

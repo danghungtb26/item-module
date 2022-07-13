@@ -4,10 +4,13 @@ import { useItemStatuses } from '@hooks/itemStatus'
 import { useItemTypes } from '@hooks/itemType'
 import { useMounted } from '@hooks/lifecycle'
 import { ColDefaultProps as c, TwoColDefaultProps } from '@themes/styles'
+import { removeUndefined } from '@utils'
+import dateTime from '@utils/dateTime'
+import moment from 'moment'
 import { Button, Col, DatePicker, Form, FormInstance, Input, Row, Select } from 'antd'
 import React, { useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { createSearchParams } from 'react-router-dom'
+import { createSearchParams, useSearchParams } from 'react-router-dom'
 
 const ColDefaultProps = {
   ...c,
@@ -70,6 +73,20 @@ const Filter: React.FC<FilterProps> = () => {
     ))
   }, [currentType?.statuses, statuses])
 
+  const [searchParams] = useSearchParams()
+  const initValue = useMemo(() => {
+    const start = searchParams.get('start')
+    const end = searchParams.get('end')
+    return {
+      search: searchParams.get('search') ?? undefined,
+      createTime:
+        start && end ? [moment(searchParams.get('start')), moment(searchParams.get('end'))] : [],
+      type: searchParams.get('type') ?? undefined,
+      category: searchParams.get('category') ?? undefined,
+      status: searchParams.get('status') ?? undefined,
+    }
+  }, [searchParams])
+
   const onCreate = () => {
     navigate('create')
   }
@@ -79,20 +96,22 @@ const Filter: React.FC<FilterProps> = () => {
   }
 
   const onSearch = value => {
-    const query = {
-      search: value.search,
-      start: value.createTime[0],
-      end: value.createTime[1],
-      category: value.category,
-      type: value.type,
-      status: value.type,
-    }
+    const start = value.createTime?.[0]?.format()
+    const end = value.createTime?.[1]?.format()
+    const query = removeUndefined({
+      search: value.search ?? undefined,
+      start: start ? dateTime(start).utc().format() : undefined,
+      end: end ? dateTime(end).utc().format() : undefined,
+      category: value.category ?? undefined,
+      type: value.type ?? undefined,
+      status: value.status ?? undefined,
+    })
 
     navigate({ pathname: location.pathname, search: `?${createSearchParams(query)}` })
   }
 
   return (
-    <Form ref={form} onFinish={onSearch}>
+    <Form ref={form} onFinish={onSearch} initialValues={initValue}>
       <Row gutter={24}>
         <Col {...ColDefaultProps} xl={12} md={12}>
           <Form.Item name="search">
@@ -102,7 +121,7 @@ const Filter: React.FC<FilterProps> = () => {
         <Col {...ColDefaultProps} xl={12} md={12} sm={24} id="createTimeRangePicker">
           <FilterItem label="Created Time">
             <Form.Item name="createTime">
-              <RangePicker style={{ width: '100%' }} />
+              <RangePicker allowClear style={{ width: '100%' }} />
             </Form.Item>
           </FilterItem>
         </Col>
@@ -110,7 +129,7 @@ const Filter: React.FC<FilterProps> = () => {
       <Row gutter={24}>
         <Col {...ColDefaultProps} xl={8} md={8}>
           <Form.Item name="category">
-            <Select style={{ width: '100%' }} placeholder="Please select category">
+            <Select allowClear style={{ width: '100%' }} placeholder="Please select category">
               {childrenCategory}
             </Select>
           </Form.Item>
@@ -118,6 +137,7 @@ const Filter: React.FC<FilterProps> = () => {
         <Col {...ColDefaultProps} xl={8} md={8}>
           <Form.Item name="type">
             <Select
+              allowClear
               onChange={onSelectType}
               style={{ width: '100%' }}
               placeholder="Please select type"
@@ -128,7 +148,7 @@ const Filter: React.FC<FilterProps> = () => {
         </Col>
         <Col {...ColDefaultProps} xl={8} md={8}>
           <Form.Item name="status">
-            <Select style={{ width: '100%' }} placeholder="Please select status">
+            <Select allowClear style={{ width: '100%' }} placeholder="Please select status">
               {childrenStatus}
             </Select>
           </Form.Item>
