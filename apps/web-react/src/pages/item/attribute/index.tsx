@@ -1,3 +1,4 @@
+import Filter from '@components/Filter'
 import ModalForm, { ModalFormMethod } from '@components/ModalForm'
 import Page from '@components/Page'
 import { useAttributes } from '@hooks/attribute'
@@ -77,6 +78,7 @@ const ItemAttributePage: React.FC<ItemAttributePageProps> = () => {
   return (
     <Page inner>
       <div className="container">
+        <Filter onCreate={onPressCreate} />
         <Table
           dataSource={data}
           bordered

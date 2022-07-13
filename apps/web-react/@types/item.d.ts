@@ -16,6 +16,12 @@ declare global {
       category?: string
 
       search?: string
+
+      status?: string
+
+      start?: string
+
+      end?: string
     }
 
     export interface TypeInterface extends Base {
@@ -36,7 +42,7 @@ declare global {
 
     export type TypeData = DataType<TypeInterface>
 
-    type TypeQuery = TypeData
+    type TypeQuery = BaseQuery
 
     export interface StatusInterface extends Base {
       name: string
@@ -46,7 +52,7 @@ declare global {
 
     export type StatusData = DataType<StatusInterface>
 
-    type StatusQuery = StatusData
+    type StatusQuery = BaseQuery
   }
 }
 

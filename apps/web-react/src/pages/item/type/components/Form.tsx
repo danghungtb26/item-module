@@ -3,7 +3,7 @@ import { useAttributes } from '@hooks/attribute'
 import { useItemStatuses } from '@hooks/itemStatus'
 import { useCreateOrUpdateItemType } from '@hooks/itemType'
 import { useMounted } from '@hooks/lifecycle'
-import { Button, Form, FormInstance, Input, Select } from 'antd'
+import { Button, Form, FormInstance, Input, notification, Select } from 'antd'
 import React, { useEffect, useImperativeHandle, useMemo, useRef } from 'react'
 
 const { Option } = Select
@@ -106,7 +106,17 @@ const ItemTypeForm = React.forwardRef<ItemTypeFormMethod, ItemTypeFormProps>(
       fetching({ id: data.current?.id, input }).then(r => {
         if (r) {
           onFinish?.(r)
+          notification.success({
+            message: `${data.current?.id ? 'Edit' : 'Create'} type ${
+              data.current?.id
+            } successfully`,
+          })
+          return
         }
+
+        notification.error({
+          message: 'Something wrong',
+        })
       })
     }
 

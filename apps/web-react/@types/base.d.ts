@@ -20,6 +20,12 @@ declare global {
   type DataType<T> = {
     [x in keyof T]?: T[x] extends () => any ? never : T[x]
   }
+
+  type BaseQuery = {
+    search?: string
+    start?: string
+    end?: string
+  }
 }
 
 export {}

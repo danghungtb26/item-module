@@ -2,7 +2,7 @@ import { api_item_type } from '@apis/config'
 import { handleRequest } from '@apis/handle'
 import { ItemType } from '@models/item/type'
 
-const getListItemType = (param?: BaseParam<Item.TypeData>) => {
+const getListItemType = (param?: BaseParam<Item.TypeQuery>) => {
   const { input = {} } = param || {}
   const keys = Object.keys(input)
   const query = keys.reduce((a, b) => {

@@ -1,3 +1,4 @@
+import Filter from '@components/Filter'
 import ModalForm, { ModalFormMethod } from '@components/ModalForm'
 import Page from '@components/Page'
 import { useItemStatuses } from '@hooks/itemStatus'
@@ -94,6 +95,7 @@ const ItemStatusPage: React.FC<ItemStatusPageProps> = () => {
   return (
     <Page inner>
       <div className="container">
+        <Filter onCreate={onPressCreate} />
         <Table
           dataSource={data}
           bordered

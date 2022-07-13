@@ -1,10 +1,16 @@
 import { api_category } from '@apis/config'
 import { handleRequest } from '@apis/handle'
 import { Category } from '@models/category'
+import { createSearchParams } from 'react-router-dom'
 
-const getListCategory = (param?: BaseParam) => {
+const getListCategory = (param?: BaseParam<CategoryQuery>) => {
   return handleRequest<CategoryInterface[]>(
-    request => request.get(`${api_category}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}`),
+    request =>
+      request.get(
+        `${api_category}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}&${createSearchParams(
+          param?.input ?? {}
+        )}`
+      ),
     r => ({
       data: r.data.data.rows.map(i => Category.fromJson(i)),
       page: {

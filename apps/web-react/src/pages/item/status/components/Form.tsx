@@ -4,7 +4,7 @@ import {
   useSetOK,
 } from '@components/ModalForm/context'
 import { useCreateOrUpdateItemStatus } from '@hooks/itemStatus'
-import { Button, Form, FormInstance, Input } from 'antd'
+import { Button, Form, FormInstance, Input, notification } from 'antd'
 import React, { useImperativeHandle, useRef } from 'react'
 
 const { Item } = Form
@@ -67,7 +67,17 @@ const ItemStatusForm = React.forwardRef<ItemStatusFormMethod, ItemStatusFormProp
       fetching({ id: data.current?.id, input }).then(r => {
         if (r) {
           onFinish?.(r)
+          notification.success({
+            message: `${data.current?.id ? 'Edit' : 'Create'} status ${
+              data.current?.id
+            } successfully`,
+          })
+          return
         }
+
+        notification.error({
+          message: 'Something wrong',
+        })
       })
     }
 

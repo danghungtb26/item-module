@@ -3,9 +3,10 @@ import { HttpResponse } from '@responses/HttpResponse'
 import { NextFunction, Request, Response } from 'express'
 import { injectable } from 'inversify'
 import { Attribute, ItemStatus, ItemType } from '@db/models'
-import { Transaction } from 'sequelize'
+import { Transaction, Op } from 'sequelize'
 import db from '@db'
 import { isUndefined } from 'lodash'
+import { pick } from '@utils/lodash'
 
 @injectable()
 export class ItemTypeController {
@@ -13,9 +14,9 @@ export class ItemTypeController {
     try {
       const page = parseInt(String(req.query.page) ?? '', 10) || 1
       const limit = parseInt(String(req.query.limit) ?? '', 10) || 10
+      const { start, end, search } = pick(req.query ?? {}, ['start', 'end', 'search'])
       const types = await ItemType.findAndCountAll({
-        offset: (page - 1) * 10,
-        limit,
+        ...(page > 0 ? { offset: (page - 1) * limit, limit } : {}),
         include: [
           {
             model: Attribute,
@@ -28,6 +29,32 @@ export class ItemTypeController {
         ],
         order: [['updated_at', 'DESC']],
         distinct: true,
+        where: {
+          [Op.and]: {
+            ...(search
+              ? {
+                  [Op.or]: {
+                    name: {
+                      [Op.like]: `%${search}%`,
+                    },
+                    description: {
+                      [Op.like]: `%${search}%`,
+                    },
+                  },
+                }
+              : {}),
+            ...(start || end
+              ? {
+                  created_at: {
+                    [Op.and]: {
+                      ...(end ? { [Op.lt]: end } : {}),
+                      ...(start ? { [Op.gt]: start } : {}),
+                    },
+                  },
+                }
+              : {}),
+          },
+        },
       })
       return res.json(
         new HttpResponse<API.V1.ResponseList>({

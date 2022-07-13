@@ -1,3 +1,4 @@
+import Filter from '@components/Filter'
 import ModalForm, { ModalFormMethod } from '@components/ModalForm'
 import Page from '@components/Page'
 import { useItemTypes } from '@hooks/itemType'
@@ -133,6 +134,7 @@ const ItemTypePage: React.FC<ItemTypePageProps> = () => {
   return (
     <Page inner>
       <div className="container">
+        <Filter onCreate={onPressCreate} />
         <Table
           dataSource={data}
           bordered

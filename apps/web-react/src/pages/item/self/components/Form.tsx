@@ -1,12 +1,9 @@
-// import TreeSelect from '@components/TreeSelect'
-import { useAttributes } from '@hooks/attribute'
 import { useCategories } from '@hooks/category'
 import { useCreateOrUpdateItem } from '@hooks/item'
-import { useItemStatuses } from '@hooks/itemStatus'
 import { useItemTypes } from '@hooks/itemType'
 import { useMounted } from '@hooks/lifecycle'
 import { defaultFormItemLayout } from '@themes/styles'
-import { Button, Form, FormInstance, Input, Select, TreeSelect } from 'antd'
+import { Button, Form, FormInstance, Input, notification, Select, TreeSelect } from 'antd'
 import React, { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -71,7 +68,15 @@ const ItemForm: React.FC<ItemFormProps> = ({ initData, initLoading = false }) =>
     fetching({ id: initData?.id, input }).then(r => {
       if (r) {
         navigate('/item')
+        notification.success({
+          message: `${initData?.id ? 'Edit' : 'Create'} item ${initData?.id} successfully`,
+        })
+        return
       }
+
+      notification.error({
+        message: 'Something wrong',
+      })
     })
   }
 

@@ -10,7 +10,7 @@ import {
 } from 'sequelize-typescript'
 import { Base } from './base'
 
-@Table({ tableName: 'categories', modelName: 'categories' })
+@Table({ tableName: 'categories', modelName: 'categories', paranoid: true })
 @Scopes({
   haveNotParent: {
     where: { parentId: null },
@@ -21,11 +21,8 @@ export class Category extends Base {
   @Column(DataType.STRING)
   name: string
 
-  @Column(DataType.STRING)
+  @Column({ type: DataType.STRING })
   description: string
-
-  @Column(DataType.INTEGER)
-  override order: number
 
   @ForeignKey(() => Category)
   @Column({ type: DataType.BIGINT, field: 'parent_id' })

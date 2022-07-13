@@ -4,6 +4,7 @@ import { HttpResponse } from '@responses/HttpResponse'
 import { HttpException } from '@exceptions/HttpException'
 import { NextFunction, Request, Response } from 'express'
 import { pick } from '@utils/lodash'
+import { Op, WhereOptions } from 'sequelize'
 
 @injectable()
 export class ItemController {
@@ -11,10 +12,72 @@ export class ItemController {
     try {
       const page = parseInt(String(req.query.page) ?? '', 10) || 1
       const limit = parseInt(String(req.query.limit) ?? '', 10) || 10
+      const { search, start, end, type, category, status } = pick(req.query ?? {}, [
+        'search',
+        'start',
+        'end',
+        'type',
+        'category',
+        'status',
+      ])
+
+      const where: WhereOptions = {
+        [Op.and]: {
+          ...(type
+            ? {
+                typeId: type,
+              }
+            : {}),
+          ...(status
+            ? {
+                statusId: status,
+              }
+            : {}),
+          ...(category
+            ? {
+                categoryId: category,
+              }
+            : {}),
+          ...(search
+            ? {
+                [Op.or]: {
+                  ...(search
+                    ? {
+                        name: {
+                          [Op.like]: `%${search}%`,
+                        },
+                        description: {
+                          [Op.like]: `%${search}%`,
+                        },
+                        title: {
+                          [Op.like]: `%${search}%`,
+                        },
+                        subtitle: {
+                          [Op.like]: `%${search}%`,
+                        },
+                      }
+                    : {}),
+                },
+              }
+            : {}),
+          ...(start || end
+            ? {
+                created_at: {
+                  [Op.and]: {
+                    ...(end ? { [Op.lt]: end } : {}),
+                    ...(start ? { [Op.gt]: start } : {}),
+                  },
+                },
+              }
+            : {}),
+        },
+      }
+
       const items = await Item.findAndCountAll({
-        offset: (page - 1) * 10,
-        limit,
+        ...(page > 0 ? { offset: (page - 1) * limit, limit } : {}),
         include: this.getInclude(),
+        where,
+        order: [['updated_at', 'DESC']],
       })
       return res.json(
         new HttpResponse({
@@ -75,29 +138,28 @@ export class ItemController {
       if (item) {
         await Item.update(body, { where: { id } })
         const item = await Item.findOne({ where: { id }, include: this.getInclude() })
+
         return res.json(
           new HttpResponse({
             data: item,
           })
         )
       }
-      throw new Error('Not found')
+      return res.status(422).json(new HttpException(422, 'Not found'))
     } catch (error: any) {
       return next(new HttpException(500, error.message))
     }
   }
 
   delete = async (req: Request, res: Response, next: NextFunction) => {
-    return Item.destroy({ where: { id: req.params.id } })
-      .then(num => {
-        if (num === 1) {
-          return res.json(new HttpResponse({ data: true }).toJson())
-        }
-        throw new Error('Not found')
-      })
-      .catch((e: any) => {
-        return next(new HttpException(500, e.message))
-      })
+    const id = req.params.id
+    try {
+      const { data } = await this.findOne(id)
+      await data.destroy()
+      return res.json(new HttpResponse({ data: true }).toJson())
+    } catch (error: any) {
+      return next(new HttpException(500, error.message))
+    }
   }
 
   findByPk = (id: string) => {
@@ -166,6 +228,19 @@ export class ItemController {
   }
 
   private getAttributeBody = (req: Request) => {
-    return pick(req.body, ['name', 'description'])
+    return pick(req.body, [
+      'name',
+      'description',
+      'statusId',
+      'categoryId',
+      'dynamic',
+      'typeId',
+      'title',
+      'subtitle',
+      'slug',
+      'image',
+      'images',
+      'price',
+    ])
   }
 }

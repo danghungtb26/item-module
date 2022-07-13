@@ -13,7 +13,7 @@ declare global {
 
   export type CategoryData = DataType<CategoryInterface>
 
-  export type CategoryQuery = CategoryData
+  export type CategoryQuery = BaseQuery
 }
 
 export {}

@@ -5,8 +5,9 @@ import Page from '@components/Page'
 import { useCategories } from '@hooks/category'
 import { useFetchPage } from '@hooks/lifecycle'
 import ModalForm, { ModalFormMethod } from '@components/ModalForm'
-import Filter from './components/Filter'
+import Filter from '@components/Filter'
 import CategoryForm, { CategoryFormMethod } from './components/Form'
+import DeleteCategory from './components/Delete'
 
 const CategoryPage: React.FC = () => {
   const { loading, data, fetch } = useCategories()
@@ -73,6 +74,7 @@ const CategoryPage: React.FC = () => {
           <Button onClick={() => onPressEdit(record)} type="ghost">
             Edit
           </Button>
+          <DeleteCategory category={record} />
         </Space>
       ),
     },

@@ -1,11 +1,16 @@
 import { api_item_status } from '@apis/config'
 import { handleRequest } from '@apis/handle'
 import { ItemStatus } from '@models/item/status'
+import { createSearchParams } from 'react-router-dom'
 
-const getListItemStatus = (param?: BaseParam) => {
+const getListItemStatus = (param?: BaseParam<Item.StatusQuery>) => {
   return handleRequest<Item.StatusInterface[]>(
     request =>
-      request.get(`${api_item_status}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}`),
+      request.get(
+        `${api_item_status}?page=${param?.page ?? 1}&limit=${
+          param?.limit ?? 10
+        }&${createSearchParams(param?.input)}`
+      ),
     r => ({
       data: r.data.data.rows.map(i => ItemStatus.fromJson(i)),
       page: {

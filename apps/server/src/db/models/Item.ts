@@ -10,7 +10,7 @@ import {
 import { Base } from './base'
 import { ItemStatus, Category, ItemType } from '.'
 
-@Table({ tableName: 'items' })
+@Table({ tableName: 'items', paranoid: true })
 export class Item extends Base {
   // @NotEmpty
   // @NotNull

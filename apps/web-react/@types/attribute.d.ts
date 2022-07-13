@@ -11,6 +11,8 @@ declare global {
     }
 
     type AttributeData = DataType<AttributeData>
+
+    type AttributeQuery = BaseQuery
   }
 }
 

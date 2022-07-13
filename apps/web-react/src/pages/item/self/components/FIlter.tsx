@@ -6,7 +6,8 @@ import { useMounted } from '@hooks/lifecycle'
 import { ColDefaultProps as c, TwoColDefaultProps } from '@themes/styles'
 import { Button, Col, DatePicker, Form, FormInstance, Input, Row, Select } from 'antd'
 import React, { useMemo, useRef, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
+import { createSearchParams } from 'react-router-dom'
 
 const ColDefaultProps = {
   ...c,
@@ -23,6 +24,7 @@ type FilterProps = {}
 
 const Filter: React.FC<FilterProps> = () => {
   const navigate = useNavigate()
+  const location = useLocation()
 
   const { data: types, fetch: fetchTypes } = useItemTypes()
   const { data: categories, fetch: fetchCategories } = useCategories()
@@ -79,11 +81,14 @@ const Filter: React.FC<FilterProps> = () => {
   const onSearch = value => {
     const query = {
       search: value.search,
-      createTime: value.createTime,
+      start: value.createTime[0],
+      end: value.createTime[1],
       category: value.category,
       type: value.type,
       status: value.type,
     }
+
+    navigate({ pathname: location.pathname, search: `?${createSearchParams(query)}` })
   }
 
   return (

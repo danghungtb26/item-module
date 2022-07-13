@@ -6,7 +6,7 @@ import {
 import TreeSelect from '@components/TreeSelect'
 import { useCategories, useCreateOrUpdateCategory } from '@hooks/category'
 import { defaultFormItemLayout } from '@themes/styles'
-import { Form, FormInstance, Input } from 'antd'
+import { Form, FormInstance, Input, notification } from 'antd'
 import React, { useImperativeHandle, useRef, useState } from 'react'
 
 export type CategoryFormMethod = {
@@ -79,7 +79,15 @@ const CategoryForm = React.forwardRef<CategoryFormMethod, CategoryFormProps>(
       fetching({ id: data?.id, input }).then(r => {
         if (r) {
           onFinished?.(r)
+          notification.success({
+            message: `${data?.id ? 'Edit' : 'Create'} category ${data?.id} successfully`,
+          })
+          return
         }
+
+        notification.error({
+          message: 'Something wrong',
+        })
       })
     }
 

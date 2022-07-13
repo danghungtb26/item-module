@@ -1,11 +1,16 @@
 import { api_item_attribute } from '@apis/config'
 import { handleRequest } from '@apis/handle'
 import { ItemAttribute } from '@models/item/attribute'
+import { createSearchParams } from 'react-router-dom'
 
-const getListItemAttribute = (param?: BaseParam) => {
+const getListItemAttribute = (param?: BaseParam<Item.AttributeQuery>) => {
   return handleRequest<Item.AttributeInterface[]>(
     request =>
-      request.get(`${api_item_attribute}?page=${param?.page ?? 1}&limit=${param?.limit ?? 10}`),
+      request.get(
+        `${api_item_attribute}?page=${param?.page ?? 1}&limit=${
+          param?.limit ?? 10
+        }&${createSearchParams(param?.input)}`
+      ),
     r => ({
       data: r.data.data.rows.map(i => ItemAttribute.fromJson(i)),
       page: {

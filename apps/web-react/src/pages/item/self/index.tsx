@@ -3,6 +3,7 @@ import { useItems } from '@hooks/item'
 import { Button, Space, Table, TableProps } from 'antd'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import DeleteItem from './components/Delete'
 import Filter from './components/FIlter'
 
 type ItemPageProps = {}
@@ -21,17 +22,29 @@ const ItemPage: React.FC<ItemPageProps> = () => {
   const limit = useMemo(() => Number(searchParams.get('limit') ?? 10), [searchParams])
 
   useEffect(() => {
+    const search = searchParams.get('search') ?? ''
+    const start = searchParams.get('start') ?? ''
+    const end = searchParams.get('end') ?? ''
+    const type = searchParams.get('type') ?? ''
+    const category = searchParams.get('category') ?? ''
+    const status = searchParams.get('status') ?? ''
+
     fetch({
       page,
 
       limit,
       query: {
-        type: param.type,
+        type: param.type ?? type,
+        start,
+        end,
+        category,
+        status,
+        search,
       },
     })
-  }, [limit, page, param.type])
+  }, [limit, page, param.type, searchParams])
 
-  const columns = useRef<TableProps<Item.StatusInterface>['columns']>([
+  const columns = useRef<TableProps<Item.Interface>['columns']>([
     {
       title: 'ID',
       dataIndex: 'id',
@@ -69,6 +82,7 @@ const ItemPage: React.FC<ItemPageProps> = () => {
           <Button onClick={() => navigate(`${location.pathname}/${record.id}/edit`)} type="primary">
             View
           </Button>
+          <DeleteItem item={record} />
         </Space>
       ),
     },

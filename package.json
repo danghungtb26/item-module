@@ -32,7 +32,8 @@
       "**/less-loader",
       "**/inversify",
       "**/routing-controllers",
-      "**/express-validator"
+      "**/express-validator",
+      "**/sequelize"
     ]
   },
   "scripts": {
