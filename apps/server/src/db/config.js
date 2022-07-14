@@ -9,6 +9,8 @@ module.exports = {
     options: {
       dialectModule: require('pg'),
     },
+    seederStorage: 'sequelize',
+    seederStorageTableName: 'SequelizeSeeder',
   },
   development: {
     username: process.env.POSTGRES_USERNAME || 'item',
@@ -19,6 +21,8 @@ module.exports = {
     options: {
       dialectModule: require('pg'),
     },
+    seederStorage: 'sequelize',
+    seederStorageTableName: 'SequelizeSeeder',
   },
   staging: {
     username: process.env.POSTGRES_USERNAME,
@@ -29,6 +33,8 @@ module.exports = {
     options: {
       dialectModule: require('pg'),
     },
+    seederStorage: 'sequelize',
+    seederStorageTableName: 'SequelizeSeeder',
   },
   production: {
     username: process.env.POSTGRES_USERNAME,
@@ -39,5 +45,7 @@ module.exports = {
     options: {
       dialectModule: require('pg'),
     },
+    seederStorage: 'sequelize',
+    seederStorageTableName: 'SequelizeSeeder',
   },
 }

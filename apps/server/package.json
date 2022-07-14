@@ -5,7 +5,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "webpack --config webpack.production.ts",
         "build:ts": "tsc && tsc-alias",
-        "start:s": "node dist/index.js",
+        "start:s": "node dist/src/index.js",
         "start": "nodemon",
         "dev:ts": "nodemon",
         "watch:src": "webpack --config webpack.development.ts",

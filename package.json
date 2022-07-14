@@ -42,7 +42,9 @@
     "start": "lerna run --parallel start",
     "type": "tsc --noEmit --composite false",
     "prepare": "husky install",
-    "lint": "eslint \"**/*.{js,ts,tsx}\""
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "docker:build:server": "docker build -t item-node-server -f docker/server.dockerfile .",
+    "docker:build:web": "docker build -t item-web-react -f docker/react.web.dockerfile ."
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^16.2.1",
@@ -62,5 +64,8 @@
   },
   "lint-staged": {
     "**/*.{js,ts,tsx}": "eslint \"**/*.{js,ts,tsx}\" --cache --fix"
+  },
+  "resolutions": {
+    "@types/react": "18.0.14"
   }
 }
