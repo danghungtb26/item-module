@@ -1,6 +1,6 @@
 FROM node:16-alpine
 
-ENV API_HOST http://localhost:4000
+ENV REACT_APP_API_HOST http://localhost:4000
 
 WORKDIR /app
 

@@ -28,7 +28,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api/**': {
-        target: process.env.API_HOST,
+        target: `${process.env.REACT_APP_API_HOST}/api`,
         pathRewrite: { '^/api': '' },
         secure: false,
         changeOrigin: true,

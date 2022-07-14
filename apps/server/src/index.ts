@@ -6,9 +6,6 @@ import routes from './routes'
 import db from './db'
 
 dotenv.config()
-
-console.log('aaaaa', process.env)
-
 db.authenticate()
   .then(() => {
     const app: Express = express()

@@ -3,7 +3,7 @@ import axios from 'axios'
 const request = axios.create({
   // withCredentials: true,
   timeout: 5000,
-  baseURL: process.env.API_HOST,
+  baseURL: process.env.REACT_APP_API_HOST,
 })
 
 export const config = (baseURL: string) => {
