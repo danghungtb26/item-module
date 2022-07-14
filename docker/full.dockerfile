@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:18-alpine
 
 ENV PORT 4000
 ENV POSTGRES_USERNAME item
@@ -8,23 +8,32 @@ ENV POSTGRES_HOSTNAME localhost
 
 WORKDIR /app
 
-RUN mkdir apps -p
+# RUN mkdir apps -p
 
-COPY package.json yarn.lock /app
+COPY apps/server/package.json apps/server/.sequelizerc /app
+COPY apps/server/dist /app/dist
+COPY apps/web-react/build /app/dist/build
+COPY apps/server/db /app/db
 
-COPY apps /app/apps
+# COPY apps /app/apps
 
-RUN rm apps/server/.env
-RUN rm apps/web-react/.env
+# RUN rm .env
+# RUN rm apps/web-react/.env
 
-RUN yarn
+RUN yarn install --production=true
 
-RUN yarn workspace server build:ts
+RUN yarn global add sequelize-cli
 
-RUN yarn workspace web-react build
+# RUN yarn workspace server build:ts
 
-COPY apps/web-react/build apps/server/dist
+# RUN yarn workspace web-react build
+
+CMD ["yarn", "migrate"]
+
+CMD ["node", "dist/src/index.js"]
+
+# COPY apps/web-react/build apps/server/dist
  
-CMD ["yarn", "workspace", "server",  "migrate"]
+# CMD ["yarn", "workspace", "server",  "migrate"]
 
-CMD ["yarn", "workspace", "server", "start:s"]
+# CMD ["yarn", "workspace", "server", "start:s"]

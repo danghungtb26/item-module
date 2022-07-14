@@ -6,6 +6,8 @@ import bodyParser from 'body-parser'
 import routes from './routes'
 import db from './db'
 
+console.log('aaa', process.env)
+
 dotenv.config()
 db.authenticate()
   .then(() => {
@@ -29,7 +31,8 @@ db.authenticate()
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
     })
   })
-  .catch(() => {
+  .catch(e => {
+    console.log('🚀 ~ file: index.ts ~ line 33 ~ e', e)
     console.log('db not running')
 
     process.exit(1)

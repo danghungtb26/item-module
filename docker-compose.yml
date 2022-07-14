@@ -1,17 +1,17 @@
 version: '3.5'
 
 services:
-  db:
-    container_name: db
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-item}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      PGDATA: /data/postgres
-    volumes:
-       - postgres:/data/postgres
-    ports:
-      - "5432:5432"
+  # db:
+  #   container_name: db
+  #   image: postgres:latest
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER:-item}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+  #     PGDATA: /data/postgres
+  #   volumes:
+  #      - postgres:/data/postgres
+  #   ports:
+  #     - "5432:5432"
   server:
     container_name: server
     image: item-node-server
@@ -20,6 +20,10 @@ services:
     environment:
       - PORT=4000
       - POSTGRES_HOSTNAME=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USERNAME=item
+      - POSTGRES_DATABASE=item
+      - NODE_ENV=production
     depends_on:
       db:
         condition: service_started
