@@ -44,7 +44,8 @@
     "prepare": "husky install",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "docker:build:server": "docker build -t item-node-server -f docker/server.dockerfile .",
-    "docker:build:web": "docker build -t item-web-react -f docker/react.web.dockerfile ."
+    "docker:build:web": "docker build -t item-web-react -f docker/react.web.dockerfile .",
+    "docker:build:full": "docker build -t item-module-full -f docker/full.dockerfile ."
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^16.2.1",
