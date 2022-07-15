@@ -1,18 +1,18 @@
 version: '3.5'
 
 services:
-  # db-full:
-  #   container_name: db-full
-  #   image: postgres:latest
-  #   environment:
-  #     POSTGRES_DB: item
-  #     POSTGRES_USER: ${POSTGRES_USER:-item}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-  #     PGDATA: /data/postgres
-  #   volumes:
-  #      - postgres:/data/postgres
-  #   ports:
-  #     - "5432:5432"
+  db-full:
+    container_name: db-full
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: item
+      POSTGRES_USER: ${POSTGRES_USER:-item}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
   full: 
     container_name: item-module-full
     image: item-module-full
@@ -26,7 +26,7 @@ services:
       - POSTGRES_DATABASE=item
       - NODE_ENV=production
     depends_on:
-      db-full:
-        condition: service_started
+      - db-full
+    restart: always
 volumes: 
   postgres:

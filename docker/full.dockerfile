@@ -15,6 +15,8 @@ COPY apps/server/dist /app/dist
 COPY apps/web-react/build /app/dist/build
 COPY apps/server/db /app/db
 
+COPY docker/wait-for-it.sh /app
+
 # COPY apps /app/apps
 
 # RUN rm .env
