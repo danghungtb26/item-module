@@ -58,7 +58,7 @@ const ItemPage: React.FC<ItemPageProps> = () => {
     },
     {
       title: 'Name',
-      dataIndex: 'version',
+      dataIndex: 'name',
       key: 'name',
       width: '10%',
       render: (text: string, record) => (
@@ -101,7 +101,7 @@ const ItemPage: React.FC<ItemPageProps> = () => {
           loading={loading}
           columns={columns}
           scroll={{ x: 1200 }}
-          rowKey={i => i.name}
+          rowKey={i => i.id}
         />
       </div>
     </Page>

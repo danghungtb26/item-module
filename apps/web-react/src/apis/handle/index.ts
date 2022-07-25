@@ -62,6 +62,7 @@ export const handleRequest: <T, S = BaseResponseServer<T>>(
       ...handle(result),
     }
   } catch (error: any) {
+    console.log('🚀 ~ file: index.ts ~ line 65 ~ )=>Promise<BaseResponse<T>>= ~ error', error)
     return handleError(error)
   }
 }

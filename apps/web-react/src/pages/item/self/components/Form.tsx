@@ -6,6 +6,8 @@ import { defaultFormItemLayout } from '@themes/styles'
 import { Button, Form, FormInstance, Input, notification, Select, TreeSelect } from 'antd'
 import React, { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
+import _ from 'lodash'
+import { ItemAttribute } from './Attribute'
 
 const { Option } = Select
 
@@ -13,7 +15,6 @@ type ItemFormProps = {
   initData?: Item.Interface
   initLoading?: boolean
 }
-
 const ItemForm: React.FC<ItemFormProps> = ({ initData, initLoading = false }) => {
   const { data: types, fetch: fetchTypes } = useItemTypes()
   const { data: categories, fetch: fetchCategories } = useCategories()
@@ -63,7 +64,6 @@ const ItemForm: React.FC<ItemFormProps> = ({ initData, initLoading = false }) =>
 
   const onSubmit = value => {
     const input: Item.Interface = {
-      ...initData,
       ...value,
     }
     fetching({ id: initData?.id, input }).then(r => {
@@ -103,7 +103,17 @@ const ItemForm: React.FC<ItemFormProps> = ({ initData, initLoading = false }) =>
     return (
       <>
         {attributes.map(i => {
-          return <Form.Item name={i.name} required={i.required} label={i.name.toUpperCase()} />
+          return (
+            <Form.Item
+              name={i.name}
+              required={i.required}
+              label={_.capitalize(i.name)}
+              hasFeedback
+              {...defaultFormItemLayout}
+            >
+              <ItemAttribute name={i.name} required={i.required} type={i.valueType} />
+            </Form.Item>
+          )
         })}
       </>
     )
@@ -118,7 +128,7 @@ const ItemForm: React.FC<ItemFormProps> = ({ initData, initLoading = false }) =>
         <Form.Item name="description" label="Description" hasFeedback {...defaultFormItemLayout}>
           <Input.TextArea placeholder="Description" rows={4} />
         </Form.Item>
-        <Form.Item name="category" label="Category" hasFeedback {...defaultFormItemLayout}>
+        <Form.Item name="categoryId" label="Category" hasFeedback {...defaultFormItemLayout}>
           <TreeSelect
             placeholder="Please select"
             allowClear
@@ -127,12 +137,12 @@ const ItemForm: React.FC<ItemFormProps> = ({ initData, initLoading = false }) =>
             treeData={childrenCategory}
           />
         </Form.Item>
-        <Form.Item name="type" label="Type" hasFeedback {...defaultFormItemLayout}>
+        <Form.Item name="typeId" label="Type" hasFeedback {...defaultFormItemLayout}>
           <Select placeholder="Please select" onSelect={onSelectType}>
             {childrenStyle}
           </Select>
         </Form.Item>
-        <Form.Item name="status" label="Status" hasFeedback {...defaultFormItemLayout}>
+        <Form.Item name="statusId" label="Status" hasFeedback {...defaultFormItemLayout}>
           <Select placeholder="Please select">{childrenStatus}</Select>
         </Form.Item>
         <Form.Item name="slug" label="Slug" hasFeedback {...defaultFormItemLayout}>
