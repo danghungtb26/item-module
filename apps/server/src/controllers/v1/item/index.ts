@@ -1,5 +1,5 @@
 import { injectable } from 'inversify'
-import { Category, Item, ItemStatus, ItemType } from '@db/models'
+import { Attribute, Category, Item, ItemStatus, ItemType } from '@db/models'
 import { HttpResponse } from '@responses/HttpResponse'
 import { HttpException } from '@exceptions/HttpException'
 import { NextFunction, Request, Response } from 'express'
@@ -82,7 +82,7 @@ export class ItemController {
       return res.json(
         new HttpResponse({
           data: {
-            rows: items.rows,
+            rows: items.rows.map(i => i.toJson()),
             paging: {
               current_page: page,
               limit,
@@ -103,7 +103,7 @@ export class ItemController {
       const item = await Item.findByPk(id, { include: this.getInclude() })
       return res.json(
         new HttpResponse({
-          data: item,
+          data: item?.toJson(),
         }).toJson()
       )
     } catch (error: any) {
@@ -114,10 +114,54 @@ export class ItemController {
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const body = this.getAttributeBody(req)
-      const item = await Item.create(body, { include: this.getInclude() })
+      const type = await ItemType.findByPk(body.typeId, {
+        include: [
+          {
+            model: Attribute,
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+      })
+
+      const attributes = type?.filterAttributeDefault() ?? []
+
+      const dynamic: Record<string, any> = {}
+
+      const dynamicBody = pick(
+        req.body,
+        attributes.map(i => i.name)
+      )
+      let check = false
+      attributes.forEach(element => {
+        // @ts-ignore
+        const value = dynamicBody[element.name]
+
+        if (element.required && !value) {
+          res
+            .status(422)
+            .json(new HttpResponse({ status: 422, message: `Missing parameter ${element.name}` }))
+          check = true
+        }
+
+        if (!this.checkCorrectType(value, element.valueType)) {
+          res
+            .status(422)
+            .json(new HttpResponse({ status: 422, message: `Wrong parameter ${element.name}` }))
+          check = true
+        }
+
+        // validate
+        dynamic[element.name] = value
+        console.log('🚀 ~ file: index.ts ~ line 155 ~ ItemController ~ create= ~ dynamic', dynamic)
+      })
+      if (check) return res
+
+      const item = await Item.create({ ...body, dynamic }, { include: this.getInclude() })
       return res.json(
         new HttpResponse({
-          data: item,
+          data: (await Item.findByPk(item.id, { include: this.getInclude() }))?.toJson(),
         }).toJson()
       )
     } catch (error: any) {
@@ -136,12 +180,65 @@ export class ItemController {
       })
 
       if (item) {
-        await Item.update(body, { where: { id } })
-        const item = await Item.findOne({ where: { id }, include: this.getInclude() })
+        const type = await ItemType.findByPk(body.typeId || item?.typeId, {
+          include: [
+            {
+              model: Attribute,
+              through: {
+                attributes: [],
+              },
+            },
+          ],
+        })
+
+        const attributes = type?.filterAttributeDefault() ?? []
+
+        const dynamic: Record<string, any> = {}
+
+        const dynamicBody = pick(
+          req.body,
+          attributes.map(i => i.name)
+        )
+        let check = false
+        attributes.forEach(element => {
+          // @ts-ignore
+          const value = dynamicBody[element.name]
+
+          if (element.required && !value) {
+            res
+              .status(422)
+              .json(new HttpResponse({ status: 422, message: `Missing parameter ${element.name}` }))
+            check = true
+          }
+
+          if (!this.checkCorrectType(value, element.valueType)) {
+            res
+              .status(422)
+              .json(new HttpResponse({ status: 422, message: `Wrong parameter ${element.name}` }))
+            check = true
+          }
+
+          // validate
+          dynamic[element.name] = value
+        })
+        if (check) return res
+
+        await Item.update(
+          {
+            ...body,
+
+            dynamic: {
+              ...item.dynamic,
+              ...dynamic,
+            },
+          },
+          { where: { id } }
+        )
+        const item2 = await Item.findOne({ where: { id }, include: this.getInclude() })
 
         return res.json(
           new HttpResponse({
-            data: item,
+            data: item2?.toJson(),
           })
         )
       }
@@ -216,7 +313,20 @@ export class ItemController {
   }
 
   getInclude() {
-    return [Category, ItemStatus, ItemType]
+    return [
+      Category,
+      ItemStatus,
+      {
+        model: ItemType,
+
+        include: [
+          {
+            model: Attribute,
+            through: { attributes: [] },
+          },
+        ],
+      },
+    ]
   }
 
   getAttributes = (req: Request, res: Response) => {
@@ -233,7 +343,6 @@ export class ItemController {
       'description',
       'statusId',
       'categoryId',
-      'dynamic',
       'typeId',
       'title',
       'subtitle',
@@ -242,5 +351,31 @@ export class ItemController {
       'images',
       'price',
     ])
+  }
+
+  private checkCorrectType = (
+    value: any,
+    type: 'string' | 'number' | 'boolean' | 'array' | 'json'
+  ) => {
+    if (value === null || value === undefined) return true
+    switch (type) {
+      case 'string':
+        return typeof `${value}` === 'string'
+
+      case 'number':
+        return /^-?[\d]{1,}/.test(`${value}`)
+
+      case 'boolean':
+        return /true|false/.test(`${value}`)
+
+      case 'array':
+        return Array.isArray(value)
+
+      case 'json':
+        return true
+
+      default:
+        return false
+    }
   }
 }

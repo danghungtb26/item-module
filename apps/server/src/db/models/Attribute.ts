@@ -16,7 +16,7 @@ export class Attribute extends Base {
     type: DataType.ENUM('string', 'number', 'boolean', 'array', 'json'),
     field: 'value_type',
   })
-  valueType: string
+  valueType: 'string' | 'number' | 'boolean' | 'array' | 'json'
 
   @Column(DataType.BOOLEAN)
   required: boolean

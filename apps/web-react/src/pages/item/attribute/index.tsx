@@ -86,7 +86,7 @@ const ItemAttributePage: React.FC<ItemAttributePageProps> = () => {
           loading={loading}
           columns={columns}
           scroll={{ x: 1200 }}
-          rowKey={i => i.name}
+          rowKey={i => i.id}
           pagination={{
             total: page.count,
             pageSize: Number(searchParams.get('limit') ?? 10),

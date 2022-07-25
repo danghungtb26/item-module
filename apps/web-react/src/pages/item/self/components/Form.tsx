@@ -63,6 +63,7 @@ const ItemForm: React.FC<ItemFormProps> = ({ initData, initLoading = false }) =>
 
   const onSubmit = value => {
     const input: Item.Interface = {
+      ...initData,
       ...value,
     }
     fetching({ id: initData?.id, input }).then(r => {
@@ -79,6 +80,34 @@ const ItemForm: React.FC<ItemFormProps> = ({ initData, initLoading = false }) =>
       })
     })
   }
+
+  const attributes = useMemo(() => {
+    return (
+      currentType?.attribute.filter(
+        i =>
+          ![
+            'name',
+            'description',
+            'slug',
+            'title',
+            'subtitle',
+            'image',
+            'images',
+            'price',
+          ].includes(i.name)
+      ) ?? []
+    )
+  }, [currentType?.attribute])
+
+  const renderMoreAttributes = useMemo(() => {
+    return (
+      <>
+        {attributes.map(i => {
+          return <Form.Item name={i.name} required={i.required} label={i.name.toUpperCase()} />
+        })}
+      </>
+    )
+  }, [attributes])
 
   const renderForm = () => {
     return (
@@ -115,6 +144,7 @@ const ItemForm: React.FC<ItemFormProps> = ({ initData, initLoading = false }) =>
         <Form.Item name="subtitle" label="Subtitle" hasFeedback {...defaultFormItemLayout}>
           <Input placeholder="Subtitle" />
         </Form.Item>
+        {renderMoreAttributes}
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
           <Button loading={loading} type="primary" htmlType="submit">
             Submit

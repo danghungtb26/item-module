@@ -48,7 +48,7 @@ export const useAttributes = (options?: { init: { page: number; limit: number } 
 }
 
 export const useCreateItemAttribute = () => {
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<boolean | string>(false)
 
   const fetching = (p: Parameters<typeof ItemAttributeApi['createItemAttribute']>[0]) => {

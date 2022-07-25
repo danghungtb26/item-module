@@ -66,6 +66,10 @@ export default {
         type: DataType.INTEGER,
         autoIncrement: true,
       },
+      dynamic: {
+        type: DataType.JSONB,
+        defaultValue: {},
+      },
       deleted_at: {
         type: DataType.DATE,
       },

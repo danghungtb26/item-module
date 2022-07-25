@@ -6,8 +6,6 @@ import bodyParser from 'body-parser'
 import routes from './routes'
 import db from './db'
 
-console.log('aaa', process.env)
-
 dotenv.config()
 db.authenticate()
   .then(() => {

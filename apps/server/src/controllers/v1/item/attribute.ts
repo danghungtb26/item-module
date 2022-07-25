@@ -76,6 +76,6 @@ export class AttributeController {
   }
 
   private getAttributeBody = (req: Request) => {
-    return pick(req.body, ['name', 'description'])
+    return pick(req.body, ['name', 'description', 'required', 'valueType'])
   }
 }

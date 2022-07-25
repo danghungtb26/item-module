@@ -35,6 +35,9 @@ export class Item extends Base {
   @Column(DataType.ARRAY(DataType.STRING))
   images: string[]
 
+  @Column(DataType.JSONB)
+  dynamic: Record<string, any>
+
   @Column(DataType.NUMBER)
   price: number
 
@@ -73,5 +76,39 @@ export class Item extends Base {
     return Object.keys(this.getAttributes()).filter(
       i => i !== 'order' && !i.toLowerCase().includes('id') && !i.toLowerCase().includes('at')
     )
+  }
+
+  toJson() {
+    const dynamic =
+      this.type?.filterAttributeDefault().reduce((a, b) => {
+        return {
+          ...a,
+          [b.name]: this.dynamic?.[b.name] ?? '',
+        }
+      }, {}) ?? {}
+
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      slug: this.slug,
+      title: this.title,
+      subtitle: this.subtitle,
+      type: this.type,
+      category: this.category,
+      status: this.status,
+      image: this.image,
+      images: this.images,
+      price: this.price,
+      typeId: this.typeId,
+      categoryId: this.categoryId,
+      statusId: this.statusId,
+      order: this.order,
+      // @ts-ignore
+      created_at: this.created_at,
+      // @ts-ignore
+      updated_at: this.updated_at,
+      ...dynamic,
+    }
   }
 }

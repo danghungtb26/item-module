@@ -31,4 +31,19 @@ export class ItemType extends Base {
     through: () => StatusType,
   })
   statuses: ItemStatus[]
+
+  filterAttributeDefault = () => {
+    return this.attribute?.filter(i => !this.AttributeDefault.includes(i.name)) ?? []
+  }
+
+  AttributeDefault = [
+    'name',
+    'description',
+    'slug',
+    'title',
+    'subtitle',
+    'image',
+    'images',
+    'price',
+  ]
 }

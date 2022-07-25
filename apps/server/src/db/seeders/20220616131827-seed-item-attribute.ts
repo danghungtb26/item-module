@@ -12,6 +12,9 @@ export default {
       { name: 'image', value_type: 'string' },
       { name: 'images', value_type: 'array' },
       { name: 'price', value_type: 'number' },
+      { name: 'string', value_type: 'string' },
+      { name: 'number', value_type: 'number' },
+      { name: 'boolean', value_type: 'boolean' },
     ]
     await queryInterface.bulkInsert('item_attributes', attributes)
   },

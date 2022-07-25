@@ -75,6 +75,10 @@ exports.default = {
                 type: sequelize_typescript_1.DataType.INTEGER,
                 autoIncrement: true,
             },
+            dynamic: {
+                type: sequelize_typescript_1.DataType.JSONB,
+                defaultValue: {},
+            },
             deleted_at: {
                 type: sequelize_typescript_1.DataType.DATE,
             },
